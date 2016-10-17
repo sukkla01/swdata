@@ -1,5 +1,6 @@
 <?php
-return [
+return [ 
+    
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
