@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c284160dfec0273d4db340ecf64b390c",
-    "content-hash": "dee05f57c2d52d98c66290f30686bf39",
+    "hash": "a5c6d3245140a3f7ffab5e525cfd4d19",
+    "content-hash": "99a544fcfe214113fdfc7851a3c511a4",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -1998,6 +1998,48 @@
             "time": "2015-12-05 10:37:16"
         },
         {
+            "name": "linchpinstudios/yii2-backstretch",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/linchpinstudios/yii2-backstretch.git",
+                "reference": "027bbf10ca0f0dc5820780f908758aea0ef2df95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/linchpinstudios/yii2-backstretch/zipball/027bbf10ca0f0dc5820780f908758aea0ef2df95",
+                "reference": "027bbf10ca0f0dc5820780f908758aea0ef2df95",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "linchpinstudios\\backstretch\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Josh Hagel",
+                    "email": "joshhagel@linchpinstudios.com"
+                }
+            ],
+            "description": "Jquery Backstrech Plugin for the Yii2 framework",
+            "keywords": [
+                "Backstrech",
+                "jquery",
+                "plugin",
+                "yii2"
+            ],
+            "time": "2014-08-01 05:49:54"
+        },
+        {
             "name": "mpdf/mpdf",
             "version": "dev-master",
             "source": {
@@ -2207,12 +2249,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "bce6953f9dd8bdef67bb8960c8ae1483b4eaf4db"
+                "reference": "4a8854d3179cd89b994c575203c70a21fc93af70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/bce6953f9dd8bdef67bb8960c8ae1483b4eaf4db",
-                "reference": "bce6953f9dd8bdef67bb8960c8ae1483b4eaf4db",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/4a8854d3179cd89b994c575203c70a21fc93af70",
+                "reference": "4a8854d3179cd89b994c575203c70a21fc93af70",
                 "shasum": ""
             },
             "require": {
@@ -2293,7 +2335,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2016-10-11 21:38:54"
+            "time": "2016-10-12 17:29:32"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2715,12 +2757,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "66e2ffd3ea74f31cae48a9a4e1adfe2a1ff30150"
+                "reference": "740e29c8185173bc90da8770d13d386ae20016bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/66e2ffd3ea74f31cae48a9a4e1adfe2a1ff30150",
-                "reference": "66e2ffd3ea74f31cae48a9a4e1adfe2a1ff30150",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/740e29c8185173bc90da8770d13d386ae20016bd",
+                "reference": "740e29c8185173bc90da8770d13d386ae20016bd",
                 "shasum": ""
             },
             "require": {
@@ -2757,7 +2799,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-10-10 09:10:21"
+            "time": "2016-10-12 10:55:14"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -4673,12 +4715,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-debug.git",
-                "reference": "6ab1ba589298936d7bdd7dc63ceb3aada6e9c255"
+                "reference": "cfcdf55263545e98a5b0e782ef998ad7a0008ccb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/6ab1ba589298936d7bdd7dc63ceb3aada6e9c255",
-                "reference": "6ab1ba589298936d7bdd7dc63ceb3aada6e9c255",
+                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/cfcdf55263545e98a5b0e782ef998ad7a0008ccb",
+                "reference": "cfcdf55263545e98a5b0e782ef998ad7a0008ccb",
                 "shasum": ""
             },
             "require": {
@@ -4712,7 +4754,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2016-10-07 13:28:10"
+            "time": "2016-10-12 22:53:16"
         },
         {
             "name": "yiisoft/yii2-faker",

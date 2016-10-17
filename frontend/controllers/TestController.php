@@ -23,5 +23,9 @@ class TestController extends \yii\web\Controller
         ]);
         return $this->render('index',['dataProvider' => $dataProvider]);
     }
+    public function actionBk()
+    {
+        return $this->render('bk');
+    }
 
 }
