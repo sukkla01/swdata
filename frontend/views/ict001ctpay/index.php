@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\Ict001CtpaySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'ระบบเบิกจ่ายค่า CT SCAN';
+$this->title = 'ระบบเบิกจ่ายค่า CT SCANjjjjjj';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ict001-ctpay-index">
