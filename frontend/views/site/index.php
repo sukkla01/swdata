@@ -92,6 +92,6 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         </div>
     </div>
     <?php
-        echo Yii::$app->security->generatePasswordHash('p07437');
+        //echo Yii::$app->security->generatePasswordHash('p07437');
 
     ?>
