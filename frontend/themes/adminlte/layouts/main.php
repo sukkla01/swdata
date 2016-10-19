@@ -36,7 +36,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <title>SWDATA | ข้อมูล รพ.ศรีสังวรสุโขทัย</title>
         <?php $this->head() ?>
     </head>
-    <body class="hold-transition <?php echo 'skin-jub2'; ?> sidebar-mini">
+    <body class="hold-transition <?php echo 'skin-blue'; ?> sidebar-mini">
     <?php $this->beginBody() ?>
     <div class="wrapper">
 
