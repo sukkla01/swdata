@@ -9,7 +9,7 @@ class DmhtController extends \common\components\AppController {
     }
 
     public function actionDm() {
-        $this->permitRole([3]);
+        $this->permitRole([1,3]);
         $sql = "SELECT * 
                 FROM tmp_dmht
                 WHERE typeicd='dm' 
