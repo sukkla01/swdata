@@ -41,7 +41,7 @@ use yii\helpers\Url;
 
             <li>
                 <a href="<?= Url::to('index.php?r=site') ?>">
-                    <i class="fa fa-th"></i> <span>Dashboard1</span>
+                    <i class="fa fa-th"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
                         <small class="label pull-right bg-green">new</small>
                     </span>
