@@ -53,4 +53,3 @@ frontend
 vendor/                  contains dependent 3rd-party packages
 environments/            contains environment-based overrides
 ```
-http://samsung-updates.com/details/37546/Galaxy_Note_8.0_3G/WIFI/GT-N5100/THL/N5100XXDNK4.html   
