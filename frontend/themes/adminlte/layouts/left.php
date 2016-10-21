@@ -53,7 +53,7 @@ use yii\helpers\Url;
 
                 </a>
             </li>
-             <li>
+            <li>
                 <a href="http://203.157.82.73/rq_supplies" target="_blank">
                     <i class="fa fa-cart-arrow-down"></i> <span>เสนอความต้องการ</span>
 
@@ -64,7 +64,7 @@ use yii\helpers\Url;
 
                 </a>
             </li>
-            
+
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-area-chart"></i> <span>ระบบรายงาน</span>
@@ -78,7 +78,7 @@ use yii\helpers\Url;
                 </ul>
             </li>
 
-            <li class="header">LABELS</li>
+            <li class="header"></li>
             <li><a href="<?= Url::to('/swdata/backend/web') ?>" target="_blank"><i class="fa fa-circle-o text-aqua" ></i> <span>ผู้ดูแลระบบ</span></a></li>
 
             <?php
@@ -86,7 +86,7 @@ use yii\helpers\Url;
             if (Yii::$app->user->isGuest) {
                 ?>
                 <li><a href="<?= Url::to('index.php?r=site/login') ?>"><i class="fa fa-circle-o text-green"></i> <span>เข้าสูระบบ</span></a></li>
-                <?php } else { ?>
+            <?php } else { ?>
                 <li>
                     <?php
                     echo Html::a('<i class="fa fa-circle-o text-red"></i>ออกจากระบบ', ['/site/logout'], [
@@ -104,5 +104,35 @@ use yii\helpers\Url;
 
         </ul>
     </section>
-
+    <!-- Histats.com  START (html only)-->
+    <ul class="sidebar-menu">
+            <li class="header"></li>
+    </ul>
+    <br>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <div id="histats_counter"></div>
+            <!-- Histats.com  END  -->
+        </div>
+    </div>
 </aside>
+
+
+<?php
+$script = <<< JS
+
+        var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,3621569,4,1047,135,50,00011111']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();
+        
+JS;
+$this->registerJs($script, yii\web\View::POS_HEAD);
+?>
+
