@@ -74,24 +74,56 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         </div>
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
-            <!-- small box 
+            
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>65</h3>
+                    <h3>0</h3>
 
-                    <p>Unique Visitors</p>
+                    <p>comming</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
+                    <i class="fa fa-bell"></i>
                 </div>
                 <a href="#" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
-        </div> -->
+        </div> 
         </div>
+ 
     </div>
+
+
+<div class="body-content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+                       
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    
+                </div>
+            </div>
+    </div>
+</div>
+<hr>
     <?php
         //echo Yii::$app->security->generatePasswordHash('p07437');
 
     ?>
+
+
+
