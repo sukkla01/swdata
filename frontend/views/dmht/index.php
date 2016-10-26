@@ -1,5 +1,8 @@
 <?php
 /* @var $this yii\web\View */
+
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
 ?>
 
 
@@ -18,14 +21,87 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+
+                    <?php
+                   
+                    $gridColumns = [
+                            [
+                            'attribute' => 'hn',
+                            'label' => 'hn'
+                        ],
+                            [
+                            'attribute' => 'vstdate',
+                            'label' => 'วันที่'
+                        ],
+                            [
+                            'attribute' => 'tname',
+                            'header' => 'ชื่อ-สกุล'
+                        ],
+                            [
+                            'attribute' => 'cid',
+                            'header' => 'CID'
+                        ],
+                            [
+                            'attribute' => 'age_y',
+                            'header' => 'อายุ'
+                        ],
+                            [
+                            'attribute' => 'taddr',
+                            'label' => 'ที่อยู่'
+                        ],
+                            [
+                            'attribute' => 'moopart',
+                            'header' => 'หมู่'
+                        ],
+                            [
+                            'attribute' => 'tmbpart',
+                            'header' => 'ตำบล'
+                        ],
+                            [
+                            'attribute' => 'amppart',
+                            'header' => 'อำเภอ'
+                        ],
+                            [
+                            'attribute' => 'chwpart',
+                            'header' => 'จังหวัด'
+                        ]
+                    ];
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                    echo '<div class="col-md-12" align="right" >';
+                     echo ExportMenu::widget([
+                        'dataProvider'=>$dataProvider,
+                        'columns'=>$gridColumns
+                    ]);
+                     echo '</div>';
+                    echo GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        //'filterModel' => $searchModel,
+                        'autoXlFormat' => true,
+                        'export' => [
+                            'fontAwesome' => true,
+                            'showConfirmAlert' => false,
+                            'target' => GridView::TARGET_BLANK
+                        ],
+                        'columns' => $gridColumns,
+                        
+                        'resizableColumns' => true,
+                        'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
+                        //'floatHeader' => true,
+                        //'floatHeaderOptions' => ['scrollingTop' => '100'],
+                        'pjax' => true,
+                        'pjaxSettings' => [
+                            'neverTimeout' => true,
+                        //'beforeGrid' => 'My fancy content before.',
+                        //'afterGrid' => 'My fancy content after.',
+                        ],
+                    ]);
+                    ?>
+
+
+
+
+
+
                 </div>
 
             </div>
