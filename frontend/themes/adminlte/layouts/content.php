@@ -9,7 +9,7 @@ use dmstr\widgets\Alert;
     <section class="content">
         <?= Alert::widget() ?>
         <?= $content ?>
-        <img src="../web/images/black_ribbon_bottom_right.png" class="black-ribbon stick-bottom stick-right"/>
+        <img src="../web/images/black_ribbon_bottom_left.png" class="black-ribbon stick-bottom stick-left"/>
     </section>
 </div>
 

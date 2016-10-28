@@ -72,7 +72,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $sql = "SELECT * FROM chart_canernew WHERE tyear BETWEEN (YEAR(CURDATE())+543)-5 AND (YEAR(CURDATE())+543)";
+        $connection = Yii::$app->db;
+        $data = $connection->createCommand($sql)
+                ->queryAll();
+
+        for ($i = 0; $i < sizeof($data); $i++) {
+            $tyear[] = $data[$i]['tyear']*1;
+            $tcount[] = $data[$i]['tcount'] * 1;
+            //$m2[] = $data[$i]['m2'] * 1;
+        }
+        //$tyear1[]=['2555','2556','2557','2558','25556'];
+        //$tcount1[]=[10,22,33,44,55];
+        return $this->render('index',['tyear'=>$tyear,'tcount'=>$tcount]);
     }
 
     /**

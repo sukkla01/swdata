@@ -10,7 +10,7 @@ class DmhtController extends \common\components\AppController {
         $sql = "SELECT * 
                 FROM tmp_dmht
                 WHERE typeicd='dm' 
-                ORDER BY chwpart,amppart,tmbpart,moopart";
+                ORDER BY vstdate desc";
         try {
             $rawData = \Yii::$app->db->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
@@ -33,7 +33,7 @@ class DmhtController extends \common\components\AppController {
         $sql = "SELECT * 
                 FROM tmp_dmht
                 WHERE typeicd='dm' 
-                ORDER BY chwpart,amppart,tmbpart,moopart";
+                ORDER BY vstdate  desc";
         try {
             $rawData = \Yii::$app->db->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
@@ -53,7 +53,7 @@ class DmhtController extends \common\components\AppController {
         $sql = "SELECT * 
                 FROM tmp_dmht
                 WHERE typeicd='ht'
-                 ORDER BY chwpart,amppart,tmbpart,moopart ";
+                 ORDER BY vstdate desc ";
         try {
             $rawData = \Yii::$app->db->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
@@ -73,7 +73,7 @@ class DmhtController extends \common\components\AppController {
         $sql = "SELECT * 
                 FROM tmp_dmht
                 WHERE typeicd='dmht'
-                 ORDER BY chwpart,amppart,tmbpart,moopart";
+                 ORDER BY vstdate  desc";
         try {
             $rawData = \Yii::$app->db->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {

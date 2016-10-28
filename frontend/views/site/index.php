@@ -2,8 +2,10 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
-use yii\helpers\Url;
 
+use yii\helpers\Url;
+use miloschuman\highcharts\Highcharts;
+use kongoon\c3js\C3JS;
 
 $connection = Yii::$app->db;
 $sql = "SELECT 
@@ -18,6 +20,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
     $ht = $data[$nu]['ht'];
     $dmht = $data[$nu]['dmht'];
 }
+//print_r($tyear1)
 ?>
 <div class="site-index">
 
@@ -74,7 +77,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         </div>
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
-            
+
             <div class="small-box bg-red">
                 <div class="inner">
                     <h3>0</h3>
@@ -89,41 +92,124 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
                 </a>
             </div>
         </div> 
-        </div>
- 
     </div>
+
+</div>
 
 
 <div class="body-content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                        <!-- /.box-tools -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <i class="fa fa-bell"></i>
+                    ผู้ป่วยมะเร็งรายใหม่
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-
-                       
-                        <!-- /.box-tools -->
-                    </div>
-                    <!-- /.box-header -->
-                    
+                    <!-- /.box-tools -->
                 </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?php
+                    echo Highcharts::widget([
+                        'options' => [
+                            'title' => ['text' => ''],
+                            'xAxis' => [
+                                'categories' => $tyear
+                            ],
+                            'yAxis' => [
+                                'title' => ['text' => 'จำนวน(คน)']
+                            ],
+                            'series' => [
+                                    ['type' => 'column',
+                                    'name' => 'ผู้ป่วยมะเร็ง',
+                                    'data' => $tcount,
+                                    'color' => '#db7093',
+                                    //'shadow' => TRUE
+                                    'pointWidth' => 50
+                                ],
+                                    ['type' => 'line',
+                                    //'name' => 'จัดการได้',
+                                    'data' => $tcount,
+                                ],
+                            //['name' => 'John', 'data' => [5, 7, 3]]
+                            ]
+                        ]
+                    ]);
+                    ?>
+
+
+
+
+
+                </div>
+                <!-- /.box-header -->
+
             </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?=
+                    C3JS::widget([
+                        'options' => [
+                            'data' => [
+                                'x' => 'x',
+                                'columns' => [
+                                        ['x', '2016-01-01', '2016-02-01', '2016-03-01', '2016-04-01', '2016-05-01', '2016-06-01'],
+                                        ['data1', 30, 200, 100, 400, 150, 250],
+                                        ['data2', 50, 20, 10, 40, 15, 25]
+                                ],
+                                'types' => [
+                                    'data1' => 'bar',
+                                    //'data2' => 'bar'
+                                ],
+                            ],
+                            'axis' => [
+                                'y' => [
+                                    'label' => [
+                                        'text' => 'Y Label',
+                                        'position' => 'outer-middle',
+                                    ]
+                                ],
+                                'x' => [
+                                    'type' => 'timeseries',
+                                    'tick' => [
+                                        'format' => '%Y-%m-%d'
+                                    ],
+                                    'label' => [
+                                        'text' => 'X Label',
+                                        'position' => 'outer-middle',
+                                    ]
+                                ]
+                            ]
+                        ],
+                    ])
+                    ?>
+                </div>
+                <!-- /.box-header -->
+
+            </div>
+        </div>
     </div>
 </div>
-<hr>
-    <?php
-        //echo Yii::$app->security->generatePasswordHash('p07437');
 
-    ?>
+<hr>
+<?php
+//echo Yii::$app->security->generatePasswordHash('p07437');
+?>
 
 
 

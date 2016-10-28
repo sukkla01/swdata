@@ -3,6 +3,7 @@
 
 use yii\bootstrap\Html;
 
+
 $this->title = 'dashboard';
 ?>
 <?php
@@ -33,7 +34,7 @@ if (Yii::$app->request->isPost) {
 <div class="site-index">
     <div class="row">
             <div class="col-md-12">
-                <div class="box">
+                <div class="box box-success">
                     <div class="box-body">
                        ค้นหาผู้ป่วยพนักงานธนาคาร
 
