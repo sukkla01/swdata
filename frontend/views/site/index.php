@@ -6,6 +6,8 @@ $this->title = 'My Yii Application';
 use yii\helpers\Url;
 use miloschuman\highcharts\Highcharts;
 use kongoon\c3js\C3JS;
+use scotthuangzl\googlechart\GoogleChart;
+use sjaakp\gcharts\LineChart;
 
 $connection = Yii::$app->db;
 $sql = "SELECT 
@@ -152,7 +154,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         <div class="col-md-6">
             <div class="box box-success">
                 <div class="box-header with-border">
-
+                    จำนวนผู้ป่วยมะเร็งที่มารับบริการ 5 โรค
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -162,7 +164,116 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+<<<<<<< Upstream, based on origin/master
                     
+=======
+                    <?php
+                    echo Highcharts::widget([
+                        'options' => [
+                            'title' => ['text' => ''],
+                            'xAxis' => [
+                                'categories' => $tyear
+                            ],
+                            'yAxis' => [
+                                'title' => ['text' => 'จำนวน(คน)']
+                            ],
+                            'series' => [
+                                    ['type' => 'line',
+                                    'name' => 'มะเร็งเต้านม',
+                                    'data' => $tone,
+                                // 'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ],
+                                    ['type' => 'line',
+                                    'name' => 'มะเร็งปากมดลูก',
+                                    'data' => $ttwo,
+                                // 'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ], ['type' => 'line',
+                                    'name' => 'มะเร็งลำไส้',
+                                    'data' => $ttree,
+                                //'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ], ['type' => 'line',
+                                    'name' => 'มะเร็งตับ',
+                                    'data' => $tfour,
+                                //'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ], ['type' => 'line',
+                                    'name' => 'มะเร็งปอด',
+                                    'data' => $tfive,
+                                // 'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ],
+                            //['name' => 'John', 'data' => [5, 7, 3]]
+                            ]
+                        ]
+                    ]);
+                    ?>
+
+                </div>
+                <!-- /.box-header -->
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <i class="fa fa-bell"></i>
+                    ผู้ป่วยมะเร็งทดสอบ
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?php
+                    echo LineChart::widget([
+                        'height' => '400px',
+                        'dataProvider' => $dataProvider,
+                        'columns' => [
+                            'name:string',
+                            'population'
+                        ],
+                        'options' => [
+                            'title' => 'Countries by Population'
+                        ],
+                    ])
+                    ?>
+
+
+                </div>
+                <!-- /.box-header -->
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    จำนวนผู้ป่วยมะเร็งที่มารับบริการ 5 โรค
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?php
+                    ?>
+
+>>>>>>> 8511db9 
                 </div>
                 <!-- /.box-header -->
 
