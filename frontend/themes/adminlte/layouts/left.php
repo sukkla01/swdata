@@ -71,13 +71,28 @@ use yii\helpers\Url;
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
-                    
+
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="#"><i class="fa fa-circle-o"></i><span class="pull-right-container">
-                        <small class="label pull-right bg-orange">0</small>
-                    </span>รายงานใหม่</a></li>
+                                <small class="label pull-right bg-orange">0</small>
+                            </span>รายงานใหม่</a></li>
                     <li><a href="http://203.157.82.75/datasrisangworn" target="_blank"><i class="fa fa-circle-o"></i>รายงานเก่า</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-address-card-o"></i> <span>ข้อมูล 43 แฟ้ม</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="<?= Url::to('index.php?r=eh') ?>"><i class="fa fa-circle-o"></i><span class="pull-right-container">
+                                <small class="label pull-right bg-orange">14</small>
+                            </span>เอ๊ะ!!!</a></li>
+                    
                 </ul>
             </li>
 
@@ -109,7 +124,7 @@ use yii\helpers\Url;
     </section>
     <!-- Histats.com  START (html only)-->
     <ul class="sidebar-menu">
-            <li class="header"></li>
+        <li class="header"></li>
     </ul>
     <br>
     <div class="row">
