@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use Yii;
@@ -16,24 +17,23 @@ use frontend\models\ContactForm;
 /**
  * Site controller
  */
-class SiteController extends Controller
-{
+class SiteController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
                 'rules' => [
-                    [
+                        [
                         'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
-                    [
+                        [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -52,8 +52,7 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
-    public function actions()
-    {
+    public function actions() {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -70,21 +69,60 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $sql = "SELECT * FROM chart_canernew WHERE tyear BETWEEN (YEAR(CURDATE())+543)-5 AND (YEAR(CURDATE())+543)";
         $connection = Yii::$app->db;
         $data = $connection->createCommand($sql)
                 ->queryAll();
 
         for ($i = 0; $i < sizeof($data); $i++) {
-            $tyear[] = $data[$i]['tyear']*1;
+            $tyear[] = $data[$i]['tyear'] * 1;
             $tcount[] = $data[$i]['tcount'] * 1;
             //$m2[] = $data[$i]['m2'] * 1;
         }
+
+        //cart cancer type
+       
+       
+        
+        
+        
+        $tsql = "SELECT tyear,
+                    SUM(IF(type ='1',tcount,0)) AS tone,
+                    SUM(IF(type ='2',tcount,0)) AS ttwo,
+                    SUM(IF(type ='3',tcount,0)) AS ttree,
+                    SUM(IF(type ='4',tcount,0)) AS tfour,
+                    SUM(IF(type ='5',tcount,0)) AS tfive 
+                    FROM swdata.chart_canertype t
+                    GROUP BY tyear";
+        
+        
+        $datat = $connection->createCommand($tsql)
+                ->queryAll();
+
+        for ($i = 0; $i < sizeof($datat); $i++) {
+            $tone[] = $datat[$i]['tone'] * 1;
+            $ttwo[] = $datat[$i]['ttwo'] * 1;
+            $ttree[] = $datat[$i]['ttree'] * 1;
+            $tfour[] = $datat[$i]['tfour'] * 1;
+            $tfive[] = $datat[$i]['tfive'] * 1;
+            //$m2[] = $data[$i]['m2'] * 1;
+        }
+        
+        try {
+            $rawData = \Yii::$app->db->createCommand($tsql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => false
+        ]);
         //$tyear1[]=['2555','2556','2557','2558','25556'];
         //$tcount1[]=[10,22,33,44,55];
-        return $this->render('index',['tyear'=>$tyear,'tcount'=>$tcount]);
+        return $this->render('index', ['tyear' => $tyear, 'tcount' => $tcount,'dataProvider' => $dataProvider,
+                              'tone'=>$tone,'ttwo'=>$ttwo,'ttree'=>$ttree,'tfour'=>$tfour,'tfive'=>$tfive]);
     }
 
     /**
@@ -92,8 +130,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -103,7 +140,7 @@ class SiteController extends Controller
             return $this->goBack();
         } else {
             return $this->render('login', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -113,8 +150,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         return $this->goHome();
@@ -125,8 +161,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
-    {
+    public function actionContact() {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -138,7 +173,7 @@ class SiteController extends Controller
             return $this->refresh();
         } else {
             return $this->render('contact', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -148,8 +183,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
-    {
+    public function actionAbout() {
         return $this->render('about');
     }
 
@@ -158,8 +192,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionSignup()
-    {
+    public function actionSignup() {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -170,7 +203,7 @@ class SiteController extends Controller
         }
 
         return $this->render('signup', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -179,8 +212,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionRequestPasswordReset()
-    {
+    public function actionRequestPasswordReset() {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
@@ -193,7 +225,7 @@ class SiteController extends Controller
         }
 
         return $this->render('requestPasswordResetToken', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -204,8 +236,7 @@ class SiteController extends Controller
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
-    {
+    public function actionResetPassword($token) {
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {
@@ -219,7 +250,8 @@ class SiteController extends Controller
         }
 
         return $this->render('resetPassword', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
+
 }
