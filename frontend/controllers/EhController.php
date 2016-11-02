@@ -1,7 +1,9 @@
 <?php
 
 namespace frontend\controllers;
+
 use Yii;
+
 class EhController extends \common\components\AppController {
 
     public function actionIndex() {
@@ -124,9 +126,16 @@ class EhController extends \common\components\AppController {
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
         if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
 
-            $date1 = $_POST['date1'];
-            $date2 = $_POST['date2'];
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
         }
         $sql = "SELECT *
 FROM (
@@ -166,7 +175,7 @@ GROUP BY hn";
             ],
                 //'pagination' => FALSE,
         ]);
-        return $this->render('eh201', ['dataProvider' => $dataProvider,'date1'=>$date1,'date2'=>$date2]);
+        return $this->render('eh201', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
 
 }

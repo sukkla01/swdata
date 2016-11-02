@@ -74,7 +74,7 @@ use yii\helpers\Url;
 
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i><span class="pull-right-container">
+                    <li><a href="<?= Url::to('index.php?r=report') ?>"><i class="fa fa-circle-o"></i><span class="pull-right-container">
                                 <small class="label pull-right bg-orange">0</small>
                             </span>รายงานใหม่</a></li>
                     <li><a href="http://203.157.82.75/datasrisangworn" target="_blank"><i class="fa fa-circle-o"></i>รายงานเก่า</a></li>

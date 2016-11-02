@@ -1,8 +1,6 @@
 <?php
 namespace frontend\controllers;
-use yii\web\Session;
-$session = new Session;
-$session->open();
+
 
 use Yii;
 
@@ -13,14 +11,17 @@ class ReportsmoController extends  \common\components\AppController  {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
-        if (Yii::$app->request->isPost) {
-           
-            $date1 = $_POST['date1'];
-            $date2 = $_POST['date2'];
-            $date1 =$session['fff'];
-            $date2 =$session['jjj']; 
-            
-            
+       if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
         }
         
         $sql = "select p.hn,concat(pname,fname,' ',lname) as tname,lo.lab_order_result,p.sex,IF(vs.age_y IS NULL,a.age_y,vs.age_y) as age,a.an,a.age_y,
