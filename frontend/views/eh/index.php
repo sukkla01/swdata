@@ -99,10 +99,9 @@ echo Breadcrumbs::widget([
     'links' => [
             [
             'label' => 'ข้อมูล 43 แฟ้ม',
-            //'url' => ['post-category/view'],
-            //'template' => "<li><b>{link}</b></li>\n", // template for this link only
+        //'url' => ['post-category/view'],
+        //'template' => "<li><b>{link}</b></li>\n", // template for this link only
         ],
-            
         'เอ๊ะ!!',
     ],
 ]);
@@ -153,7 +152,7 @@ echo Breadcrumbs::widget([
                             <?php } ?>
                         </td>
                         <td ><a href="<?= Url::to('index.php?r=eh/eh002') ?>"><i class='fa fa-tv'></i></a></td>
-                        
+
                     </tr>
                     <tr <?= $color ?>>
                         <td>3</td>
@@ -308,6 +307,11 @@ echo Breadcrumbs::widget([
     </div>
 </div>
 
+<?php
+        
+?>
+
+
 <div class="row">
     <div class="col-md-12">
 
@@ -320,6 +324,24 @@ echo Breadcrumbs::widget([
                 </div>
             </div>
             <div class="box-body">
+                <?php $color = "bgcolor='e6f5ff'"; ?>
+                <table class="table table-hover">
+
+                    <tr bgcolor="ccccb3">
+                        <th>#</th>
+                        <th>รายการ</th>
+                        <th>จำนวน/คน</th>
+                        <th align="center">Preview</th>
+                    </tr>
+                    <tr <?= $color ?> >
+                        <td>1</td>
+                        <td>ผู้ป่วยที่ถูกวินิจฉัยว่าเป็นเบาหวานหรือความดัน แต่ยังไม่ได้ลงทะเบียนในคลินิก (clinicmember)  ปีงบ 2559</td>
+                        <td>
+
+                        </td>
+                        <td ><a href="<?= Url::to('index.php?r=eh/eh201') ?>"><i class='fa fa-tv'></i></a></td>
+                    </tr >
+                </table>
 
             </div>
         </div>
