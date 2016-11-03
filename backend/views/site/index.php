@@ -11,13 +11,16 @@ $this->title = 'My Yii Application';
     <hr>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <a class="btn btn-lg btn-success" href="<?= Url::to('index.php?r=user') ?>">USERS SYSTEM</a></p>
         </div>
-         <div class="col-md-4">
+         <div class="col-md-3">
+            <a class="btn btn-lg btn-info" href="<?= Url::to('index.php?r=reporttemplate') ?>">เพิ่มระบบรายงาน</a></p>
+        </div>
+         <div class="col-md-3">
             
         </div>
-         <div class="col-md-4">
+        <div class="col-md-3">
             
         </div>
     </div>

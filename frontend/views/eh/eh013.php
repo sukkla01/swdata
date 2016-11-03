@@ -17,7 +17,7 @@ echo Breadcrumbs::widget([
             'url' => ['eh/'],
         //'template' => "<li><b>{link}</b></li>\n", // template for this link only
         ],
-        'Eh009--> 	สิทธิการรักษาในบัญชี 1 เป็นค่าว่างทำให้ส่งออกไม่ได้'
+        'Eh009--> อายุเกิน 100 ปี'
     ],
 ]);
 ?>
@@ -27,7 +27,7 @@ echo Breadcrumbs::widget([
         <h3 class="box-title">ตรวจสอบข้อมูล 43 แฟ้ม</h3>
         <div class="box box-info box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Eh009--> 	สิทธิการรักษาในบัญชี 1 เป็นค่าว่างทำให้ส่งออกไม่ได้</h3>
+                <h3 class="box-title">Eh009--> อายุเกิน 100 ปี</h3>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>

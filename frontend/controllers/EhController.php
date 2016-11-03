@@ -17,7 +17,7 @@ class EhController extends \common\components\AppController {
                 FROM patient p
                 LEFT JOIN person ps ON ps.patient_hn=p.hn
                 LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
-                WHERE type_area IN('1','3') AND ps.cid IS NULL";
+                WHERE type_area IN('1','3') AND ps.cid IS NULL and p.last_update >'2006-10-01'";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
@@ -26,6 +26,14 @@ class EhController extends \common\components\AppController {
         $dataProvider = new \yii\data\ArrayDataProvider([
             //'key' => 'hoscode',
             'allModels' => $rawData,
+            'sort' => [
+                'attributes' => [
+                    'cid',
+                    'hn',
+                    'tname'
+                    
+                ],
+            ],
             'pagination' => [
                 'pageSize' => 20
             ],
@@ -117,6 +125,195 @@ class EhController extends \common\components\AppController {
                 //'pagination' => FALSE,
         ]);
         return $this->render('eh005', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh006() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE occupation IS NULL";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh006', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh007() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE pname IS NULL";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh007', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh008() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE (pname IN('ด.ช.','นาย','พระ','พระครู') AND sex ='2') OR (pname IN('ด.ญ.','น.ส.','นาง') AND sex ='1')";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh008', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh009() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE (pttype IS NULL OR pttype='')";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh009', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh010() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE  death ='Y' AND person_discharge_id='9'";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh010', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh011() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE  death ='Y' AND (discharge_date IS NULL OR discharge_date ='')";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh011', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh012() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE house_regist_type_id IN('1','3') AND nationality='99' AND cid LIKE '0%'";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh012', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh013() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE (YEAR(CURDATE())-YEAR(birthdate)) > 100";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh013', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionEh014() {
+        $this->permitRole([1, 3]);
+        $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
+                FROM person p
+                WHERE house_regist_type_id IN('1','3') AND nationality<>'99'";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+                //'pagination' => FALSE,
+        ]);
+        return $this->render('eh014', ['dataProvider' => $dataProvider]);
     }
 
     //-------------- eh20x --------------------------------

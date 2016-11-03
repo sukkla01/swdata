@@ -35,7 +35,7 @@ if (isset($_GET['module']) <> '') {
     <div class="col-md-3">
         <div class="box box-info box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">ระบบรายงาน</h3>
+                <h3 class="box-title">ระบบ</h3>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -58,7 +58,7 @@ if (isset($_GET['module']) <> '') {
                             $module = $data[$i]['module'];
                             ?>
                             <td><a href="<?= Url::to(['report/', 'module' => $module]) ?>"><?= $data[$i]['modulename'] ?></a></td>
-                            <td> <?= $data[$i]['tcount'] ?></td>
+                            <td><span data-toggle="tooltip" title="รายงานทั้งหมด" class="badge bg-light-blue"><?= $data[$i]['tcount'] ?></span> </td>
 
                         </tr>   
                     <?php } ?>
@@ -69,7 +69,7 @@ if (isset($_GET['module']) <> '') {
     <div class="col-md-9">
         <div class="box box-warning box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">ระบบรายงาน</h3>
+                <h3 class="box-title">ชื่อรายงาน</h3>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
