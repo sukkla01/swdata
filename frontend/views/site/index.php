@@ -219,6 +219,76 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    จำนวนผู้ป่วยมะเร็งที่มารับบริการแผนกเคมีบำบัด 5 โรค
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?php
+                    echo Highcharts::widget([
+                        'options' => [
+                            'title' => ['text' => ''],
+                            'xAxis' => [
+                                'categories' => $tyear
+                            ],
+                            'yAxis' => [
+                                'title' => ['text' => 'จำนวน(คน)']
+                            ],
+                            'series' => [
+                                    ['type' => 'line',
+                                    'name' => 'มะเร็งเต้านม',
+                                    'data' => $one58,
+                                // 'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ],
+                                    ['type' => 'line',
+                                    'name' => 'มะเร็งปากมดลูก',
+                                    'data' => $two58,
+                                // 'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ], ['type' => 'line',
+                                    'name' => 'มะเร็งลำไส้',
+                                    'data' => $tree58,
+                                //'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ], ['type' => 'line',
+                                    'name' => 'มะเร็งตับ',
+                                    'data' => $four58,
+                                //'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ], ['type' => 'line',
+                                    'name' => 'มะเร็งปอด',
+                                    'data' => $five58,
+                                // 'color' => '#db7093',
+                                //'shadow' => TRUE
+                                //'pointWidth' => 50
+                                ],
+                            //['name' => 'John', 'data' => [5, 7, 3]]
+                            ]
+                        ]
+                    ]);
+                    ?>
+
+                </div>
+                <!-- /.box-header -->
+
+            </div>
+        </div>
+        
+    </div>
 
     
 </div>

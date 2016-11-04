@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\IctCheck */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Ict Checks', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'รายการหลัก', 'url' => ['test/test']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ict-check-view">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('กลับหน้ารายการ', ['test/test', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [

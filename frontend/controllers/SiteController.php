@@ -81,12 +81,7 @@ class SiteController extends Controller {
             //$m2[] = $data[$i]['m2'] * 1;
         }
 
-        //cart cancer type
-       
-       
-        
-        
-        
+        //chart cancer type
         $tsql = "SELECT tyear,
                     SUM(IF(type ='1',tcount,0)) AS tone,
                     SUM(IF(type ='2',tcount,0)) AS ttwo,
@@ -109,6 +104,32 @@ class SiteController extends Controller {
             //$m2[] = $data[$i]['m2'] * 1;
         }
         
+        //chart cancer spclty cancer
+        $sql58 = "SELECT tyear,
+                    SUM(IF(type ='1',tcount,0)) AS tone,
+                    SUM(IF(type ='2',tcount,0)) AS ttwo,
+                    SUM(IF(type ='3',tcount,0)) AS ttree,
+                    SUM(IF(type ='4',tcount,0)) AS tfour,
+                    SUM(IF(type ='5',tcount,0)) AS tfive 
+                    FROM swdata.chart_canertype_dept t
+                    GROUP BY tyear";
+        
+        
+        $data58 = $connection->createCommand($sql58)
+                ->queryAll();
+
+        for ($i = 0; $i < sizeof($data58); $i++) {
+            $one58[] = $data58[$i]['tone'] * 1;
+            $two58[] = $data58[$i]['ttwo'] * 1;
+            $tree58[] = $data58[$i]['ttree'] * 1;
+            $four58[] = $data58[$i]['tfour'] * 1;
+            $five58[] = $data58[$i]['tfive'] * 1;
+            //$m2[] = $data[$i]['m2'] * 1;
+        }
+        
+        
+        
+        
         try {
             $rawData = \Yii::$app->db->createCommand($tsql)->queryAll();
         } catch (\yii\db\Exception $e) {
@@ -122,7 +143,8 @@ class SiteController extends Controller {
         //$tyear1[]=['2555','2556','2557','2558','25556'];
         //$tcount1[]=[10,22,33,44,55];
         return $this->render('index', ['tyear' => $tyear, 'tcount' => $tcount,'dataProvider' => $dataProvider,
-                              'tone'=>$tone,'ttwo'=>$ttwo,'ttree'=>$ttree,'tfour'=>$tfour,'tfive'=>$tfive]);
+                              'tone'=>$tone,'ttwo'=>$ttwo,'ttree'=>$ttree,'tfour'=>$tfour,'tfive'=>$tfive,
+                               'one58'=>$one58,'two58'=>$two58,'tree58'=>$tree58,'four58'=>$four58,'five58'=>$five58]);
     }
 
     /**
