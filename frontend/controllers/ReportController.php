@@ -7,6 +7,7 @@ class ReportController extends \common\components\AppController
 {
     public function actionIndex()
     {
+        $this->permitRole([1, 3]);
         return $this->render('index');
     }
     public function actionTsql()
