@@ -104,7 +104,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         <div class="col-md-6">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    <i class="fa fa-bell"></i>
+                    <i class="fa fa-eercast"></i>
                     ผู้ป่วยมะเร็งรายใหม่
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -154,6 +154,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         <div class="col-md-6">
             <div class="box box-success">
                 <div class="box-header with-border">
+                     <i class="fa fa-spinner"></i>
                     จำนวนผู้ป่วยมะเร็งที่มารับบริการ 5 โรค
 
                     <div class="box-tools pull-right">
@@ -223,6 +224,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         <div class="col-md-6">
             <div class="box box-success">
                 <div class="box-header with-border">
+                    <i class="fa fa-line-chart"></i>
                     จำนวนผู้ป่วยมะเร็งมารับบริการที่แผนกเคมีบำบัด 5 โรค
 
                     <div class="box-tools pull-right">
