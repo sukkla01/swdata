@@ -223,7 +223,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         <div class="col-md-6">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    จำนวนผู้ป่วยมะเร็งที่มารับบริการแผนกเคมีบำบัด 5 โรค
+                    จำนวนผู้ป่วยมะเร็งมารับบริการที่แผนกเคมีบำบัด 5 โรค
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -238,7 +238,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
                         'options' => [
                             'title' => ['text' => ''],
                             'xAxis' => [
-                                'categories' => $tyear
+                                'categories' => $year58
                             ],
                             'yAxis' => [
                                 'title' => ['text' => 'จำนวน(คน)']

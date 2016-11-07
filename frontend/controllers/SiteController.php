@@ -119,6 +119,7 @@ class SiteController extends Controller {
                 ->queryAll();
 
         for ($i = 0; $i < sizeof($data58); $i++) {
+            $year58[] = $data58[$i]['tyear'] ;
             $one58[] = $data58[$i]['tone'] * 1;
             $two58[] = $data58[$i]['ttwo'] * 1;
             $tree58[] = $data58[$i]['ttree'] * 1;
@@ -144,7 +145,7 @@ class SiteController extends Controller {
         //$tcount1[]=[10,22,33,44,55];
         return $this->render('index', ['tyear' => $tyear, 'tcount' => $tcount,'dataProvider' => $dataProvider,
                               'tone'=>$tone,'ttwo'=>$ttwo,'ttree'=>$ttree,'tfour'=>$tfour,'tfive'=>$tfive,
-                               'one58'=>$one58,'two58'=>$two58,'tree58'=>$tree58,'four58'=>$four58,'five58'=>$five58]);
+                               'one58'=>$one58,'two58'=>$two58,'tree58'=>$tree58,'four58'=>$four58,'five58'=>$five58,'year58'=>$year58]);
     }
 
     /**
