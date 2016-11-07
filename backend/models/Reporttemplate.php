@@ -31,7 +31,7 @@ class Reporttemplate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['reportname', 'module', 'modulename', 'url', 'staff', 'tsql'], 'string', 'max' => 255],
+            [['reportname', 'module', 'modulename', 'url', 'staff'], 'string', 'max' => 255],
         ];
     }
 

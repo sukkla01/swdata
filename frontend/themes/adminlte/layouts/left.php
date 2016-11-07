@@ -75,7 +75,14 @@ use yii\helpers\Url;
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="<?= Url::to('index.php?r=report') ?>"><i class="fa fa-circle-o"></i><span class="pull-right-container">
-                                <small class="label pull-right bg-orange">0</small>
+                                <small class="label pull-right bg-orange">
+                                    <?php
+                                    $sqlc_report = "SELECT COUNT(DISTINCT module) FROM reporttemplate ";
+                                    $command = Yii::$app->db->createCommand($sqlc_report);
+                                    $c_report = $command->queryScalar();
+                                    echo $c_report;
+                                    ?>
+                                </small>
                             </span>รายงานใหม่</a></li>
                     <li><a href="http://203.157.82.75/datasrisangworn" target="_blank"><i class="fa fa-circle-o"></i>รายงานเก่า</a></li>
                 </ul>
@@ -92,7 +99,7 @@ use yii\helpers\Url;
                     <li><a href="<?= Url::to('index.php?r=eh') ?>"><i class="fa fa-circle-o"></i><span class="pull-right-container">
                                 <small class="label pull-right bg-orange">14</small>
                             </span>เอ๊ะ!!!</a></li>
-                    
+
                 </ul>
             </li>
 

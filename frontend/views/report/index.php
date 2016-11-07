@@ -84,6 +84,7 @@ if (isset($_GET['module']) <> '') {
                         <th>Module</th>
                         <th>ชื่อรายงาน</th>
                         <th align="center">Preview</th>
+                        <th>ดูคำสั่ง sql</th>
                     </tr>
                     <?php if (isset($_GET['module']) <> '') { ?>
                         <?php for ($i = 0; $i < sizeof($datad); $i++) { ?>
@@ -93,10 +94,13 @@ if (isset($_GET['module']) <> '') {
                                 <?php
                                 $module = $datad[$i]['module'];
                                 $url ='index.php?r='.$datad[$i]['url'];
+                                $tsql = $datad[$i]['tsql'];
+                                $reportname = $datad[$i]['reportname'];
                                 ?>
                                 <td><?= $module ?></td>
                                 <td><?= $datad[$i]['reportname'] ?></td>
                                 <td><a href="<?= Url::to($url) ?>" target="_blank"><i class='fa fa-tv'></i></a></td>
+                                <td><a href="<?= Url::to(['report/tsql','tsql'=>$tsql,'reportname'=>$reportname]); ?>" target="_blank">sql</a></td>
 
 
                             </tr>   

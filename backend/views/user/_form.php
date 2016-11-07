@@ -20,7 +20,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'role')->textInput() ?>
+    
+    <?= $form->field($model, 'role')->dropDownList([ '1' => 'Admin', '2' => 'รพ.สต.','3' => 'เจ้าหน้าที่โรงพยาบาล'], ['prompt' => '']) ?>
 
     
 

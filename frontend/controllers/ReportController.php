@@ -9,6 +9,11 @@ class ReportController extends \common\components\AppController
     {
         return $this->render('index');
     }
+    public function actionTsql()
+    {
+        
+        return $this->render('tsql');
+    }
     
      public function actionMrs001()
     {
