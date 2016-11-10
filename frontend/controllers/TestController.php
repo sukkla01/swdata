@@ -27,7 +27,8 @@ class TestController extends \yii\web\Controller
     {
         return $this->render('bk');
     }
-     public function actionTgrid()
+     
+    public function actionTgrid()
     {
         return $this->render('tgrid');
     }

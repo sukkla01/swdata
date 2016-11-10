@@ -111,16 +111,30 @@ use kartik\export\ExportMenu;
                             'header' => 'จังหวัด'
                         ],
                             [
-                            'attribute' => 'type',
-                            'header' => 'ประเภท'
-                        ],
-                            [
                             'attribute' => 'dm_first',
                             'header' => 'วันวินิจฉัยครั้งแรกเบาหวาน'
                         ],
                             [
                             'attribute' => 'ht_first',
                             'header' => 'วันวินิจฉัยครั้งแรกความดัน'
+                        ],
+                            [
+                            'header' => 'ประเภท',
+                            'attribute' => 'type',
+                            'value' => function ($model, $key, $index, $widget) {
+                                if ($model['type'] === 'DM') {
+                                    return "<span class='badge' style='background-color: #cc0052'>" . $model['type'] . "</span>  <code></code>";
+                                } else if ($model['type'] === 'HT') {
+                                    return "<span class='badge' style='background-color: #ff9933'>" . $model['type'] . "</span>  <code></code>";
+                                } else {
+                                    return "<span class='badge' style='background-color: #999966'>" . $model['type'] . "</span>  <code></code>";
+                                }
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'vAlign' => 'middle',
+                            'format' => 'raw',
+                            'width' => '150px',
+                            'noWrap' => true
                         ],
                     ];
 

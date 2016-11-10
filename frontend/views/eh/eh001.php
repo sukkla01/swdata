@@ -34,77 +34,84 @@ echo Breadcrumbs::widget([
             </div>
         </div>
         <div class="box-body">
-<?php
-$gridColumns = [
-        ['class' => 'kartik\grid\SerialColumn'],
-        [
-        'attribute' => 'hn',
-        'label' => 'hn'
-    ],
-        [
-        'attribute' => 'cid',
-        'label' => 'cid'
-    ],
-        [
-        'attribute' => 'tname',
-        'header' => 'ชื่อ-สกุล'
-    ],
-        [
-        'attribute' => 'taddr',
-        'header' => 'ที่อยู่'
-    ],
-        [
-        'attribute' => 'moopart',
-        'header' => 'หมู่'
-    ],
-        [
-        'attribute' => 'tmbpart',
-        'header' => 'ตำบล'
-    ],
-        [
-        'attribute' => 'amppart',
-        'header' => 'อำเภอ'
-    ],
-        [
-        'attribute' => 'chwpart',
-        'header' => 'จังหวัด'
-    ],
-       [
-            'class' => 'yii\grid\DataColumn', // can be omitted, as it is the default
-            'value' => function ($data) {
-                return $data->name; // $data['name'] for array data, e.g. using SqlDataProvider.
-            },
-        ],
-];
+            <?php
+            $gridColumns = [
+                    ['class' => 'kartik\grid\SerialColumn'],
+                    [
+                    'attribute' => 'hn',
+                    'label' => 'hn'
+                ],
+                    [
+                    'attribute' => 'cid',
+                    'label' => 'cid'
+                ],
+                    [
+                    'attribute' => 'tname',
+                    'header' => 'ชื่อ-สกุล'
+                ],
+                    [
+                    'attribute' => 'taddr',
+                    'header' => 'ที่อยู่'
+                ],
+                    [
+                    'attribute' => 'moopart',
+                    'header' => 'หมู่'
+                ],
+                    [
+                    'attribute' => 'tmbpart',
+                    'header' => 'ตำบล'
+                ],
+                    [
+                    'attribute' => 'amppart',
+                    'header' => 'อำเภอ'
+                ],
+                    [
+                    'attribute' => 'chwpart',
+                    'header' => 'จังหวัด'
+                ],
+                    [
+                    'attribute' => 'color',
+                    'value' => function ($model, $key, $index, $widget) {
+                      if ($model['color'] === 'Y') {  
+                        return "<span class='badge' style='background-color: fffff'>Y </span>  <code></code>";
+                      }
+                    },
+                    'filterType' => GridView::FILTER_COLOR,
+                    'vAlign' => 'middle',
+                    'format' => 'raw',
+                    'width' => '150px',
+                    'noWrap' => true
+                ],
+            ];
 
-echo '<div class="col-md-12" align="right" >';
-echo ExportMenu::widget([
-    'dataProvider' => $dataProvider,
-    'columns' => $gridColumns
-]);
-echo '</div>';
-echo GridView::widget([
-    'dataProvider' => $dataProvider,
-    //'filterModel' => $searchModel,
-    'autoXlFormat' => true,
-    'export' => [
-        'fontAwesome' => true,
-        'showConfirmAlert' => false,
-        'target' => GridView::TARGET_BLANK
-    ],
-    'columns' => $gridColumns,
-    'resizableColumns' => true,
-    'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
-    //'floatHeader' => true,
-    //'floatHeaderOptions' => ['scrollingTop' => '100'],
-    'pjax' => true,
-    'pjaxSettings' => [
-        'neverTimeout' => true,
-    //'beforeGrid' => 'My fancy content before.',
-    //'afterGrid' => 'My fancy content after.',
-    ],
-]);
-?>
+            echo '<div class="col-md-12" align="right" >';
+            echo ExportMenu::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => $gridColumns
+            ]);
+            echo '</div>';
+            echo GridView::widget([
+                'dataProvider' => $dataProvider,
+                //'filterModel' => $searchModel,
+                'autoXlFormat' => true,
+                'export' => [
+                    'fontAwesome' => true,
+                    'showConfirmAlert' => false,
+                    'target' => GridView::TARGET_BLANK
+                ],
+                'columns' => $gridColumns,
+                'resizableColumns' => true,
+                'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
+                //'floatHeader' => true,
+                //'floatHeaderOptions' => ['scrollingTop' => '100'],
+                'pjax' => true,
+                'pjaxSettings' => [
+                    'neverTimeout' => true,
+                //'beforeGrid' => 'My fancy content before.',
+                //'afterGrid' => 'My fancy content after.',
+                ],
+            ]);
+            ?>
 
         </div>
     </div>
