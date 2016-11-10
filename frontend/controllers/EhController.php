@@ -13,7 +13,8 @@ class EhController extends \common\components\AppController {
     public function actionEh001() {
         $this->permitRole([1, 3]);
         $sql = "SELECT p.hn,IF(p.cid IS NULL,'',p.cid) AS cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) AS taddr,
-                p.moopart,p.tmbpart,p.amppart,p.chwpart
+                p.moopart,p.tmbpart,p.amppart,p.chwpart,
+                if(p.sex =1,'Y','N') as color
                 FROM patient p
                 LEFT JOIN person ps ON ps.patient_hn=p.hn
                 LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
@@ -23,6 +24,12 @@ class EhController extends \common\components\AppController {
         } catch (\yii\db\Exception $e) {
             throw new \yii\web\ConflictHttpException('sql error');
         }
+        
+         for ($i = 0; $i < sizeof($rawData); $i++) {
+            $color[] = $rawData[$i]['color'] ;
+            //$m2[] = $data[$i]['m2'] * 1;
+        }
+        
         $dataProvider = new \yii\data\ArrayDataProvider([
             //'key' => 'hoscode',
             'allModels' => $rawData,
@@ -39,7 +46,7 @@ class EhController extends \common\components\AppController {
             ],
                 //'pagination' => FALSE,
         ]);
-        return $this->render('eh001', ['dataProvider' => $dataProvider]);
+        return $this->render('eh001', ['dataProvider' => $dataProvider,'color'=>$color]);
     }
 
     public function actionEh002() {

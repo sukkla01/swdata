@@ -8,8 +8,6 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-
-
 <div class="reporttemplate-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -31,22 +29,13 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'staff')->textInput(['maxlength' => true]) ?>
     </div>
     <div class="col-md-12">
-        <?= $form->field($model, 'tsql')->textarea(['rows' => 6]) ?>
+         <?= $form->field($model, 'tsql')->textarea(['rows' => 6]) ?>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <?= $form->field($model, 'create_date')->textInput() ?>
+    <div class="col-md-4">
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? 'บันทึก' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <?= Html::submitButton($model->isNewRecord ? 'บันทึก' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-            </div>
-        </div>
-    </div>
-
-
 
     <?php ActiveForm::end(); ?>
 

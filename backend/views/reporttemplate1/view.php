@@ -34,8 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'modulename',
             'url:url',
             'staff',
-            'tsql:ntext',
-            'create_date',
+            'tsql',
         ],
     ]) ?>
 

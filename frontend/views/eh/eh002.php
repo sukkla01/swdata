@@ -36,6 +36,7 @@ echo Breadcrumbs::widget([
             <div class="box-body">
 <?php
 $gridColumns = [
+    ['class' => 'kartik\grid\SerialColumn'],
         [
         'attribute' => 'hn',
         'label' => 'hn'

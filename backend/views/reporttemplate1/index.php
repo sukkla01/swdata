@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="reporttemplate-index">
 
+    
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -30,8 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'modulename',
             'url:url',
             // 'staff',
-            // 'tsql:ntext',
-            // 'create_date',
+            // 'tsql',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

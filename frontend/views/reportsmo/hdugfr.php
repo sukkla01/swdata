@@ -83,6 +83,7 @@ use kartik\export\ExportMenu;
 
                     <?php
                     $gridColumns = [
+                        ['class' => 'kartik\grid\SerialColumn'],
                             [
                             'attribute' => 'hn',
                             'label' => 'hn'

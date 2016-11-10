@@ -19,7 +19,7 @@ class ReporttemplateSearch extends Reporttemplate
     {
         return [
             [['id'], 'integer'],
-            [['reportname', 'module', 'modulename', 'url', 'staff', 'tsql'], 'safe'],
+            [['reportname', 'module', 'modulename', 'url', 'staff', 'tsql', 'create_date'], 'safe'],
         ];
     }
 
@@ -60,6 +60,7 @@ class ReporttemplateSearch extends Reporttemplate
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'create_date' => $this->create_date,
         ]);
 
         $query->andFilterWhere(['like', 'reportname', $this->reportname])

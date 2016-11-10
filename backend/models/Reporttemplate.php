@@ -14,6 +14,7 @@ use Yii;
  * @property string $url
  * @property string $staff
  * @property string $tsql
+ * @property string $create_date
  */
 class Reporttemplate extends \yii\db\ActiveRecord
 {
@@ -31,6 +32,8 @@ class Reporttemplate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['tsql'], 'string'],
+            [['create_date'], 'safe'],
             [['reportname', 'module', 'modulename', 'url', 'staff'], 'string', 'max' => 255],
         ];
     }
@@ -45,9 +48,10 @@ class Reporttemplate extends \yii\db\ActiveRecord
             'reportname' => 'ชื่อรายงาน',
             'module' => 'Module',
             'modulename' => 'ชื่อ Module',
-            'url' => 'route',
-            'staff' => 'ผู้บันทึก',
-            'tsql' => 'sql',
+            'url' => 'Route',
+            'staff' => 'Staff',
+            'tsql' => 'Sql',
+            'create_date' => 'วันที่สร้าง',
         ];
     }
 }

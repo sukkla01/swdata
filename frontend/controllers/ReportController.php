@@ -76,5 +76,7 @@ class ReportController extends \common\components\AppController
         ]);
         return $this->render('mrs001',['dataProvider' => $dataProvider,'date1'=>$date1,'date2'=>$date2]);
     }
+    
+    
 
 }
