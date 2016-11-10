@@ -1,17 +1,17 @@
 <?php
-namespace frontend\controllers;
 
+namespace frontend\controllers;
 
 use Yii;
 
-class ReportsmoController extends  \common\components\AppController  {
+class ReportsmoController extends \common\components\AppController {
 
     public function actionHdugfr() {
 
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
-       if (Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             if (isset($_POST['date1']) == '') {
                 $date1 = Yii::$app->session['date1'];
                 $date2 = Yii::$app->session['date2'];
@@ -23,7 +23,7 @@ class ReportsmoController extends  \common\components\AppController  {
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        
+
         $sql = "select p.hn,concat(pname,fname,' ',lname) as tname,lo.lab_order_result,p.sex,IF(vs.age_y IS NULL,a.age_y,vs.age_y) as age,a.an,a.age_y,
                                      if(department='OPD',s.name,w.name) as tspclty,l.vn,albu.lab_order_result AS albu_result,micro.lab_order_result AS micro_result,TEST.lab_order_result AS test_result,
                                      concat(p.addrpart,'  ',p.moopart,' ' ,t.full_name) as addrfull,pt.name as ptname,department,
@@ -68,15 +68,14 @@ class ReportsmoController extends  \common\components\AppController  {
                 'pageSize' => 20
             ],
         ]);
-        return $this->render('hdugfr',['dataProvider' => $dataProvider,'date1'=>$date1,'date2'=>$date2]);
+        return $this->render('hdugfr', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
-    
-    public function actionNotclinic()
-    {
-         $this->permitRole([1, 3]);
+
+    public function actionNotclinic() {
+        $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
-       if (Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             if (isset($_POST['date1']) == '') {
                 $date1 = Yii::$app->session['date1'];
                 $date2 = Yii::$app->session['date2'];
@@ -88,7 +87,7 @@ class ReportsmoController extends  \common\components\AppController  {
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        
+
         $sql = "SELECT tt.*,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
                 p.moopart,p.tmbpart,p.amppart,p.chwpart,
@@ -131,13 +130,15 @@ class ReportsmoController extends  \common\components\AppController  {
             'pagination' => [
                 'pageSize' => 20
             ],
+            'sort' => [
+                'attributes' => count($rawData[5]) > 0 ? array_keys($rawData[0]) : array()
+            ]
         ]);
-        return $this->render('notclinic',['dataProvider' => $dataProvider,'date1'=>$date1,'date2'=>$date2]);
+        return $this->render('notclinic', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
-    
-    
-     public function actionIndex() {
-         return $this->render('index'); 
-     }
+
+    public function actionIndex() {
+        return $this->render('index');
+    }
 
 }
