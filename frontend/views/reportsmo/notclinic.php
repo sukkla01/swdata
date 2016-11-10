@@ -112,11 +112,25 @@ use kartik\export\ExportMenu;
                         ],
                             [
                             'attribute' => 'dm_first',
-                            'header' => 'วันวินิจฉัยครั้งแรกเบาหวาน'
+                            'header' => 'วันวินิจฉัยครั้งแรกเบาหวาน',
+                             'value' => function($model) {
+                                if ($model['dm_first'] <> '') {
+                                   return $model['dm_first']; 
+                                }else{
+                                    return Html::encode(''); 
+                                }
+                             }
                         ],
                             [
                             'attribute' => 'ht_first',
-                            'header' => 'วันวินิจฉัยครั้งแรกความดัน'
+                            'header' => 'วันวินิจฉัยครั้งแรกความดัน',
+                             'value' => function($model) {
+                                if ($model['ht_first'] <> '') {
+                                   return $model['ht_first']; 
+                                }else{
+                                    return Html::encode(''); 
+                                }
+                             }
                         ],
                             [
                             'header' => 'ประเภท',
@@ -154,6 +168,18 @@ use kartik\export\ExportMenu;
                             'target' => GridView::TARGET_BLANK
                         ],
                         'columns' => $gridColumns,
+                        'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
+                        'beforeHeader' => [
+                                [
+                                'columns' => [
+                                        ['content' => '', 'options' => ['colspan' => 4, 'class' => 'text-center success']],
+                                        ['content' => 'แยกที่อยู่', 'options' => ['colspan' => 4, 'class' => 'text-center danger']],
+                                        ['content' => '', 'options' => ['colspan' => 4, 'class' => 'text-center info']],
+                                ],
+                                'options' => ['class' => 'skip-export'] // remove this row from export
+                            ]
+                        ],
+                        
                         'resizableColumns' => true,
                         'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
                         //'floatHeader' => true,

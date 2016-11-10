@@ -122,7 +122,8 @@ use kartik\export\ExportMenu;
                         ],
                             [
                             'attribute' => 'tsum',
-                            'header' => 'ราคารวม'
+                            'header' => 'ราคารวม',
+                            'format' => ['decimal', 2],
                         ],
                             [
                             'attribute' => 'admday',
