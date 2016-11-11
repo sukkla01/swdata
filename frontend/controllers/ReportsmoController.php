@@ -131,7 +131,7 @@ class ReportsmoController extends \common\components\AppController {
                 'pageSize' => 20
             ],
             'sort' => [
-                'attributes' => count($rawData[5]) > 0 ? array_keys($rawData[0]) : array()
+                'attributes' => count($rawData[0]) > 0 ? array_keys($rawData[0]) : array()
             ]
         ]);
         return $this->render('notclinic', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);

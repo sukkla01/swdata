@@ -51,7 +51,7 @@ class IpdController extends \common\components\AppController {
                 'pageSize' => 20
             ],
         ]);
-        return $this->render('m17', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'tsql', $tsql]);
+        return $this->render('m17', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
 
     public function actionH25() {
@@ -220,7 +220,7 @@ class IpdController extends \common\components\AppController {
         }
 
         $sql = "SELECT o.an,i.dchdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,SUM(sum_price) AS tsum,admday,
-                g.rw,adjrw,i.ward,w.name AS wname,icd9,c.name AS cname,g.pdx
+                g.rw,adjrw,i.ward,w.name AS wname,IF(icd9 IS NULL,'',icd9) as icd9,IF(c.name IS NULL ,'',c.name) AS cname,g.pdx
                 FROM opitemrece o
                 INNER JOIN ipt i ON i.an=o.an
                 LEFT JOIN patient p ON p.hn=o.hn

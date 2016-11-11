@@ -24,12 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'reportname',
             'module',
             'modulename',
             'url:url',
-            // 'staff',
+             'staff',
             // 'tsql:ntext',
             // 'create_date',
 

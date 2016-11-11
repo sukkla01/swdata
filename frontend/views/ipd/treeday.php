@@ -99,13 +99,28 @@ use kartik\export\ExportMenu;
                               
                                 
                         ],
-                            [
-                           'attribute' => 'admday',
-                            'label' => 'วันนอน',
+                        [
+                            'header' => 'วันนอน',
+                            'attribute' => 'admday',
+                            'value' => function ($model, $key, $index, $widget) {
+                                if ($model['admday'] > 50) {
+                                    return "<span class='badge' style='background-color: #cc0052'>" . $model['admday'] . "</span>  <code></code>";
+                                } else if ($model['admday'] > 70) {
+                                    return "<span class='badge' style='background-color: #ff9933'>" . $model['admday'] . "</span>  <code></code>";
+                                } else {
+                                    return "<span class='badge' style='background-color: #999966'>" . $model['admday'] . "</span>  <code></code>";
+                                }
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'hAlign' => 'middle',
+                            'format' => 'raw',
+                            'width' => '150px',
+                            'noWrap' => true
                         ],
+                           
                             [
-                           'attribute' => 'rw',
-                            'label' => 'RW',
+                           'attribute' => 'adjrw',
+                            'label' => 'AdjRW',
                         ],
                             [
                             'attribute' => 'wname',
