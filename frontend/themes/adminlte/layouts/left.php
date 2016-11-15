@@ -103,6 +103,12 @@ use yii\helpers\Url;
 
                 </ul>
             </li>
+            <li>
+                <a href="<?= Url::to('index.php?r=thaicvrisk/thaidetail') ?>" >
+                    <i class="fa fa-heartbeat"></i> <span>Thai CV Risk</span>
+
+                </a>
+            </li>
 
             <li class="header"></li>
             <li><a href="<?= Url::to('/swdata/backend/web') ?>" target="_blank"><i class="fa fa-circle-o text-aqua" ></i> <span>ผู้ดูแลระบบ</span></a></li>
