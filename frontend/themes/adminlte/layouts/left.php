@@ -99,6 +99,7 @@ use yii\helpers\Url;
                     <li><a href="<?= Url::to('index.php?r=eh') ?>"><i class="fa fa-circle-o"></i><span class="pull-right-container">
                                 <small class="label pull-right bg-orange">14</small>
                             </span>เอ๊ะ!!!</a></li>
+                            <li><a href="<?= Url::to('index.php?r=eh') ?>"><i class="fa fa-circle-o"></i>ตรวจสอบข้อมูล</a></li>
 
                 </ul>
             </li>
