@@ -193,7 +193,7 @@ use miloschuman\highcharts\Highcharts;
                                 } else if ($model['tcolor'] === '4') {
                                     return "<span class='badge' style='background-color: #ff1a1a'><font  color='7a7a52'>" . $model['tcolor'] . "</font></span>  <code></code>";
                                 } else if ($model['tcolor'] === '5') {
-                                    return "<span class='badge' style='background-color: #7a7a52'><font  color='7a7a52'>" . $model['tcolor'] . "</font></span>  <code></code>";
+                                    return "<span class='badge' style='background-color: #990000'><font  color='7a7a52'>" . $model['tcolor'] . "</font></span>  <code></code>";
                                 } else {
                                     return "ไม่ทราบ";
                                 }
@@ -214,7 +214,7 @@ use miloschuman\highcharts\Highcharts;
                     echo '</div>';
                     echo GridView::widget([
                         'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
+                        //'filterModel' => $searchModel,
                         'autoXlFormat' => true,
                         'export' => [
                             'fontAwesome' => true,
