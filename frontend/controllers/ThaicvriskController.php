@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 use Yii;
+use app\models\TmpThaicvriskSearch;
 
 class ThaicvriskController extends \common\components\AppController
 {
@@ -64,7 +65,7 @@ class ThaicvriskController extends \common\components\AppController
           $connection->createCommand($sql)->execute();
           
          //-----------  grid view ---------------------------------------
-        
+        $searchModel = new TmpThaicvriskSearch();
         $tsql="select * from swdata.tmp_thaicvrisk ";
         
         try {
@@ -76,7 +77,7 @@ class ThaicvriskController extends \common\components\AppController
             //'key' => 'hoscode',
             'allModels' => $rawData,
             'pagination' => [
-                'pageSize' => 20
+                'pageSize' => 10
             ],
         ]);
         
@@ -99,7 +100,7 @@ class ThaicvriskController extends \common\components\AppController
            
             //$m2[] = $data[$i]['m2'] * 1;
         }
-        return $this->render('thaidetail', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql,'tcolor'=>$tcolor,'tcount'=>$tcount]);
+        return $this->render('thaidetail', ['dataProvider' => $dataProvider,'searchModel' => $searchModel, 'date1' => $date1, 'date2' => $date2, 'sql', $sql,'tcolor'=>$tcolor,'tcount'=>$tcount]);
     }
 
 }

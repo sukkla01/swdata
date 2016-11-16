@@ -102,6 +102,10 @@ use kartik\export\ExportMenu;
                             'label' => 'ชื่อ-สกุล',
                         ],
                             [
+                            'attribute' => 'thosp',
+                            'label' => 'โรงพยาบาลหลัก',
+                        ],
+                            [
                             'attribute' => 'pdx',
                             'label' => 'icd10',
                         ],

@@ -266,12 +266,13 @@ class IpdController extends \common\components\AppController {
         }
 
         $sql = "SELECT o.hn,o.vn,o.vstdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,SUM(sum_price)  AS tsum,SUM(sum_price)-700 AS kun,
-                SUM(IF(o.income IN('03','04','17'),sum_price,0)) AS tdrug,v.pdx,i.name AS iname
+                SUM(IF(o.income IN('03','04','17'),sum_price,0)) AS tdrug,v.pdx,i.name AS iname,CONCAT(h.hosptype,h.name) AS thosp
                 FROM  opitemrece o
                 LEFT JOIN pttype t ON t.pttype = o.pttype
                 LEFT JOIN patient p ON p.hn=o.hn
                 LEFT JOIN vn_stat v ON v.vn=o.vn
                 LEFT JOIN icd101 i ON i.code=v.pdx
+								LEFT JOIN hospcode h ON h.hospcode=v.hospmain
                 WHERE o.vstdate BETWEEN '$date1' AND '$date2'
                                         AND editmask IN('UC ในเขต','UC นอกเขต')
                                         AND LENGTH(o.vn) =12

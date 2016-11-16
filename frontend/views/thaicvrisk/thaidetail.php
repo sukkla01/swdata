@@ -214,7 +214,7 @@ use miloschuman\highcharts\Highcharts;
                     echo '</div>';
                     echo GridView::widget([
                         'dataProvider' => $dataProvider,
-                        //'filterModel' => $searchModel,
+                        'filterModel' => $searchModel,
                         'autoXlFormat' => true,
                         'export' => [
                             'fontAwesome' => true,
