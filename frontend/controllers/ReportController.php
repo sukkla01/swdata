@@ -145,7 +145,7 @@ class ReportController extends \common\components\AppController {
 			AND (drugcategory IN('arv','NON-ANTIRETROVIRAL','ANTIVIRAL DRUGS','ANTI-TUBERCULOSIS',
                                             'ANTI-MALARIAL DRUGS','ANTIINFECTIVE','ANTIBACTERIALS AND EYE WASH SOLUTION',
                                             'ANTIBACTERIALS WITH CORTICOSTEROIDS','')
-                             OR icode IN('1900673','1900747','1900685','1900683') )
+                             OR o.icode IN('1900673','1900747','1900685','1900683') )
                 GROUP BY o.icode
                 ORDER BY tqty DESC";
                         try {
