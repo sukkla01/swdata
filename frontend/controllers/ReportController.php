@@ -119,5 +119,47 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('mrs002', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
+    public function actionDrugning() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT o.icode,d.name AS dname,SUM(o.qty) AS tqty,SUM(sum_price) AS tsum,SUM(o.qty)*cost AS tscost,
+                drugcategory,IF(LENGTH(an)=9,'IPD','OPD')  AS type
+                FROM opitemrece o
+                LEFT JOIN drugitems d ON d.icode=o.icode
+                WHERE o.vstdate BETWEEN  '$date1' and '$date2'
+			AND o.income IN('04','03','17')
+			AND drugcategory IN('arv','NON-ANTIRETROVIRAL','ANTIVIRAL DRUGS','ANTI-TUBERCULOSIS',
+                                            'ANTI-MALARIAL DRUGS','ANTIINFECTIVE','ANTIBACTERIALS AND EYE WASH SOLUTION',
+                                            'ANTIBACTERIALS WITH CORTICOSTEROIDS','')
+                GROUP BY o.icode
+                ORDER BY tqty DESC";
+                        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20000
+            ],
+        ]);
+        return $this->render('drugning', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
 
 }

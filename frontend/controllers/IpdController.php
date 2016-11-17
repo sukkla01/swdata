@@ -292,5 +292,46 @@ class IpdController extends \common\components\AppController {
         ]);
         return $this->render('uc', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
+     public function actionDrughome() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT o.icode,d.name AS dname,SUM(o.qty) AS tqty,SUM(sum_price) AS tsum
+                FROM opitemrece o
+                LEFT JOIN drugitems d ON d.icode=o.icode
+                WHERE o.vstdate BETWEEN '$date1' AND '$date2'
+                    AND o.pttype IN('20','22') AND o.income ='04'
+                GROUP BY o.icode
+                ORDER BY tqty DESC";
+                        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20000
+            ],
+        ]);
+        return $this->render('drughome', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
+    
+    
+    
 
 }
