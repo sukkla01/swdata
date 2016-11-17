@@ -142,9 +142,10 @@ class ReportController extends \common\components\AppController {
                 LEFT JOIN drugitems d ON d.icode=o.icode
                 WHERE o.vstdate BETWEEN  '$date1' and '$date2'
 			AND o.income IN('04','03','17')
-			AND drugcategory IN('arv','NON-ANTIRETROVIRAL','ANTIVIRAL DRUGS','ANTI-TUBERCULOSIS',
+			AND (drugcategory IN('arv','NON-ANTIRETROVIRAL','ANTIVIRAL DRUGS','ANTI-TUBERCULOSIS',
                                             'ANTI-MALARIAL DRUGS','ANTIINFECTIVE','ANTIBACTERIALS AND EYE WASH SOLUTION',
                                             'ANTIBACTERIALS WITH CORTICOSTEROIDS','')
+                             OR icode IN('1900673','1900747','1900685','1900683') )
                 GROUP BY o.icode
                 ORDER BY tqty DESC";
                         try {
