@@ -67,7 +67,7 @@ use kartik\export\ExportMenu;
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title"> <i class='glyphicon glyphicon-search'></i> 	รายงานยากลับบ้าน สิทธิ์เบิกได้จ่ายตรง (20 , 22)</h3>
+                    <h3 class="box-title"> <i class='glyphicon glyphicon-search'></i> 	รายงานการใช้ยาปฏิชีวนะ</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
