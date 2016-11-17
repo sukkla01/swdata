@@ -1,27 +1,26 @@
 <?php
 
 namespace frontend\controllers;
+
 use Yii;
 
-class ReportController extends \common\components\AppController
-{
-    public function actionIndex()
-    {
+class ReportController extends \common\components\AppController {
+
+    public function actionIndex() {
         $this->permitRole([1, 3]);
         return $this->render('index');
     }
-    public function actionTsql()
-    {
-        
+
+    public function actionTsql() {
+
         return $this->render('tsql');
     }
-    
-     public function actionMrs001()
-    {
-         $this->permitRole([1, 3]);
+
+    public function actionMrs001() {
+        $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
-       if (Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             if (isset($_POST['date1']) == '') {
                 $date1 = Yii::$app->session['date1'];
                 $date2 = Yii::$app->session['date2'];
@@ -33,7 +32,7 @@ class ReportController extends \common\components\AppController
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        
+
         $sql = "select distinct(a.an),a.hn,concat(p.pname,p.fname,' ',p.lname) as PatientName,ia.admday,i.adjrw,ds.name as dchstts,dt.name as dchtype,max(idl.ipt_diagnosis_log_date) as datemodify,
                 a.pdx,icdpdx.name,a.dx0,a.dx1,a.dx2,a.dx3,a.dx4,a.dx5,a.op0,a.op1,a.op2,a.op3,a.op4,a.op5,a.op6
                 from an_stat a
@@ -74,9 +73,51 @@ class ReportController extends \common\components\AppController
                 'pageSize' => 20
             ],
         ]);
-        return $this->render('mrs001',['dataProvider' => $dataProvider,'date1'=>$date1,'date2'=>$date2]);
+        return $this->render('mrs001', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
-    
-    
+
+    public function actionMrs002() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+        $sql = "SELECT t.hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                death_diag_1,death_diag_2,death_diag_3,death_diag_4,
+                IF(tsum=1,death_diag_1,IF(tsum=3,death_diag_2,IF(tsum=6,death_diag_3,death_diag_4))) AS cdeath
+                FROM (
+                SELECT hn,cid,death_diag_1,death_diag_2,death_diag_3,death_diag_4,
+                (IF(death_diag_1 <>'',1,0 ) + IF(death_diag_2 <>'',2,0 ) +
+                IF(death_diag_3 <>'',3,0 ) +
+                IF(death_diag_4 <>'',4,0 )) AS tsum 
+                FROM death 
+                WHERE death_date BETWEEN '$date1' and '$date2' ) AS t
+                LEFT JOIN patient p ON p.hn=t.hn
+                HAVING  (cdeath BETWEEN 'r00' AND 'r99' OR cdeath BETWEEN 'y10' AND 'y34' 
+                        OR cdeath IN('c80','c97','i472','i490','i46','i50','i514','i515','i516','i519','i709'))";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('mrs002', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
+    }
 
 }

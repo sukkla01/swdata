@@ -59,7 +59,7 @@ class ThaicvriskController extends \common\components\AppController
                 WHERE v.vstdate BETWEEN '$date1' AND '$date2' 
                                                 AND (icd10 between 'E10' and 'E14' OR icd10 BETWEEN 'i10' AND 'i15' )
                 GROUP BY v.vn
-                HAVING tc1>0 OR waist >0 ) AS tt";
+                HAVING tc1>0 OR waist >0 ) AS tt ";
         
           
           $connection->createCommand($sql)->execute();
