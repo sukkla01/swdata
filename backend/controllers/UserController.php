@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * UserController implements the CRUD actions for User model.
  */
-class UserController extends Controller
+class UserController extends \common\components\AppController
 {
     /**
      * @inheritdoc
@@ -35,6 +35,7 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+        $this->permitRole([1]);
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

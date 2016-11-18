@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * IctcheckController implements the CRUD actions for IctCheck model.
  */
-class IctcheckController extends Controller
+class IctcheckController extends \common\components\AppController
 {
     /**
      * @inheritdoc
@@ -35,6 +35,7 @@ class IctcheckController extends Controller
      */
     public function actionIndex()
     {
+        $this->permitRole([1]);
         $searchModel = new IctCheckSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

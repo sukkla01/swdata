@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * ReporttemplateController implements the CRUD actions for Reporttemplate model.
  */
-class ReporttemplateController extends Controller
+class ReporttemplateController extends \common\components\AppController
 {
     /**
      * @inheritdoc
@@ -35,6 +35,7 @@ class ReporttemplateController extends Controller
      */
     public function actionIndex()
     {
+        $this->permitRole([1]);
         $searchModel = new ReporttemplateSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

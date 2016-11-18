@@ -10,7 +10,7 @@ use common\models\LoginForm;
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends \common\components\AppController
 {
     /**
      * @inheritdoc
@@ -60,6 +60,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        //$this->permitRole([1]);
         return $this->render('index');
     }
 
