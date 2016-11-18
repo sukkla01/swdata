@@ -130,6 +130,22 @@ echo Breadcrumbs::widget([
                             'attribute' => 'chwpart',
                             'header' => 'จังหวัด'
                         ],
+                        [  
+                            'header' => '#',
+                            'attribute' => 'type',
+                            'value' => function ($model, $key, $index, $widget) {
+                                if ($model['type'] === 'DM') {
+                                    return "<span class='badge' style='background-color: #cc0052'>" . $model['type'] . "</span>  <code></code>";
+                                } else  {
+                                    return "<span class='badge' style='background-color: #ff9933'>" . $model['type'] . "</span>  <code></code>";
+                                }
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'vAlign' => 'middle',
+                            'format' => 'raw',
+                            'width' => '150px',
+                            'noWrap' => true
+                        ],
                            
                     ];
 
