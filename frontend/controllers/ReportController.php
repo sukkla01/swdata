@@ -92,7 +92,11 @@ class ReportController extends \common\components\AppController {
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        $sql = "SELECT t.hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+        $sql = "SELECT tt.*,
+                IF((cdeath BETWEEN 'r00' AND 'r99' OR cdeath BETWEEN 'y10' AND 'y34' 
+                     OR cdeath IN('c80','c97','i472','i490','i46','i50','i514','i515','i516','i519','i709','')),'error','complete') AS tcheck
+                FROM (								
+                SELECT t.hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 death_diag_1,death_diag_2,death_diag_3,death_diag_4,
                 IF(tsum=1,death_diag_1,IF(tsum=3,death_diag_2,IF(tsum=6,death_diag_3,death_diag_4))) AS cdeath
                 FROM (
@@ -102,9 +106,8 @@ class ReportController extends \common\components\AppController {
                 IF(death_diag_4 <>'',4,0 )) AS tsum 
                 FROM death 
                 WHERE death_date BETWEEN '$date1' and '$date2' ) AS t
-                LEFT JOIN patient p ON p.hn=t.hn
-                HAVING  (cdeath BETWEEN 'r00' AND 'r99' OR cdeath BETWEEN 'y10' AND 'y34' 
-                        OR cdeath IN('c80','c97','i472','i490','i46','i50','i514','i515','i516','i519','i709'))";
+                LEFT JOIN patient p ON p.hn=t.hn ) AS tt
+               ";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {

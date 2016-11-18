@@ -116,6 +116,22 @@ use kartik\export\ExportMenu;
                             'attribute' => 'cdeath',
                             'header' => 'cdeath'
                         ],
+                        [  
+                            'header' => '#',
+                            'attribute' => 'tcheck',
+                            'value' => function ($model, $key, $index, $widget) {
+                                if ($model['tcheck'] === 'error') {
+                                    return "<span class='badge' style='background-color: #cc0052'>" . $model['tcheck'] . "</span>  <code></code>";
+                                } else {
+                                    return "<span class='badge' style='background-color: #339966'>" . $model['tcheck'] . "</span>  <code></code>";
+                                }
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'vAlign' => 'middle',
+                            'format' => 'raw',
+                            'width' => '150px',
+                            'noWrap' => true
+                        ],
                         
                     ];
 
