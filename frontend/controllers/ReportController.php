@@ -94,7 +94,7 @@ class ReportController extends \common\components\AppController {
         }
         $sql = "SELECT tt.*,
                 IF((cdeath BETWEEN 'r00' AND 'r99' OR cdeath BETWEEN 'y10' AND 'y34' 
-                     OR cdeath IN('c80','c97','i472','i490','i46','i50','i514','i515','i516','i519','i709','')),'error','complete') AS tcheck
+                     OR cdeath IN('c80','c97','i472','i490','i46','i50','i514','i515','i516','i519','i709','','CODE')),'error','complete') AS tcheck
                 FROM (								
                 SELECT t.hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 death_diag_1,death_diag_2,death_diag_3,death_diag_4,
