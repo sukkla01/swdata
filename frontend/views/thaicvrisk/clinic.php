@@ -36,11 +36,11 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
     <div class="row">
         <div class="col-md-3">
             <div class="info-box">
-                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-id-card"></i></span>
+                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-user-circle" ></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text" data-toggle='tooltip' title='จำนวนผู้ป่วย DM/HT ที่ลงทะเบียนทั้งหมด'><small>ขึ้นทะเบียนทั้งหมด</small></span>
-                    <span class="info-box-number"><?=$tregis?></span>
+                    <span class="info-box-text" data-toggle='tooltip' title='จำนวนผู้ป่วย DM/HT ที่ลงทะเบียนทั้งหมด'><small>ขึ้นทะเบียนทั้งหมด(คน)</small></span>
+                    <span class="info-box-number"><?=number_format($tregis)?></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -52,8 +52,15 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
                 <span class="info-box-icon " style="background-color: #476b6b"><i class="fa fa-heartbeat"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text" data-toggle='tooltip' title='จำนวนผู้ป่วย DM/HT ที่ด้รับารประเมิณ Thai CV Risk'>Thai CV Risk</span>
-                    <span class="info-box-number"><?=$trisk?></span>
+                    <span class="info-box-text" data-toggle='tooltip' title='จำนวนผู้ป่วย DM/HT ที่ด้รับารประเมิณ Thai CV Risk'>Thai CV Risk(คน)</span>
+                    <span class="info-box-number"><?=number_format($trisk)?></span>
+                    <span >
+                        <?php 
+                            $persen = ($trisk/$tregis)*100;
+                            $persen = number_format($persen);
+                            echo 'ร้อยละ '.$persen;
+                            ?>
+                    </span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -66,11 +73,19 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
 
         <div class="col-md-2">
             <div class="info-box">
-                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags"></i></span>
+                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags" style="color:#1a1a00;"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text" data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงปานกลาง (<20%)'>ปานกลาง</span>
-                    <span class="info-box-number"><?=$r1?></span>
+                    <span class="info-box-text" data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงปานกลาง (<20%)'>ปานกลาง(คน)</span>
+                    <span class="info-box-number "><?=number_format($r1)?></span>
+                    <span >
+                        <?php 
+                            $persen1 = ($r1/$trisk)*100;
+                            $persen1 = number_format($persen1);
+                            echo 'ร้อยละ '.$persen1;
+                            ?>
+                    </span>
+                    
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -79,11 +94,18 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         <!-- /.col -->
         <div class="col-md-2">
             <div class="info-box">
-                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags"></i></span>
+                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags" style="color:#330033;"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text"data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงสูง (20-<30%)'>สูง</span>
+                    <span class="info-box-text"data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงสูง (20-<30%)'>สูง(คน)</span>
                     <span class="info-box-number"><?=$r2?></span>
+                     <span >
+                        <?php 
+                            $persen2 = ($r2/$trisk)*100;
+                            $persen2= number_format($persen2);
+                            echo 'ร้อยละ '.$persen2;
+                            ?>
+                    </span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -91,11 +113,18 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
         </div>
         <div class="col-md-2">
             <div class="info-box">
-                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags"></i></span>
+                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags" style="color:#660000;"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text" data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงสูงมาก (>=30%)'>สูงมาก</span>
+                    <span class="info-box-text" data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงสูงมาก (>=30%)'>สูงมาก(คน)</span>
                     <span class="info-box-number"><?=$r3?></span>
+                     <span >
+                        <?php 
+                            $persen3 = ($r3/$trisk)*100;
+                            $persen3= number_format($persen3);
+                            echo 'ร้อยละ '.$persen3;
+                            ?>
+                    </span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -114,34 +143,9 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
                     <?= Html::beginForm(); ?>
                     <i class="fa fa-calendar"></i>&nbsp;&nbsp;
                     ประมวลข้อมูลระหว่าง :
-                    <?php
-                    echo yii\jui\DatePicker::widget([
-                        'name' => 'date1',
-                        'value' => '',
-                        'language' => 'th',
-                        'dateFormat' => 'yyyy-MM-dd',
-                        'clientOptions' => [
-                            'changeMonth' => true,
-                            'changeYear' => true,
-                        ],
-                    ]);
-                    ?>
+                    
 
-                    ถึง
-
-
-                    <?php
-                    echo yii\jui\DatePicker::widget([
-                        'name' => 'date2',
-                        'value' => '',
-                        'language' => 'th',
-                        'dateFormat' => 'yyyy-MM-dd',
-                        'clientOptions' => [
-                            'changeMonth' => true,
-                            'changeYear' => true,
-                        ]
-                    ]);
-                    ?>
+                    
 
                     &nbsp;&nbsp;<button class='btn btn-danger'>ประมวลผล</button>
 

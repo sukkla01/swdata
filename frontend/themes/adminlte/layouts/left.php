@@ -128,7 +128,7 @@ use yii\helpers\Url;
             $cid = '';
             if (Yii::$app->user->isGuest) {
                 ?>
-                <li><a href="<?= Url::to('index.php?r=site/login') ?>"><i class="fa fa-circle-o text-"></i> <span>เข้าสูระบบ</span></a></li>
+                <li><a href="<?= Url::to('index.php?r=site/login') ?>"><i class="fa fa-circle-o text-green"></i> <span>เข้าสูระบบ</span></a></li>
             <?php } else { ?>
                 <li>
                     <?php
