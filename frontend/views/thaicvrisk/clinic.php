@@ -7,6 +7,28 @@ use kartik\widgets\DatePicker;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 use miloschuman\highcharts\Highcharts;
+
+$connection = Yii::$app->db;
+$sql = "SELECT 
+(SELECT COUNT(hn) 
+FROM swdata.tmb_thaicvrisk_ngob_web WHERE year_ng='2559' ) AS tregis,
+(SELECT COUNT(hn) 
+FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor <>'ไม่ทราบ'  AND year_ng='2559') AS trisk,
+(SELECT COUNT(hn) 
+FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor IN('1','2','3')  AND year_ng='2559') AS r1,
+(SELECT COUNT(hn) 
+FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor ='4'  AND year_ng='2559') AS r2,
+(SELECT COUNT(hn) 
+FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor ='5'  AND year_ng='2559') AS r3 ";
+$data = $connection->createCommand($sql)
+        ->queryAll();
+for ($nu = 0; $nu < sizeof($data); $nu++) {
+    $tregis = $data[$nu]['tregis'];
+    $trisk = $data[$nu]['trisk'];
+    $r1 = $data[$nu]['r1'];
+    $r2 = $data[$nu]['r2'];
+    $r3 = $data[$nu]['r3'];
+}
 ?>
 
 <div class="body-content">
@@ -18,7 +40,7 @@ use miloschuman\highcharts\Highcharts;
 
                 <div class="info-box-content">
                     <span class="info-box-text" data-toggle='tooltip' title='จำนวนผู้ป่วย DM/HT ที่ลงทะเบียนทั้งหมด'><small>ขึ้นทะเบียนทั้งหมด</small></span>
-                    <span class="info-box-number">90<small>%</small></span>
+                    <span class="info-box-number"><?=$tregis?></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -31,7 +53,7 @@ use miloschuman\highcharts\Highcharts;
 
                 <div class="info-box-content">
                     <span class="info-box-text" data-toggle='tooltip' title='จำนวนผู้ป่วย DM/HT ที่ด้รับารประเมิณ Thai CV Risk'>Thai CV Risk</span>
-                    <span class="info-box-number">41,410</span>
+                    <span class="info-box-number"><?=$trisk?></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -44,11 +66,11 @@ use miloschuman\highcharts\Highcharts;
 
         <div class="col-md-2">
             <div class="info-box">
-                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-heart-o"></i></span>
+                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text" data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงปานกลาง (<20%)'>ปานกลาง</span>
-                    <span class="info-box-number">760</span>
+                    <span class="info-box-number"><?=$r1?></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -57,11 +79,11 @@ use miloschuman\highcharts\Highcharts;
         <!-- /.col -->
         <div class="col-md-2">
             <div class="info-box">
-                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-heart-o"></i></span>
+                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text"data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงสูง (20-<30%)'>สูง</span>
-                    <span class="info-box-number">2,000</span>
+                    <span class="info-box-number"><?=$r2?></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -69,11 +91,11 @@ use miloschuman\highcharts\Highcharts;
         </div>
         <div class="col-md-2">
             <div class="info-box">
-                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-heart-o"></i></span>
+                <span class="info-box-icon" style="background-color: #476b6b"><i class="fa fa-tags"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text" data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงสูงมาก (>=30%)'>สูงมาก</span>
-                    <span class="info-box-number">2,000</span>
+                    <span class="info-box-number"><?=$r3?></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
