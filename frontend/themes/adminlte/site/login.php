@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
+use linchpinstudios\backstretch\Backstrech;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
@@ -19,6 +19,8 @@ $fieldOptions2 = [
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
 ?>
+
+
 
 <div class="login-box">
     <div class="login-logo">

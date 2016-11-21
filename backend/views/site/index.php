@@ -21,7 +21,7 @@ $this->title = 'My Yii Application';
              <a class="btn btn-lg btn-danger" href="<?= Url::to('index.php?r=test/test') ?>">ระบบตรวจสอบ Network</a></p>
         </div>
         <div class="col-md-3">
-            
+            <a class="btn btn-lg btn-primary" href="<?= Url::to('index.php?r=thaicv/process') ?>">ประมวลผล Thai CV Risk</a>
         </div>
     </div>
     

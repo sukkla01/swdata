@@ -103,12 +103,23 @@ use yii\helpers\Url;
 
                 </ul>
             </li>
-            <li>
-                <a href="<?= Url::to('index.php?r=thaicvrisk/thaidetail') ?>" >
+            <li class="treeview">
+                <a href="#">
                     <i class="fa fa-heartbeat"></i> <span>Thai CV Risk</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
 
                 </a>
+                <ul class="treeview-menu">
+                    <li><a href="<?= Url::to('index.php?r=thaicvrisk/thaidetail') ?>"><i class="fa fa-circle-o"></i><span class="pull-right-container">
+                                
+                            </span>ผู้ป่วยที่มารับบริการทั่วไป</a></li>
+                            <li><a href="<?= Url::to('index.php?r=thaicvrisk/clinic') ?>"><i class="fa fa-circle-o"></i>ผู้ป่วยที่ลงทะเบียน</a></li>
+
+                </ul>
             </li>
+            
 
             <li class="header"></li>
             <li><a href="<?= Url::to('/swdata/backend/web') ?>" target="_blank"><i class="fa fa-circle-o text-aqua" ></i> <span>ผู้ดูแลระบบ</span></a></li>
@@ -117,7 +128,7 @@ use yii\helpers\Url;
             $cid = '';
             if (Yii::$app->user->isGuest) {
                 ?>
-                <li><a href="<?= Url::to('index.php?r=site/login') ?>"><i class="fa fa-circle-o text-green"></i> <span>เข้าสูระบบ</span></a></li>
+                <li><a href="<?= Url::to('index.php?r=site/login') ?>"><i class="fa fa-circle-o text-"></i> <span>เข้าสูระบบ</span></a></li>
             <?php } else { ?>
                 <li>
                     <?php

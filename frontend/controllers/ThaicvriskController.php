@@ -102,5 +102,34 @@ class ThaicvriskController extends \common\components\AppController
         }
         return $this->render('thaidetail', ['dataProvider' => $dataProvider,'searchModel' => $searchModel, 'date1' => $date1, 'date2' => $date2, 'sql', $sql,'tcolor'=>$tcolor,'tcount'=>$tcount]);
     }
+    
+      public function actionClinic() {
+        $this->permitRole([1,2,3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        
+        
+        $sql="SELECT hn,vn,vstdate,bps,tc,waist,height,IF(smoker =2 ,'Y','N') AS smoker,is_dm,is_ht,age,tname,tcolor,
+              IF(sex=1,'ชาย',IF(sex=2,'หญิง','ไม่ทราบ')) as sex1,sex,
+                IF(is_dm='Y' AND is_ht='N','DM',IF(is_dm='N' AND is_ht='Y','HT',IF(is_dm='Y' AND is_ht='Y','DMHT','ไม่หราบ')))  AS type
+                FROM swdata.tmb_thaicvrisk_ngob_web Order BY hn";
+        
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 100
+            ],
+        ]);
+        
+        
+        return $this->render('clinic',['dataProvider' => $dataProvider]);
+        
+      }
 
 }
