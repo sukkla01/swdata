@@ -20,6 +20,10 @@ class ReportController extends \common\components\AppController {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
         if (Yii::$app->request->isPost) {
             if (isset($_POST['date1']) == '') {
                 $date1 = Yii::$app->session['date1'];
@@ -80,6 +84,10 @@ class ReportController extends \common\components\AppController {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
         if (Yii::$app->request->isPost) {
             if (isset($_POST['date1']) == '') {
                 $date1 = Yii::$app->session['date1'];
@@ -126,6 +134,10 @@ class ReportController extends \common\components\AppController {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
         if (Yii::$app->request->isPost) {
             if (isset($_POST['date1']) == '') {
                 $date1 = Yii::$app->session['date1'];

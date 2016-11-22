@@ -15,6 +15,10 @@ class ThaicvriskController extends \common\components\AppController {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
         if (Yii::$app->request->isPost) {
             if (isset($_POST['date1']) == '') {
                 $date1 = Yii::$app->session['date1'];
@@ -102,20 +106,26 @@ class ThaicvriskController extends \common\components\AppController {
         return $this->render('thaidetail', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'date1' => $date1, 'date2' => $date2, 'sql', $sql, 'tcolor' => $tcolor, 'tcount' => $tcount]);
     }
 
-    public function actionClinic() {
+    public
+            function actionClinic() {
         $this->permitRole([1, 2, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
         $color = '';
         $type1 = '';
+        if (isset($_GET['page'])) {
+            $color = Yii::$app->session['color'];
+            $type = Yii::$app->session['type'];
+        }
         if (Yii::$app->request->isPost) {
-            if(!isset($_POST['type']) or !isset($_POST['color'])){
-                $color= Yii::$app->session['color'];
-                $type =Yii::$app->session['type'] ;
-            }else {
-                $type = $_POST['type']*1;
+
+            if (!isset($_POST['type']) or ! isset($_POST['color'])) {
+                $color = Yii::$app->session['color'];
+                $type = Yii::$app->session['type'];
+            } else {
+                $type = $_POST['type'] * 1;
             }
-            
+
             if (isset($_POST['color']) <> '0') {
                 $color = $_POST['color'];
                 $color = 'where tcolor=' . $color;
@@ -123,28 +133,27 @@ class ThaicvriskController extends \common\components\AppController {
                 if ($_POST['color'] == 'null') {
                     $color = 'where tcolor IS NULL';
                     Yii::$app->session['color'] = $color;
-                    
                 }
             }
-            if ($type<>0) {
-                if ($type==1){
-                    $type='dm';
-                }else if($type==2){
-                    $type='ht';
-                }else if($type==3){
-                    $type='dmht';
+            if ($type <> 0) {
+                if ($type == 1) {
+                    $type = 'dm';
+                } else if ($type == 2) {
+                    $type = 'ht';
+                } else if ($type == 3) {
+                    $type = 'dmht';
                 }
-                $type1 = "HAVING type ="."'".$type."'" ;
+                $type1 = "HAVING type =" . "'" . $type . "'";
                 Yii::$app->session['type'] = $type1;
-            }else{
-                $type='';
+            } else {
+                $type = '';
             }
         }
-        
-        if($color=='where tcolor=0'){
-            $color ='';
+
+        if ($color == 'where tcolor=0') {
+            $color = '';
         }
-       
+
 
 
         $sql = "SELECT hn,vn,vstdate,bps,tc,waist,height,IF(smoker =2 ,'Y','N') AS smoker,is_dm,is_ht,age,tname,tcolor,
@@ -164,7 +173,7 @@ class ThaicvriskController extends \common\components\AppController {
             //'key' => 'hoscode',
             'allModels' => $rawData,
             'pagination' => [
-                'pageSize' => 10000
+                'pageSize' => 20
             ],
         ]);
 
