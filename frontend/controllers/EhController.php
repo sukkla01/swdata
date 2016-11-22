@@ -407,7 +407,7 @@ GROUP BY hn";
             }
         }
 
-        $sql = "select COUNT(p.cid) AS tcount,(ph.screen_date),concat(p.pname,p.fname,'  ',p.lname) as name,  p.cid,p.birthdate,ph.age_y,concat(h.address,'  ','หมูู่',v.village_moo,'  ',t.full_name) as address, 
+        $sql = "select (ph.screen_date),concat(p.pname,p.fname,'  ',p.lname) as name,  p.cid,p.birthdate,ph.age_y,concat(h.address,'  ','หมูู่',v.village_moo,'  ',t.full_name) as address, 
  IF(ps.person_dm_screen_status_id=1 or ps.person_dm_screen_status_id is null, 'N', 'Y') as dm, 
  IF(ps.person_ht_screen_status_id<3 or ps.person_ht_screen_status_id is null, 'N', 'Y') as ht, 
  IF(ps.person_stroke_screen_status_id=1 or ps.person_stroke_screen_status_id is null, 'N', 'Y') as stroke, 
