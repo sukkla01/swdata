@@ -29,6 +29,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
     $r2 = $data[$nu]['r2'];
     $r3 = $data[$nu]['r3'];
 }
+echo $color.'---'.$type;
 ?>
 
 <div class="body-content">
@@ -40,7 +41,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
 
                 <div class="info-box-content">
                     <span class="info-box-text" data-toggle='tooltip' title='จำนวนผู้ป่วย DM/HT ที่ลงทะเบียนทั้งหมด'><small>ขึ้นทะเบียนทั้งหมด(คน)</small></span>
-                    <span class="info-box-number"><?=number_format($tregis)?></span>
+                    <span class="info-box-number"><?= number_format($tregis) ?></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -53,13 +54,13 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
 
                 <div class="info-box-content">
                     <span class="info-box-text" data-toggle='tooltip' title='จำนวนผู้ป่วย DM/HT ที่ด้รับารประเมิณ Thai CV Risk'>Thai CV Risk(คน)</span>
-                    <span class="info-box-number"><?=number_format($trisk)?></span>
+                    <span class="info-box-number"><?= number_format($trisk) ?></span>
                     <span >
-                        <?php 
-                            $persen = ($trisk/$tregis)*100;
-                            $persen = number_format($persen);
-                            echo 'ร้อยละ '.$persen;
-                            ?>
+                        <?php
+                        $persen = ($trisk / $tregis) * 100;
+                        $persen = number_format($persen);
+                        echo 'ร้อยละ ' . $persen;
+                        ?>
                     </span>
                 </div>
                 <!-- /.info-box-content -->
@@ -77,15 +78,15 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
 
                 <div class="info-box-content">
                     <span class="info-box-text" data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงปานกลาง (<20%)'>ปานกลาง(คน)</span>
-                    <span class="info-box-number "><?=number_format($r1)?></span>
+                    <span class="info-box-number "><?= number_format($r1) ?></span>
                     <span >
-                        <?php 
-                            $persen1 = ($r1/$trisk)*100;
-                            $persen1 = number_format($persen1);
-                            echo 'ร้อยละ '.$persen1;
-                            ?>
+                        <?php
+                        $persen1 = ($r1 / $trisk) * 100;
+                        $persen1 = number_format($persen1);
+                        echo 'ร้อยละ ' . $persen1;
+                        ?>
                     </span>
-                    
+
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -98,13 +99,13 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
 
                 <div class="info-box-content">
                     <span class="info-box-text"data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงสูง (20-<30%)'>สูง(คน)</span>
-                    <span class="info-box-number"><?=$r2?></span>
-                     <span >
-                        <?php 
-                            $persen2 = ($r2/$trisk)*100;
-                            $persen2= number_format($persen2);
-                            echo 'ร้อยละ '.$persen2;
-                            ?>
+                    <span class="info-box-number"><?= $r2 ?></span>
+                    <span >
+                        <?php
+                        $persen2 = ($r2 / $trisk) * 100;
+                        $persen2 = number_format($persen2);
+                        echo 'ร้อยละ ' . $persen2;
+                        ?>
                     </span>
                 </div>
                 <!-- /.info-box-content -->
@@ -117,13 +118,13 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
 
                 <div class="info-box-content">
                     <span class="info-box-text" data-toggle='tooltip' title='จำนวนกลุ่มเสี่ยงสูงมาก (>=30%)'>สูงมาก(คน)</span>
-                    <span class="info-box-number"><?=$r3?></span>
-                     <span >
-                        <?php 
-                            $persen3 = ($r3/$trisk)*100;
-                            $persen3= number_format($persen3);
-                            echo 'ร้อยละ '.$persen3;
-                            ?>
+                    <span class="info-box-number"><?= $r3 ?></span>
+                    <span >
+                        <?php
+                        $persen3 = ($r3 / $trisk) * 100;
+                        $persen3 = number_format($persen3);
+                        echo 'ร้อยละ ' . $persen3;
+                        ?>
                     </span>
                 </div>
                 <!-- /.info-box-content -->
@@ -141,13 +142,36 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
 
 
                     <?= Html::beginForm(); ?>
-                    <i class="fa fa-calendar"></i>&nbsp;&nbsp;
-                    ประมวลข้อมูลระหว่าง :
-                    
-
-                    
-
-                    &nbsp;&nbsp;<button class='btn btn-danger'>ประมวลผล</button>
+                    <div class="col-md-2">
+                        <div class="form-group" >
+                            <label>Color : </label>
+                            <select class="form-control" name ="color">
+                                <option value="0">--- select ---</option>
+                                <option value="1" style="background-color: #53ff1a">1</option>
+                                <option value="2" style="background-color: #ffff00">2</option>
+                                <option value="3" style="background-color: #ff751a">3</option>
+                                <option value="4" style="background-color: #ff1a1a">4</option>
+                                <option value="5" style="background-color: #990000">5</option>
+                                <option value="null" style="background-color: #ffffff">ไม่ทราบ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>ประเภทผู้ป่วย : </label>
+                            <select class="form-control" name="type" >
+                                <option value="0">--- select ---</option>
+                                <option value="1" style="background-color: #0099ff">DM</option>
+                                <option value="2" style="background-color: #99e600">HT</option>
+                                <option value="3" style="background-color: #ff0066">DMHT</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                         &nbsp;&nbsp;<button class='btn btn-danger'>ประมวลผล</button>
+                    </div>
 
                     <?= Html::endForm(); ?>
 

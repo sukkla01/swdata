@@ -1,17 +1,16 @@
 <?php
 
 namespace frontend\controllers;
+
 use Yii;
 use app\models\TmpThaicvriskSearch;
 
-class ThaicvriskController extends \common\components\AppController
-{
-    public function actionIndex()
-    {
+class ThaicvriskController extends \common\components\AppController {
+
+    public function actionIndex() {
         return $this->render('index');
     }
-    
-    
+
     public function actionThaidetail() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -29,11 +28,11 @@ class ThaicvriskController extends \common\components\AppController
             }
         }
         $connection = Yii::$app->db2;
-        
-        if(!isset($_GET['page'])) {
-            $connection->createCommand("DELETE FROM swdata.tmp_thaicvrisk ")->execute(); 
+
+        if (!isset($_GET['page'])) {
+            $connection->createCommand("DELETE FROM swdata.tmp_thaicvrisk ")->execute();
         }
-       
+
 
         $sql = "INSERT IGNORE INTO swdata.tmp_thaicvrisk
 
@@ -60,14 +59,14 @@ class ThaicvriskController extends \common\components\AppController
                                                 AND (icd10 between 'E10' and 'E14' OR icd10 BETWEEN 'i10' AND 'i15' )
                 GROUP BY v.vn
                 HAVING tc1>0 OR waist >0 ) AS tt ";
-        
-          
-          $connection->createCommand($sql)->execute();
-          
-         //-----------  grid view ---------------------------------------
+
+
+        $connection->createCommand($sql)->execute();
+
+        //-----------  grid view ---------------------------------------
         $searchModel = new TmpThaicvriskSearch();
-        $tsql="select * from swdata.tmp_thaicvrisk ";
-        
+        $tsql = "select * from swdata.tmp_thaicvrisk ";
+
         try {
             $rawData = \Yii::$app->db2->createCommand($tsql)->queryAll();
         } catch (\yii\db\Exception $e) {
@@ -80,9 +79,9 @@ class ThaicvriskController extends \common\components\AppController
                 'pageSize' => 10
             ],
         ]);
-        
+
         // -------------------- chart -------------------------------
-        $gsql="SELECT '1' AS tcolor,COUNT(DISTINCT vn)  AS tcount FROM swdata.tmp_thaicvrisk t WHERE tcolor='1' 
+        $gsql = "SELECT '1' AS tcolor,COUNT(DISTINCT vn)  AS tcount FROM swdata.tmp_thaicvrisk t WHERE tcolor='1' 
                 UNION
                 SELECT '2' AS tcolor,COUNT(DISTINCT vn)  AS tcount FROM swdata.tmp_thaicvrisk t WHERE tcolor='2'
                 UNION
@@ -97,23 +96,55 @@ class ThaicvriskController extends \common\components\AppController
         for ($i = 0; $i < sizeof($gdata); $i++) {
             $tcolor[] = $gdata[$i]['tcolor'] * 1;
             $tcount[] = $gdata[$i]['tcount'] * 1;
-           
+
             //$m2[] = $data[$i]['m2'] * 1;
         }
-        return $this->render('thaidetail', ['dataProvider' => $dataProvider,'searchModel' => $searchModel, 'date1' => $date1, 'date2' => $date2, 'sql', $sql,'tcolor'=>$tcolor,'tcount'=>$tcount]);
+        return $this->render('thaidetail', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'date1' => $date1, 'date2' => $date2, 'sql', $sql, 'tcolor' => $tcolor, 'tcount' => $tcount]);
     }
-    
-      public function actionClinic() {
-        $this->permitRole([1,2,3]);
+
+    public function actionClinic() {
+        $this->permitRole([1, 2, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
+        $color = '';
+        $type1 = '';
+        if (Yii::$app->request->isPost) {
+            $type = $_POST['type']*1;
+            if (isset($_POST['color']) <> '0') {
+                $color = $_POST['color'];
+                $color = 'where tcolor=' . $color;
+                if ($_POST['color'] == 'null') {
+                    $color = 'where tcolor IS NULL';
+                }
+            }
+            if ($type<>0) {
+                if ($type==1){
+                    $type='dm';
+                }else if($type==2){
+                    $type='ht';
+                }else if($type==3){
+                    $type='dmht';
+                }
+                $type1 = "HAVING type ="."'".$type."'" ;
+            }else{
+                $type='';
+            }
+        }
         
-        
-        $sql="SELECT hn,vn,vstdate,bps,tc,waist,height,IF(smoker =2 ,'Y','N') AS smoker,is_dm,is_ht,age,tname,tcolor,
+        if($color=='where tcolor=0'){
+            $color ='';
+        }
+       
+
+
+        $sql = "SELECT hn,vn,vstdate,bps,tc,waist,height,IF(smoker =2 ,'Y','N') AS smoker,is_dm,is_ht,age,tname,tcolor,
               IF(sex=1,'ชาย',IF(sex=2,'หญิง','ไม่ทราบ')) as sex1,sex,
                 IF(is_dm='Y' AND is_ht='N','DM',IF(is_dm='N' AND is_ht='Y','HT',IF(is_dm='Y' AND is_ht='Y','DMHT','ไม่หราบ')))  AS type
-                FROM swdata.tmb_thaicvrisk_ngob_web Order BY hn";
-        
+                FROM swdata.tmb_thaicvrisk_ngob_web 
+                $color
+                $type1
+                Order BY hn";
+
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
@@ -126,10 +157,9 @@ class ThaicvriskController extends \common\components\AppController
                 'pageSize' => 100
             ],
         ]);
-        
-        
-        return $this->render('clinic',['dataProvider' => $dataProvider]);
-        
-      }
+
+
+        return $this->render('clinic', ['dataProvider' => $dataProvider, 'color' => $color, 'type' => $type1]);
+    }
 
 }
