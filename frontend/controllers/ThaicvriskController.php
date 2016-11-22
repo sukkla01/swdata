@@ -108,7 +108,7 @@ class ThaicvriskController extends \common\components\AppController {
 
     public
             function actionClinic() {
-        $this->permitRole([1, 2, 3]);
+        $this->permitRole([1, 2,3,4]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
         $color = '';
