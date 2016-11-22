@@ -29,7 +29,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
     $r2 = $data[$nu]['r2'];
     $r3 = $data[$nu]['r3'];
 }
-echo $color.'---'.$type;
+
 ?>
 
 <div class="body-content">

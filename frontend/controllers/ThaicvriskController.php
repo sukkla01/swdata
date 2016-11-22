@@ -109,12 +109,21 @@ class ThaicvriskController extends \common\components\AppController {
         $color = '';
         $type1 = '';
         if (Yii::$app->request->isPost) {
-            $type = $_POST['type']*1;
+            if(!isset($_POST['type']) or !isset($_POST['color'])){
+                $color= Yii::$app->session['color'];
+                $type =Yii::$app->session['type'] ;
+            }else {
+                $type = $_POST['type']*1;
+            }
+            
             if (isset($_POST['color']) <> '0') {
                 $color = $_POST['color'];
                 $color = 'where tcolor=' . $color;
+                Yii::$app->session['color'] = $color;
                 if ($_POST['color'] == 'null') {
                     $color = 'where tcolor IS NULL';
+                    Yii::$app->session['color'] = $color;
+                    
                 }
             }
             if ($type<>0) {
@@ -126,6 +135,7 @@ class ThaicvriskController extends \common\components\AppController {
                     $type='dmht';
                 }
                 $type1 = "HAVING type ="."'".$type."'" ;
+                Yii::$app->session['type'] = $type1;
             }else{
                 $type='';
             }
@@ -154,7 +164,7 @@ class ThaicvriskController extends \common\components\AppController {
             //'key' => 'hoscode',
             'allModels' => $rawData,
             'pagination' => [
-                'pageSize' => 100
+                'pageSize' => 10000
             ],
         ]);
 
