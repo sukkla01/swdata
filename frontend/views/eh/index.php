@@ -341,6 +341,14 @@ echo Breadcrumbs::widget([
                         </td>
                         <td ><a href="<?= Url::to('index.php?r=eh/eh201') ?>"><i class='fa fa-tv'></i></a></td>
                     </tr >
+                    <tr <?= $color ?> >
+                        <td>1</td>
+                        <td>ผู้ป่วยที่ได้รับการคัดกรอง  ปีงบ 2559</td>
+                        <td>
+
+                        </td>
+                        <td ><a href="<?= Url::to('index.php?r=eh/eh202') ?>"><i class='fa fa-tv'></i></a></td>
+                    </tr >
                 </table>
 
             </div>

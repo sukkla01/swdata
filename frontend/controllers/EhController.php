@@ -385,5 +385,55 @@ GROUP BY hn";
         ]);
         return $this->render('eh201', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
+    
+    public function actionEh202() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "select COUNT(p.cid) AS tcount,(ph.screen_date),concat(p.pname,p.fname,'  ',p.lname) as name,  p.cid,p.birthdate,ph.age_y,concat(h.address,'  ','หมูู่',v.village_moo,'  ',t.full_name) as address, 
+ IF(ps.person_dm_screen_status_id=1 or ps.person_dm_screen_status_id is null, 'N', 'Y') as dm, 
+ IF(ps.person_ht_screen_status_id<3 or ps.person_ht_screen_status_id is null, 'N', 'Y') as ht, 
+ IF(ps.person_stroke_screen_status_id=1 or ps.person_stroke_screen_status_id is null, 'N', 'Y') as stroke, 
+ IF(ps.person_obesity_screen_status_id=1 or ps.person_obesity_screen_status_id is null, 'N', 'Y') as obesity 
+ from person_dmht_risk_screen_head ph 
+ left outer join person_dmht_screen_summary ps on ps. person_dmht_screen_summary_id=ph.person_dmht_screen_summary_id   
+ left outer join person p on ps.person_id=p.person_id  
+left outer join house h on p.house_id=h.house_id  
+left outer join village v on h.village_id=v.village_id  
+left outer join thaiaddress t on v.address_id=t.addressid  
+where ps.status_active='Y'  and ps.bdg_year=2559 and
+(p.birthdate between '1865-10-01' and '2015-10-01') and ph.screen_date BETWEEN '2015-10-01' and '2016-09-30'  
+GROUP BY p.cid";
+                        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 50
+            ],
+        ]);
+        return $this->render('eh202', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
 
 }

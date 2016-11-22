@@ -172,10 +172,12 @@ class ReportController extends \common\components\AppController {
             //'key' => 'hoscode',
             'allModels' => $rawData,
             'pagination' => [
-                'pageSize' => 20000
+                'pageSize' => 50
             ],
         ]);
         return $this->render('drugning', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
+    
+     
 
 }
