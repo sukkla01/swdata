@@ -117,7 +117,7 @@ class EhController extends \common\components\AppController {
         $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
                 FROM person p
                 WHERE Year(CURDATE())-YEAR(birthdate) BETWEEN '6' AND '12'
-			AND education <>'1'";
+			AND education <>'2'";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
