@@ -33,7 +33,7 @@ $eh004 = $command->queryScalar();
 $sqleh005 = "SELECT COUNT(p.cid) tcount
 FROM person p
 WHERE Year(CURDATE())-YEAR(birthdate) BETWEEN '6' AND '12'
-			AND education <>'1'";
+			AND education <>'2'";
 $command = Yii::$app->db2->createCommand($sqleh005);
 $eh005 = $command->queryScalar();
 
