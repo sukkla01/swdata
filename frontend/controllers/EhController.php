@@ -53,7 +53,7 @@ class EhController extends \common\components\AppController {
         $this->permitRole([1, 3]);
         $sql = "SELECT IF(p.patient_hn IS NULL,'',p.patient_hn) AS hn,p.cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname
                 FROM person p
-                WHERE house_regist_type_id IS NULL";
+                WHERE house_regist_type_id IS NULL and p.last_visit > '2006-10-01'";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
