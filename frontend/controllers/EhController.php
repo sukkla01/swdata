@@ -18,7 +18,7 @@ class EhController extends \common\components\AppController {
                 FROM patient p
                 LEFT JOIN person ps ON ps.patient_hn=p.hn
                 LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
-                WHERE type_area IN('1','3') AND ps.cid IS NULL and p.last_update >'2006-10-01'";
+                WHERE type_area IN('1','3') AND ps.cid IS NULL and p.last_visit < '2006-08-01'";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {

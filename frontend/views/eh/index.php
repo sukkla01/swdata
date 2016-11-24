@@ -8,7 +8,7 @@ use yii\widgets\Breadcrumbs;
 $sqleh001 = "SELECT COUNT(p.hn)  AS tcount
 FROM patient p
 LEFT JOIN person ps ON ps.patient_hn=p.hn
-WHERE type_area IN('1','3') AND ps.cid IS NULL";
+WHERE type_area IN('1','3') AND ps.cid IS NULL AND p.last_visit > '2006-10-01'";
 $command = Yii::$app->db2->createCommand($sqleh001);
 $eh001 = $command->queryScalar();
 
