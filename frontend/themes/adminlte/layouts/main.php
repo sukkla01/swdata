@@ -29,9 +29,11 @@ if (Yii::$app->controller->action->id === 'login') {
     <?php $this->beginPage() ?>
     <!DOCTYPE html>
     <html lang="<?= Yii::$app->language ?>">
+        
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" type="image/png" href="http://www.example.com/favicon.png" />
         <?= Html::csrfMetaTags() ?>
         <title>SWDATA | ข้อมูล รพ.ศรีสังวรสุโขทัย</title>
         <?php $this->head() ?>
