@@ -15,11 +15,11 @@ FROM swdata.tmb_thaicvrisk_ngob_web WHERE year_ng='2559' ) AS tregis,
 (SELECT COUNT(hn) 
 FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor <>'ไม่ทราบ'  AND year_ng='2559') AS trisk,
 (SELECT COUNT(hn) 
-FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor IN('1','2','3')  AND year_ng='2559') AS r1,
+FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor IN('1','2')  AND year_ng='2559') AS r1,
 (SELECT COUNT(hn) 
-FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor ='4'  AND year_ng='2559') AS r2,
+FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor ='3'  AND year_ng='2559') AS r2,
 (SELECT COUNT(hn) 
-FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor ='5'  AND year_ng='2559') AS r3 ";
+FROM swdata.tmb_thaicvrisk_ngob_web WHERE tcolor IN('4','5')  AND year_ng='2559') AS r3 ";
 $data = $connection->createCommand($sql)
         ->queryAll();
 for ($nu = 0; $nu < sizeof($data); $nu++) {

@@ -10,8 +10,8 @@ $data = $connection->createCommand($sql)
 //----------------------  Line Api --------------------
 define('LINE_API', "https://notify-api.line.me/api/notify");
 //define('LINE_TOKEN','Dn2Vk3PqIBYPb6L9DsqTcsIEbgoHnzw18vO8S7aSnHD');//test
-//define('LINE_TOKEN', 'Dn2Vk3PqIBYPb6L9DsqTcsIEbgoHnzw18vO8S7aSnHD');
-define('LINE_TOKEN', '2zkkjjAhJVTc93IZvgczy5oE8kyw3XCfZzzPORKDVhJ'); //ict check auto
+//define('LINE_TOKEN', 'Dn2Vk3PqIBYPb6L9DsqTcsIEbgoHnzw18vO8S7aSnHD'); 
+define('LINE_TOKEN', 'g0xAx8RYg1NYh95pelcgD9Pks7UyrIxEiePBMk2CDzY'); //ict check auto
 ?>
 <meta http-equiv="refresh" content="3600;url=<?= Url::to('index.php?r=test/test') ?>">
 
