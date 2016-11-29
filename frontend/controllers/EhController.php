@@ -345,31 +345,37 @@ class EhController extends \common\components\AppController {
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        $sql = "SELECT *
+        $sql = "SELECT tt.*
 FROM (
 SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) AS taddr,
 p.moopart,p.tmbpart,p.amppart,p.chwpart,IF(icd10 BETWEEN 'e14' AND 'e149','DM','HT') AS type
 FROM ovstdiag o
 LEFT JOIN clinicmember c ON c.hn=o.hn AND clinic IN('013','029')
+LEFT JOIN (SELECT hn,min(vstdate) AS vstdate FROM ovstdiag WHERE icd10 BETWEEN 'e10' AND 'e149'   GROUP BY hn ) AS tdm ON tdm.hn=o.hn 
+LEFT JOIN (SELECT hn,min(vstdate) AS vstdate FROM ovstdiag WHERE icd10 = 'i10'   GROUP BY hn ) AS tht ON tht.hn=o.hn
 LEFT JOIN patient p ON p.hn=o.hn
 LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
-WHERE vstdate BETWEEN '$date1' AND '$date2'
-			AND (icd10 BETWEEN 'e14' AND 'e149' OR icd10 BETWEEN 'i10' AND 'i15')
+WHERE o.vstdate BETWEEN '$date1' AND '$date2'
+			AND (icd10 BETWEEN 'e10' AND 'e149' OR icd10 BETWEEN 'i10' AND 'i15')
 			AND c.hn IS NULL
 GROUP BY o.hn
 UNION ALL
 SELECT i.hn,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) AS taddr,
-p.moopart,p.tmbpart,p.amppart,p.chwpart,IF(icd10 BETWEEN 'e14' AND 'e149','DM','HT') AS type
+p.moopart,p.tmbpart,p.amppart,p.chwpart,IF(icd10 BETWEEN 'e10' AND 'e149','DM','HT') AS type
 FROM ipt i
 LEFT JOIN iptdiag d ON d.an=i.an
 LEFT JOIN clinicmember c ON c.hn=i.hn AND clinic IN('013','029')
+LEFT JOIN (SELECT i.hn,min(dchdate) AS dchdate FROM ipt i  LEFT JOIN iptdiag d ON d.an=i.an WHERE  icd10 BETWEEN 'e10' AND 'e149' GROUP BY i.hn ) AS tdm ON tdm.hn=i.hn 
+LEFT JOIN (SELECT i.hn,min(dchdate) AS dchdate FROM ipt i  LEFT JOIN iptdiag d ON d.an=i.an WHERE  icd10 ='i10' GROUP BY i.hn ) AS tht ON tht.hn=i.hn
 LEFT JOIN patient p ON p.hn=i.hn
 LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
 WHERE i.dchdate BETWEEN '$date1' AND '$date2'
-			AND (icd10 BETWEEN 'e14' AND 'e149' OR icd10 BETWEEN 'i10' AND 'i15')
+			AND (icd10 BETWEEN 'e10' AND 'e149' OR icd10 BETWEEN 'i10' AND 'i15')
 			AND c.hn IS NULL
 GROUP BY i.hn ) AS tt
-GROUP BY hn";
+LEFT JOIN death d ON d.hn=tt.hn
+WHERE d.hn IS NULL
+GROUP BY tt.hn";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {

@@ -35,7 +35,7 @@ class RegischronicController extends \common\components\AppController {
 IF(dm_first IS NULL AND ht_first IS NOT NULL,'029',
 IF(dm_first IS NOT NULL AND ht_first IS  NULL,'013',
 IF(dm_first IS NOT NULL AND ht_first IS NOT NULL,'013','')) ) AS type,
-tt.hn,CURDATE() AS regdate,'Y' AS newcase,'fmw002' AS staff,'fmw002' AS estaff,'Jubadd' AS note
+tt.hn,vstdate AS regdate,'Y' AS newcase,'fmw002' AS staff,'fmw002' AS estaff,'Jubadd' AS note
 FROM (
 SELECT o.hn,o.vstdate,tdm.vstdate AS dm_first ,tht.vstdate AS ht_first
 FROM ovstdiag o
