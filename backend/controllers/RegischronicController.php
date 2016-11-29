@@ -81,8 +81,8 @@ GROUP BY tt.hn";
             $clinicid = $command->queryScalar();
             $clinicid =$clinicid+1;
             
-            $sqlInsert = "INSERT IGNORE INTO  clinicmember (clinicmember_id,clinic,hn,regdate,entry_staff,modify_staff,note) VALUES
-                            ($clinicid,'$clinic','$hn','$regdate','$staff','$estaff','$note') ";
+            $sqlInsert = "INSERT IGNORE INTO  clinicmember (clinicmember_id,clinic,hn,regdate,entry_staff,modify_staff,note,clinic_subtype_id) VALUES
+                            ($clinicid,'$clinic','$hn','$regdate','$staff','$estaff','$note','1') ";
             $data1 = $connection->createCommand($sqlInsert)->execute();
             Yii::$app->session->setFlash('success', 'อัพโหลดไฟล์เรียบร้อยแล้ว');
         }
