@@ -23,6 +23,13 @@ $this->title = 'My Yii Application';
         <div class="col-md-3">
             <a class="btn btn-lg btn-primary" href="<?= Url::to('index.php?r=thaicv/process') ?>">ประมวลผล Thai CV Risk</a>
         </div>
+       
+    </div>
+    
+    <div class="row">
+         <div class="col-md-3">
+            <a class="btn btn-lg btn-primary" href="<?= Url::to('index.php?r=regischronic') ?>">ลงทะเบียน Chronic</a>
+        </div>
     </div>
     
 </div>
