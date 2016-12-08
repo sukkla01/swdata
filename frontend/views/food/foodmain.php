@@ -5,9 +5,12 @@ use kartik\widgets\DatePicker;
 //use kartik\grid\GridView;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
+use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Modal;
+use yii\widgets\Pjax;
 ?>
 
-
+<div class="container" id="ttt">
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
@@ -18,8 +21,8 @@ use kartik\export\ExportMenu;
 
                 <div class="box-tools pull-right">
 
-                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger" id="btn_sql"><h5><i class="fa fa-filter"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
-                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger" id="btn_sql"><h5><i class="fa fa-filter"></i>&nbsp;&nbsp;พิมพ์</h5></a>
+                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger" id="btn_sql"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
+                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql"><h5><i class="fa fa-print"></i>&nbsp;&nbsp;พิมพ์</h5></a>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
                 </div>
@@ -27,10 +30,9 @@ use kartik\export\ExportMenu;
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-
+                   
 
                 <?php
-                
                 $gridColumns = [
                         ['class' => 'kartik\grid\SerialColumn'],
                         [
@@ -94,16 +96,21 @@ use kartik\export\ExportMenu;
                         'attribute' => 'bmi',
                         'label' => 'bmi'
                     ],
-                    [
+                        [
                         'attribute' => 'an',
                         'label' => '#',
-                        'value' => function($model)  {
-                            
-                                return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-cart-plus'></i></span>", [
-                                    'smonthlist/smonth_cid',
-                                    'year' => $model['an'],
-                                ]);
-                            },
+                        'value' => function($model, $key) {
+                            $an = $model['an'];
+                            $bed = $model['bedno'];
+                            return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-cart-plus'></i></span>", ['/food/test', 'an' => $an, 'bed' => $bed], [
+                                        'class' => 'activity-add-link',
+                                        'title' => 'สั่งอาหาร',
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modalvote',
+                                        'data-id' => $model['an'],
+                                        
+                            ]);
+                        },
                         'filterType' => GridView::FILTER_COLOR,
                         'hAlign' => 'middle',
                         'format' => 'raw',
@@ -116,6 +123,7 @@ use kartik\export\ExportMenu;
                     'columns' => $gridColumns
                 ]);
                 echo '</div>';
+                Pjax::begin(['id' => 'tfood']); 
                 echo GridView::widget([
                     'dataProvider' => $dataProvider,
                     //'filterModel' => $searchModel,
@@ -130,13 +138,14 @@ use kartik\export\ExportMenu;
                     // 'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
                     //'floatHeader' => true,
                     //'floatHeaderOptions' => ['scrollingTop' => '100'],
-                    'pjax' => true,
-                    'pjaxSettings' => [
-                        'neverTimeout' => true,
+                   // 'pjax' => true,
+                    //'pjaxSettings' => [
+                    //    'neverTimeout' => true,
                     //'beforeGrid' => 'My fancy content before.',
                     //'afterGrid' => 'My fancy content after.',
-                    ],
+                    //],
                 ]);
+                Pjax::end();
                 ?>
 
 
@@ -151,3 +160,54 @@ use kartik\export\ExportMenu;
     </div>
 
 </div>
+
+    <div class="modal remote fade " id="modalvote">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content  "></div>
+        </div>
+    </div>
+</div>
+
+<?php
+/* Modal::begin([
+  'id' => 'fm_add',
+  'size' => 'modal-lg',
+  'header' => '<h2>สั่งอาหาร</h2>',
+  'toggleButton' => [
+  'label' => 'บันทึก',
+  'tag' => 'button',
+  'class' => 'btn btn-success'
+  ],
+  'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>',
+  ]);
+
+  ActiveForm::begin([
+  'action' => ['/foodmain'],
+  'method' => 'get',
+  'options' => [
+  'class' => 'navbar-form navbar-left'
+  ]
+  ]);
+  echo '<div class="input-group input-group-sm">';
+  echo yii\helpers\Html::input(
+  'type: text'
+  );
+  echo '</div>';
+  ActiveForm::end();
+  Modal::end(); */
+?>
+
+
+<?php
+/*$this->registerJs('
+        function init_click_handlers(){
+            $(".activity-add-link").click("pjax:end",function() {
+                    
+                    console.log("gggggggg");
+                   // $.pjax.reload({container:"#tfood"});
+                });
+            
+        }
+        init_click_handlers(); //first run
+        ');*/
+?>

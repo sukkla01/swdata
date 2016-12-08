@@ -29,7 +29,8 @@
         "kartik-v/yii2-export": "*",
         "kongoon/yii2-c3js-chart": "^0.0.4",
         "miloschuman/yii2-highcharts-widget": "dev-master",
-        "yiisoft/yii2-jui": "^2.0"
+        "yiisoft/yii2-jui": "^2.0",
+        "prawee/yii2-widgets": "*"
         
     },
     "require-dev": {
