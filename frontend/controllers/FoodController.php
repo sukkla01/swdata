@@ -15,26 +15,13 @@ class FoodController extends \yii\web\Controller {
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
         $tdate = date('Y-m-d H:m:s');
-        $dataProvider = '';
+        $dataProvider[] = '';
         $i = '';
-        if (isset($_GET['page'])) {
-            $date1 = Yii::$app->session['date1'];
-            $date2 = Yii::$app->session['date2'];
-        }
+        $ward='';
+
         if (Yii::$app->request->isPost) {
-            if (isset($_POST['date1']) == '') {
-                $date1 = Yii::$app->session['date1'];
-                $date2 = Yii::$app->session['date2'];
-            } else {
-
-                $date1 = $_POST['date1'];
-                $date2 = $_POST['date2'];
-                Yii::$app->session['date1'] = $date1;
-                Yii::$app->session['date2'] = $date2;
-            }
-        }
-
-        $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+            $ward = $_POST['ward'];
+            $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate,
                 i.regdate,i.regtime,f2.icode,congenital_disease,
                 CONCAT(bd,' ',cal,' ',n.name)  AS nname,o.height,o.bw,o.bmi
@@ -46,29 +33,35 @@ class FoodController extends \yii\web\Controller {
                 LEFT JOIN food_detail_01 f2 ON f2.an = f.an AND f2.fooddate = f.fooddate
                 LEFT JOIN nutrition_items n ON n.icode = f2.icode
                 LEFT JOIN opdscreen o ON o.vn = i.vn
-                WHERE i.dchdate IS NULL AND i.ward ='02' limit 3";
+                WHERE i.dchdate IS NULL AND i.ward ='$ward' ";
 
-        try {
-            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
-        } catch (\yii\db\Exception $e) {
-            throw new \yii\web\ConflictHttpException('sql error');
+           
+        }else {
+            $sql="select 1 as cc,'' as fooddate,'' as an,'' as bedno";
         }
-        $dataProvider = new \yii\data\ArrayDataProvider([
-            //'key' => 'hoscode',
-            'allModels' => $rawData,
-            'pagination' => [
-                'pageSize' => 50
-            ],
-        ]);
 
-         $model = new FoodDetail01();
-         if(\Yii::$app->getRequest()->isAjax){
-             return $this->renderAjax('test', ['model' => $model,]); 
-         }else {
-            return $this->render('foodmain', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]); 
-         }
-       
-        
+                 try {
+                $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+            } catch (\yii\db\Exception $e) {
+                throw new \yii\web\ConflictHttpException('sql error');
+            }
+            $dataProvider = new \yii\data\ArrayDataProvider([
+                //'key' => 'hoscode',
+                'allModels' => $rawData,
+                'pagination' => [
+                    'pageSize' => 50
+                ],
+            ]);
+
+
+
+
+        $model = new FoodDetail01();
+        if (\Yii::$app->getRequest()->isAjax) {
+            return $this->renderAjax('test', ['model' => $model,]);
+        } else {
+            return $this->render('foodmain', ['dataProvider' => $dataProvider,'ward'=>$ward]);
+        }
     }
 
     public function actionFoodone() {
@@ -88,18 +81,18 @@ class FoodController extends \yii\web\Controller {
             return $this->render('create');
         }
     }
-    
+
     public function actionTest() {
         //$id= $_GET['id'];
-         $model = new FoodDetail01();
-         $an='';
+        $model = new FoodDetail01();
+        $an = '';
         $an = $_GET['an'];
         $bed = $_GET['bed'];
         $tname = '';
-            $hn = '';
-             $ptname = '';
-             $aa =0;
-        $sql ="select i.an,i.hn,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
+        $hn = '';
+        $ptname = '';
+        $aa = 0;
+        $sql = "select i.an,i.hn,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
                 t.name AS ptname,i.ward
                 from  ipt i
                 LEFT JOIN patient p ON p.hn=i.hn
@@ -112,20 +105,17 @@ class FoodController extends \yii\web\Controller {
         for ($i = 0; $i < sizeof($data); $i++) {
             $tname = $data[$i]['tname'];
             $hn = $data[$i]['hn'];
-             $ptname = $data[$i]['ptname'];
-             $ward = $data[$i]['ward'];
+            $ptname = $data[$i]['ptname'];
+            $ward = $data[$i]['ward'];
         }
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-              return $this->redirect( Yii::$app->request->referrer );
-        }else{
-            return $this->renderAjax('test',['model' => $model,
-                         'an' =>$an,'bed'=>$bed,'tname'=>$tname,
-                         'hn'=>$hn,'ptname'=>$ptname,'ward'=>$ward]);
+            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            return $this->renderAjax('test', ['model' => $model,
+                        'an' => $an, 'bed' => $bed, 'tname' => $tname,
+                        'hn' => $hn, 'ptname' => $ptname, 'ward' => $ward]);
         }
-        
-        
-        
     }
 
 }
