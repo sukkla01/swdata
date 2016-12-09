@@ -41,7 +41,7 @@ class FingerDownload extends \yii\db\ActiveRecord {
                 [['year', 'month'], 'required'],
                 [['year', 'month'], 'string', 'max' => 5],
                 [['file1', 'file2', 'file3', 'file4'], 'file', 'maxFiles' => 1],
-                // [['note'],'string','max'=>255]
+                 [['note1'],'string','max'=>255]
         ];
     }
 
