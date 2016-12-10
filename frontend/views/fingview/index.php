@@ -34,52 +34,52 @@
                             'attribute' => 'file1',
                             'label' => 'วันที่1-10',
                             'value' => function($model, $key) {
-                                return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-download'></i></span>",
+                                return Html::a("<i class='fa fa-download'></i>",
                                                 ['dfile','file'=>$model['file1']], ['target'=>'_blank',
                                             'title' => 'สั่งอาหาร',
                   ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
-                            'hAlign' => 'middle',
+                            'hAlign' => 'center',
                             'format' => 'raw',
                         ],
                                     [
                             'attribute' => 'file2',
                             'label' => 'วันที่1-10',
                             'value' => function($model, $key) {
-                                return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-download'></i></span>",
+                                return Html::a("<i class='fa fa-download'></i>",
                                                 ['dfile','file'=>$model['file2']], ['target'=>'_blank',
                                             'title' => 'สั่งอาหาร',
                   ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
-                            'hAlign' => 'middle',
+                            'hAlign' => 'center',
                             'format' => 'raw',
                         ],
                                     [
                             'attribute' => 'file3',
                             'label' => 'วันที่21-31',
                             'value' => function($model, $key) {
-                                return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-download'></i></span>",
+                                return Html::a("<i class='fa fa-download'></i>",
                                                 ['dfile','file'=>$model['file3']], ['target'=>'_blank',
                                             'title' => 'สั่งอาหาร',
                   ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
-                            'hAlign' => 'middle',
+                            'hAlign' => 'center',
                             'format' => 'raw',
                         ],
                                                [
                             'attribute' => 'file4',
                             'label' => 'รวม OPD',
                             'value' => function($model, $key) {
-                                return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-download'></i></span>",
+                                return Html::a("<i class='fa fa-download'></i>",
                                                 ['dfile','file'=>$model['file4']], ['target'=>'_blank',
                                             'title' => 'สั่งอาหาร',
                   ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
-                            'hAlign' => 'middle',
+                            'hAlign' => 'center',
                             'format' => 'raw',
                         ],
                                      [
