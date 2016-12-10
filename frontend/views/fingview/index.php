@@ -35,9 +35,9 @@
                             'label' => 'วันที่1-10',
                             'value' => function($model, $key) {
                                 return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-download'></i></span>",
-                                                ['http://localhost/swdata/backnd/web/'.$model['file1']], [
+                                                ['dfile','file'=>$model['file1']], ['target'=>'_blank',
                                             'title' => 'สั่งอาหาร',
-                                ]);
+                  ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
                             'hAlign' => 'middle',
