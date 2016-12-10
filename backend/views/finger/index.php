@@ -11,7 +11,7 @@ $this->title = 'Finger Downloads';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="finger-download-index">
-
+    
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

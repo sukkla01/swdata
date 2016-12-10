@@ -12,6 +12,7 @@ use yii\web\UploadedFile;
 use yii\helpers\BaseFileHelper;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 
 /**
  * FingerController implements the CRUD actions for FingerDownload model.
@@ -39,10 +40,11 @@ class FingerController extends Controller {
     public function actionIndex() {
         $searchModel = new FingerDownloadSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $path = Yii::getAlias('@webroot').'/fingerfile/';
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
+                    'path' => $path
         ]);
     }
 
@@ -226,7 +228,20 @@ class FingerController extends Controller {
      */
     public function actionDelete($year, $month) {
         $this->findModel($year, $month)->delete();
-
+        $file1 = $month.$year.'_1.pdf';
+        $file2 = $month.$year.'_2.pdf';
+        $file3 = $month.$year.'_3.pdf';
+        $file4 = $month.$year.'_4.pdf';
+        
+        $path1 = Yii::getAlias('@webroot').'/fingerfile/'.$file1;
+        $path2 = Yii::getAlias('@webroot').'/fingerfile/'.$file2;
+        $path3 = Yii::getAlias('@webroot').'/fingerfile/'.$file3;
+        $path4 = Yii::getAlias('@webroot').'/fingerfile/'.$file4;
+        //FileHelper::removeDirectory($path);
+        unlink($path1);
+        unlink($path2);
+        unlink($path3);
+        unlink($path4);
         return $this->redirect(['index']);
     }
 
