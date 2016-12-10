@@ -41,6 +41,18 @@ return [
                 ],
             ],
         ],
+        'urlManager' => [
+            'class' => 'yii\web\urlManager',
+            'enablePrettyUrl' => false,
+            'showScriptName' => true,
+        ],
+        'urlManagerBackend' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => 'D:\xampp\htdocs\swdata\backend\web',
+            'scriptUrl' => '/swdata/backend/web/index.php',
+            'enablePrettyUrl' => false,
+            'showScriptName' => true,
+        ],
     /*
       'urlManager' => [
       'enablePrettyUrl' => true,

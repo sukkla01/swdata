@@ -48,9 +48,9 @@
                             'label' => 'วันที่1-10',
                             'value' => function($model, $key) {
                                 return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-download'></i></span>",
-                                                ['http://localhost/swdata/backnd/web/'.$model['file2']], [
+                                                ['dfile','file'=>$model['file2']], ['target'=>'_blank',
                                             'title' => 'สั่งอาหาร',
-                                ]);
+                  ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
                             'hAlign' => 'middle',
@@ -61,9 +61,9 @@
                             'label' => 'วันที่21-31',
                             'value' => function($model, $key) {
                                 return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-download'></i></span>",
-                                                ['http://localhost/swdata/backnd/web/'.$model['file3']], [
+                                                ['dfile','file'=>$model['file3']], ['target'=>'_blank',
                                             'title' => 'สั่งอาหาร',
-                                ]);
+                  ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
                             'hAlign' => 'middle',
@@ -74,9 +74,9 @@
                             'label' => 'รวม OPD',
                             'value' => function($model, $key) {
                                 return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-download'></i></span>",
-                                                ['http://localhost/swdata/backnd/web/'.$model['file4']], [
+                                                ['dfile','file'=>$model['file4']], ['target'=>'_blank',
                                             'title' => 'สั่งอาหาร',
-                                ]);
+                  ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
                             'hAlign' => 'middle',
@@ -103,12 +103,12 @@
                         'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
                         //'floatHeader' => true,
                         //'floatHeaderOptions' => ['scrollingTop' => '100'],
-                        'pjax' => true,
+                        /*'pjax' => true,
                         'pjaxSettings' => [
                             'neverTimeout' => true,
                         //'beforeGrid' => 'My fancy content before.',
                         //'afterGrid' => 'My fancy content after.',
-                        ],
+                        ]*/
                     ]);
                     ?>
 

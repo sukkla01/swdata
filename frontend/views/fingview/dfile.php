@@ -1,2 +1,3 @@
 <?php
-echo $path;
+echo $path.'<br>';
+echo $path1;

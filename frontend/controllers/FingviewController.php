@@ -31,28 +31,23 @@ class FingviewController extends \yii\web\Controller {
 
         $name = $_GET['file'];
 
-        $path = Yii::getAlias('localhost/swdata/backend/web') . '/fingerfile/';
-        $file = $path . $name;
+       // $path = Yii::getAlias('localhost/swdata/backend/web') . '/fingerfile/';
+       // $file = $path . $name;
 
         //$aa = Yii::$app->response->sendFile($file);
+        
+        $pathFile = 'D:/xampp/htdocs/swdata/backend/web/fingerfile/'.$name;
 
-
+        $pathFile1 = Yii::getAlias('@webroot').'/fingerfile/012559_1.pdf' ;
+       //  $filename = '012559_1.pdf';
         //$path = Yii::getPathOfAlias('webroot') . "/uploads/downloads/23602414.pdf";
-        //$this->downloadFile($file);
-        $file = Yii::getAlias('@webroot') ;
-        return $this->render('dfile',['path'=>$file]);
+       // $this->downloadFile($file);
+       //  return $this->render('dfile', ['path' => $pathFile,'path1'=>$pathFile1]);
+        //return  Yii::$app->response->sendFile($path, $filename);
+       return \Yii::$app->response->sendFile($pathFile);
+
     }
 
-    public function downloadFile($fullpath) {
-        if (!empty($fullpath)) {
-            header("Content-type:application/pdf"); //for pdf file
-            //header('Content-Type:text/plain; charset=ISO-8859-15');
-            //if you want to read text file using text/plain header 
-            header('Content-Disposition: attachment; filename="' . basename($fullpath) . '"');
-            header('Content-Length: ' . filesize($fullpath));
-            readfile($fullpath);
-            Yii::app()->end();
-        }
-    }
+   
 
 }
