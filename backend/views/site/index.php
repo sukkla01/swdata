@@ -30,6 +30,9 @@ $this->title = 'My Yii Application';
          <div class="col-md-3">
             <a class="btn btn-lg btn-primary" href="<?= Url::to('index.php?r=regischronic') ?>">ลงทะเบียน Chronic</a>
         </div>
+         <div class="col-md-3">
+            <a class="btn btn-lg btn-success" href="<?= Url::to('index.php?r=finger') ?>">อัพโหลดไฟล์สแกนลายนิ้วมือ</a>
+        </div>
     </div>
     
 </div>
