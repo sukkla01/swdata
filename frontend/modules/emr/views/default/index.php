@@ -6,8 +6,10 @@ use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap\Html;
 use kartik\grid\GridView;
+use yii\jui\Tabs;
+use kartik\tabs\TabsX;
 ?>
-
+<h1><p align="center">EMR CENTER</p></h1>
 
 <div class="row">
     <div class="col-md-12">
@@ -101,10 +103,9 @@ use kartik\grid\GridView;
                             'attribute' => 'hospcode',
                             'label' => 'สถานที่',
                             'value' => function($model, $key) {
-                                return Html::a($model['hospcode'], ['emr', 'hospcode' => $model['hospcode'],
-                                                                    'pid'=>$model['pid'],
-                                                                    'seq'=>$model['seq']], ['target' => '_blank',
-                                            'title' => $model['hospname'],
+                                return Html::a($model['hospcode'], ['/emr', 'hospcode' => $model['hospcode'],
+                                            'pid' => $model['pid'],
+                                            'seq' => $model['seq']], ['title' => $model['hospname'],
                                 ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
@@ -136,6 +137,8 @@ use kartik\grid\GridView;
                     ]);
                     ?>
 
+
+
                 </div>
             </div>
         </div>
@@ -150,17 +153,95 @@ use kartik\grid\GridView;
                     </div>
                 </div>
                 <div class="box-body">
-                    <ul class="nav nav-tabs">
-                        <li role="presentation" class="active"><a href="#">Lab</a></li>
-                        <li role="presentation"><a href="#">ยา</a></li>
-                        <li role="presentation"><a href="#">Messages</a></li>
-                    </ul>
+
+                    <?php
+                    echo TabsX::widget([
+                        'position' => TabsX::POS_ABOVE,
+                        'align' => TabsX::ALIGN_LEFT,
+                        'items' => [
+                                [
+                                'label' => 'อารการ/วินิจฉัย',
+                                'content' => $this->render('drug', [
+                                        //'searchModel' => $searchModel,
+                                        //'dataProvider' => $dataProvider,
+                                ]),
+                                'active' => true
+                            ],
+                                [
+                                'label' => 'Lab',
+                                'content' => $this->render('drug', [
+                                        //'searchModel' => $searchModel,
+                                        //'dataProvider' => $dataProvider,
+                                ]),
+                                
+                            ],
+                                [
+                                'label' => 'ยา',
+                                'content' => $this->render('drug', [
+                                        //'searchModel' => $searchModel,
+                                        //'dataProvider' => $dataProvider,
+                                ]),
+                                
+                            ],
+                                [
+                                'label' => 'หัตถการ',
+                                'content' => $this->render('lab', [
+                                        //'searchModel' => $searchModel,
+                                        //'dataProvider' => $dataProvider,
+                                ]),
+                                'headerOptions' => ['style' => 'font-weight:bold'],
+                                'options' => ['id' => 'lab'],
+                            ],
+                                [
+                                'label' => 'วัคซีน',
+                                'content' => "xxxxxxxxxxxxxx",
+                                'headerOptions' => ['style' => 'font-weight:bold'],
+                                'options' => ['id' => 'myveryownID'],
+                            ],
+                                [
+                                'label' => 'ANC',
+                                'content' => "xxxxxxxxxxxxxx",
+                                'headerOptions' => ['style' => 'font-weight:bold'],
+                                'options' => ['id' => 'myveryownID'],
+                            ],
+                        /* [
+                          'label' => 'Dropdown',
+                          'items' => [
+                          [
+                          'label' => 'DropdownA',
+                          'content' => 'DropdownA, Anim pariatur cliche...',
+                          ],
+                          [
+                          'label' => 'DropdownB',
+                          'content' => 'DropdownB, Anim pariatur cliche...',
+                          ],
+                          ],
+                          ], */
+                        ],
+                    ]);
+                    ?>
                 </div>
             </div>
         </div>
     </div>
-
+    <button class="tt">Get External Content</button>
 <?php } ?>
 
+
+<?php
+$this->registerJs('
+   $(document).ready(function(){
+  $("tt").click(function() { 
+    var popID = $(this).attr("rel");
+    $.get("content.php", { ref:popID }, function(data) {
+       $(popID+"Container").html(data);
+       $(popID).dialog();
+       alert("Load was performed.");
+    });
+    return false; // prevent default
+  });
+});
+');
+?>
 
 

@@ -31,7 +31,8 @@
         "miloschuman/yii2-highcharts-widget": "dev-master",
         "yiisoft/yii2-jui": "^2.0",
         "prawee/yii2-widgets": "*",
-        "2amigos/yii2-file-upload-widget": "~1.0"
+        "2amigos/yii2-file-upload-widget": "~1.0",
+        "kartik-v/yii2-tabs-x": "*"
         
     },
     "require-dev": {
