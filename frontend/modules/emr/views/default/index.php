@@ -68,6 +68,7 @@ use kartik\tabs\TabsX;
                         <div class="col-md-10">
                             <p> ชื่อ-สกุล  : <?= $tname ?> </p>
                             <p> ที่อยู่  : <?= $taddr ?></p>
+                            <p> โรคประจำตัว  : <?= $chronic ?></p>
                         </div>
                     </div>
                 </div>

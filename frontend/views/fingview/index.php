@@ -45,7 +45,7 @@
                         ],
                                     [
                             'attribute' => 'file2',
-                            'label' => 'วันที่1-10',
+                            'label' => 'วันที่11-20',
                             'value' => function($model, $key) {
                                 return Html::a("<i class='fa fa-download'></i>",
                                                 ['dfile','file'=>$model['file2']], ['target'=>'_blank',

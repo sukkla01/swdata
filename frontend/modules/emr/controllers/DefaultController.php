@@ -20,17 +20,18 @@ class DefaultController extends Controller {
         $tname ='';
         $taddr = '';
         $sex = '1';
+        $chronic = '';
         $sql = "SELECT p.cid,CONCAT(n.prename,p.name,' ',p.lname) AS tname,sex,
-                CONCAT('เลขที่ ',h.HOUSE,' ต.',t.tambonname,' อ.',a.ampurname,' จ.',c.changwatname) AS taddr
+                CONCAT('เลขที่ ',h.HOUSE,' ต.',t.tambonname,' อ.',a.ampurname,' จ.',c.changwatname) AS taddr,
+                tc.chronic
                 FROM person p
                 LEFT JOIN cprename n ON n.id_prename = p.prename
                 LEFT JOIN home h ON h.HOSPCODE = p.HOSPCODE AND h.HID = p.HID
-                #LEFT JOIN cvillage v ON c.villagecode = h.VILLAGE 
-
+                LEFT JOIN tmp_chronic tc on tc.cid = p.cid
                 LEFT JOIN campur a ON a.ampurcode = h.AMPUR AND a.changwatcode =  h.CHANGWAT
                 LEFT JOIN cchangwat c  ON c.changwatcode = h.CHANGWAT
                 LEFT JOIN ctambon t ON t.tamboncode = h.TAMBON AND t.ampurcode = CONCAT(c.changwatcode,a.ampurcode)
-                WHERE  cid = '$cid' AND  TYPEAREA IN('1','3')
+                WHERE  p.cid = '$cid' 
                 LIMIT 1";
         $connection = Yii::$app->db3;
         $data = $connection->createCommand($sql)
@@ -40,6 +41,8 @@ class DefaultController extends Controller {
             $tname = $data[$i]['tname'];
             $taddr = $data[$i]['taddr'];
             $sex = $data[$i]['sex'];
+            $chronic = $data[$i]['chronic'];
+            
             
         }
         
@@ -64,7 +67,7 @@ class DefaultController extends Controller {
                 ],
             ]);
 
-        return $this->render('index', ['cid' => $cid,'tname'=>$tname,'taddr'=>$taddr,'sex'=>$sex,
+        return $this->render('index', ['cid' => $cid,'tname'=>$tname,'taddr'=>$taddr,'sex'=>$sex,'chronic'=>$chronic,
                                        'dataProvider' => $dataProvider 
                                         ]);
     }
