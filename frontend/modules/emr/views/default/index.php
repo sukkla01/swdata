@@ -8,21 +8,16 @@ use yii\bootstrap\Html;
 use kartik\grid\GridView;
 use yii\jui\Tabs;
 use kartik\tabs\TabsX;
+
 ?>
-<h1><p align="center">EMR CENTER</p></h1>
+<h1><p align="center"> Electronic Medical Record</p></h1>
 
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-info box-solid">
-            <div class="box-header with-border">
-                <i class="fa fa-search"></i> 
-                <h3 class="box-title">ค้นหาผู้ป่วย</h3>
+        <div class="panel panel-primary">
+            <div class="panel-heading"><i class="fa fa-search"></i> ค้นหาผู้ป่วย</div>
+            <div class="panel-body">
 
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                </div>
-            </div>
-            <div class="box-body">
                 <?= Html::beginForm(); ?>
 
                 <label for="pwd">เลขบัตรประชาชน 13 หลัก : &nbsp;&nbsp; </label>
@@ -40,18 +35,14 @@ use kartik\tabs\TabsX;
 
 <?php if ($cid <> '') { ?>
 
+
+
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-info box-solid">
-                <div class="box-header with-border">
-                    <i class="fa fa-id-card-o"></i> 
-                    <h3 class="box-title">ข้อมูลบุคคล</h3>
+            <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fa fa-id-card-o"></i>&nbsp;&nbsp;ข้อมูลบุคคล</div>
+                <div class="panel-body">
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
                     <?php
                     if ($sex == '1') {
                         $ipath = Yii::$app->request->baseUrl . '/images/men.png';
@@ -66,7 +57,7 @@ use kartik\tabs\TabsX;
                             <img src="<?= $ipath ?>" class="img-circle" alt="User Image" height="100" width="100" >
                         </div>
                         <div class="col-md-10">
-                            <p> ชื่อ-สกุล  : <?= $tname ?> </p>
+                            <p> ชื่อ-สกุล  : <?= $tname ?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เลขบัตรประชาชน : <?=$cid?> </p>
                             <p> ที่อยู่  : <?= $taddr ?></p>
                             <p> โรคประจำตัว  : <?= $chronic ?></p>
                         </div>
@@ -78,34 +69,39 @@ use kartik\tabs\TabsX;
 
     <div class="row">
         <div class="col-md-3">
-            <div class="box box-info box-solid">
-                <div class="box-header with-border">
-                    <i class="fa fa-calendar-check-o"></i> 
-                    <h3 class="box-title">วันที่รับบริการ</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fa fa-calendar-check-o"></i>&nbsp;&nbsp;วันที่รับบริการ</div>
+                <div class="panel-body">
+   
 
                     <?php
                     $gridColumns = [
                             ['class' => 'kartik\grid\SerialColumn'],
                             [
-                            'attribute' => 'date_serv',
-                            'label' => 'วันที่'
+                            'attribute' => 'tdate',
+                            'label' => 'วัน/เวลามารับบริการ',
+                            'value' => function ($model, $key, $index, $widget) {
+                                if ($model['tadmit'] === 'N') {
+                                    return "<font  color='000000'>" . $model['tdate'] . "</font>";
+                                } else {
+                                    return "<font  color='ff0066'>" . $model['tdate'] . "</font>";
+                               
+                                }
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'vAlign' => 'middle',
+                            'format' => 'raw',
+                            'width' => '150px',
+                            'noWrap' => true
                         ],
-                            [
-                            'attribute' => 'time_serv',
-                            'label' => 'เวลา'
-                        ],
+                           
                             [
                             'attribute' => 'hospcode',
                             'label' => 'สถานที่',
                             'value' => function($model, $key) {
                                 return Html::a($model['hospcode'], ['/emr', 'hospcode' => $model['hospcode'],
                                             'pid' => $model['pid'],
+                                            'an' => $model['an'],
                                             'seq' => $model['seq']], ['title' => $model['hospname'],
                                 ]);
                             },
@@ -143,65 +139,62 @@ use kartik\tabs\TabsX;
                 </div>
             </div>
         </div>
+    <?php } ?>    
+    <?php if ($hospcode <> '') { ?>    
         <div class="col-md-9">
-            <div class="box box-info box-solid">
-                <div class="box-header with-border">
-                    <i class="fa fa-th-large"></i> 
-                    <h3 class="box-title">รายละเอียด</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
-
+            <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fa fa-th-large"></i>&nbsp;&nbsp; รายละเอียด</div>
+                <div class="panel-body">
                     <?php
                     echo TabsX::widget([
                         'position' => TabsX::POS_ABOVE,
                         'align' => TabsX::ALIGN_LEFT,
                         'items' => [
                                 [
-                                'label' => 'อารการ/วินิจฉัย',
-                                'content' => $this->render('drug', [
-                                        //'searchModel' => $searchModel,
-                                        //'dataProvider' => $dataProvider,
+                                'label' => 'วินิจฉัย',
+                                'content' => $this->render('diag', [
+                                    'dataProvider' => $dataProvideri,
+                                    'dateserv' => $dateserv,
+                                       'cc'=>$cc,
+                                       'sbp'=>$sbp,
+                                       'dbp'=>$dbp,
+                                       'pr'=>$pr,
+                                       'rr'=>$rr,
+                                       'btemp'=>$btemp
+                                    
                                 ]),
                                 'active' => true
                             ],
                                 [
-                                'label' => 'Lab',
-                                'content' => $this->render('drug', [
-                                        //'searchModel' => $searchModel,
-                                        //'dataProvider' => $dataProvider,
-                                ]),
-                                
-                            ],
-                                [
                                 'label' => 'ยา',
                                 'content' => $this->render('drug', [
-                                        //'searchModel' => $searchModel,
-                                        //'dataProvider' => $dataProvider,
+                                        'dataProvider' => $dataProviderdr,
                                 ]),
-                                
                             ],
                                 [
-                                'label' => 'หัตถการ',
+                                'label' => 'Lab',
                                 'content' => $this->render('lab', [
-                                        //'searchModel' => $searchModel,
-                                        //'dataProvider' => $dataProvider,
+                                    'dataProvider' => $dataProviderl,
                                 ]),
-                                'headerOptions' => ['style' => 'font-weight:bold'],
-                                'options' => ['id' => 'lab'],
                             ],
+                            /*  [
+                              'label' => 'หัตถการ',
+                              'content' => $this->render('diag', [
+                              //'searchModel' => $searchModel,
+                              //'dataProvider' => $dataProvider,
+                              ]),
+                              'headerOptions' => ['style' => 'font-weight:bold'],
+                              'options' => ['id' => 'lab'],
+                              ], */
                                 [
                                 'label' => 'วัคซีน',
-                                'content' => "xxxxxxxxxxxxxx",
+                                'content' => "รออัพเดท",
                                 'headerOptions' => ['style' => 'font-weight:bold'],
                                 'options' => ['id' => 'myveryownID'],
                             ],
                                 [
                                 'label' => 'ANC',
-                                'content' => "xxxxxxxxxxxxxx",
+                                'content' => "รออัพเดท",
                                 'headerOptions' => ['style' => 'font-weight:bold'],
                                 'options' => ['id' => 'myveryownID'],
                             ],
@@ -225,24 +218,12 @@ use kartik\tabs\TabsX;
             </div>
         </div>
     </div>
-    <button class="tt">Get External Content</button>
+
 <?php } ?>
 
 
 <?php
-$this->registerJs('
-   $(document).ready(function(){
-  $("tt").click(function() { 
-    var popID = $(this).attr("rel");
-    $.get("content.php", { ref:popID }, function(data) {
-       $(popID+"Container").html(data);
-       $(popID).dialog();
-       alert("Load was performed.");
-    });
-    return false; // prevent default
-  });
-});
-');
+$this->registerJs('');
 ?>
 
 
