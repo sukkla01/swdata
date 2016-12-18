@@ -30,6 +30,8 @@ class DefaultController extends Controller {
         $pr = '';
         $rr = '';
         $btemp = '';
+        $hospname = '';
+        $timeserv = '';
         
         
         
@@ -47,7 +49,7 @@ class DefaultController extends Controller {
         // ข้อมูลบุคคล
         $sql = "SELECT p.cid,CONCAT(n.prename,p.name,' ',p.lname) AS tname,sex,
                 CONCAT('เลขที่ ',h.HOUSE,' ต.',t.tambonname,' อ.',a.ampurname,' จ.',c.changwatname) AS taddr,
-                CONCAT(tc.chronic,' ',i.diagename)  as chronic
+                CONCAT(tc.chronic,' ',i.diagename)  as chronic,birth
                 FROM person p
                 LEFT JOIN cprename n ON n.id_prename = p.prename
                 LEFT JOIN home h ON h.HOSPCODE = p.HOSPCODE AND h.HID = p.HID
@@ -67,6 +69,7 @@ class DefaultController extends Controller {
             $taddr = $data[$i]['taddr'];
             $sex = $data[$i]['sex'];
             $chronic = $data[$i]['chronic'];
+            $birth = $data[$i]['birth'];
         }
 
 
@@ -114,9 +117,11 @@ class DefaultController extends Controller {
             ],
         ]);
         //อาการ
-        $sqlcc = "SELECT date_serv,CHIEFCOMP,sbp,dbp,pr,rr,btemp
+        $sqlcc = "SELECT date_serv,CHIEFCOMP,sbp,dbp,pr,rr,btemp,h.hospname,
+                    CONCAT(left(time_serv,2),':',SUBSTR(time_serv,3,2),':',right(time_serv,2)) as time_serv
                     FROM service s
-                    WHERE hospcode='$hospcode' AND seq ='$seq' 
+                    LEFT JOIN  chospcode h ON h.hospcode = s.hospcode
+                    WHERE s.hospcode='$hospcode' AND seq ='$seq' 
                     LIMIT 1";
         $datacc = $connection->createCommand($sqlcc)
                 ->queryAll();
@@ -129,6 +134,8 @@ class DefaultController extends Controller {
             $pr = $datacc[$i]['pr'];
             $rr = $datacc[$i]['rr'];
             $btemp = $datacc[$i]['btemp'];
+            $hospname = $datacc[$i]['hospname'];
+            $timeserv = $datacc[$i]['time_serv'];
         }
         //LAB
         $sqll = "SELECT l.labtest, t.labtest AS tlname,labresult
@@ -169,7 +176,7 @@ class DefaultController extends Controller {
             ],
         ]);
 
-        return $this->render('index', ['cid' => $cid, 'tname' => $tname, 'taddr' => $taddr, 'sex' => $sex, 'chronic' => $chronic,
+        return $this->render('index', ['cid' => $cid, 'tname' => $tname, 'taddr' => $taddr, 'sex' => $sex, 'chronic' => $chronic,'birth'=>$birth,
                     'dataProvider' => $dataProvider,
                     'dataProvideri' => $dataProvideri,
                     'dataProviderl' => $dataProviderl,
@@ -181,7 +188,9 @@ class DefaultController extends Controller {
                     'pr' => $pr,
                     'rr' => $rr,
                     'btemp' => $btemp,
-                    'hospcode' =>$hospcode
+                    'hospcode' =>$hospcode,
+                    'hospname'=>$hospname,
+                    'timeserv'=>$timeserv
         ]);
     }
 

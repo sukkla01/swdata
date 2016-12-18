@@ -10,7 +10,7 @@ use yii\jui\Tabs;
 use kartik\tabs\TabsX;
 
 ?>
-<h1><p align="center"> Electronic Medical Record</p></h1>
+<h1><p align="center"> Electronic Health Record (EHR)</p></h1>
 
 <div class="row">
     <div class="col-md-12">
@@ -60,6 +60,7 @@ use kartik\tabs\TabsX;
                             <p> ชื่อ-สกุล  : <?= $tname ?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เลขบัตรประชาชน : <?=$cid?> </p>
                             <p> ที่อยู่  : <?= $taddr ?></p>
                             <p> โรคประจำตัว  : <?= $chronic ?></p>
+                            <p> วันเกิด  : <?= $birth ?></p>
                         </div>
                     </div>
                 </div>
@@ -151,7 +152,7 @@ use kartik\tabs\TabsX;
                         'align' => TabsX::ALIGN_LEFT,
                         'items' => [
                                 [
-                                'label' => 'วินิจฉัย',
+                                'label' => 'อาการ/วินิจฉัย',
                                 'content' => $this->render('diag', [
                                     'dataProvider' => $dataProvideri,
                                     'dateserv' => $dateserv,
@@ -160,7 +161,10 @@ use kartik\tabs\TabsX;
                                        'dbp'=>$dbp,
                                        'pr'=>$pr,
                                        'rr'=>$rr,
-                                       'btemp'=>$btemp
+                                       'btemp'=>$btemp,
+                                       'timeserv'=>$timeserv,
+                                       'hospname'=>$hospname,
+                                       'hospcode'=>$hospcode,
                                     
                                 ]),
                                 'active' => true
