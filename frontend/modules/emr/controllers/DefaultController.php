@@ -32,7 +32,7 @@ class DefaultController extends Controller {
         $btemp = '';
         $hospname = '';
         $timeserv = '';
-        
+        $birth ='';
         
         
         if (Yii::$app->request->isPost) {
