@@ -100,7 +100,7 @@ use kartik\tabs\TabsX;
                             'attribute' => 'hospcode',
                             'label' => 'สถานที่',
                             'value' => function($model, $key) {
-                                return Html::a($model['hospcode'], ['/emr', 'hospcode' => $model['hospcode'],
+                                return Html::a($model['hospcode'], ['/ehr', 'hospcode' => $model['hospcode'],
                                             'pid' => $model['pid'],
                                             'an' => $model['an'],
                                             'seq' => $model['seq']], ['title' => $model['hospname'],

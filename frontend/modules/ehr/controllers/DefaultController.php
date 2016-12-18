@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\emr\controllers;
+namespace frontend\modules\ehr\controllers;
 
 use yii\web\Controller;
 use Yii;
