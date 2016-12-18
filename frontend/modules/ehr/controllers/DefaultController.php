@@ -155,15 +155,14 @@ class DefaultController extends Controller {
         ]);
 
         //ยา
-        $sqldr = "SELECT s.TRADE_NAME,d.AMOUNT,d.DRUGPRICE,d.AMOUNT*d.DRUGPRICE AS tprice
+        $sqldr = "SELECT d.dname,d.AMOUNT
                 FROM tmp_drug_opd  d 
-                LEFT JOIN cdrug_std s ON s.didstd =  d.DIDSTD
                 WHERE cid = '$cid'
                       AND HOSPCODE ='$hospcode' AND seq ='$seq' 
                 UNION ALL
-                SELECT s.TRADE_NAME,d.AMOUNT,d.DRUGPRICE,d.AMOUNT*d.DRUGPRICE AS tprice
+                SELECT d.dname,d.AMOUNT
                 FROM drug_ipd  d
-                LEFT JOIN cdrug_std s ON s.didstd =  d.DIDSTD
+               
                 WHERE an ='$an'  AND hospcode = '$hospcode'  ";
         $rawdr = $connection->createCommand($sqldr)
                 ->queryAll();
