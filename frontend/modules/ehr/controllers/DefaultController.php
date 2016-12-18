@@ -75,12 +75,12 @@ class DefaultController extends Controller {
 
         // ข้อมูลวันที่มารักษา
         $sqld = "SELECT CONCAT(s.date_serv,' ',left(time_serv,2),':',SUBSTR(time_serv,3,2),':',right(time_serv,2)) tdate,
-                s.hospcode,s.seq,h.hospname,p.pid,
+                s.hospcode,s.seq,h.hosname as hospname,p.pid,
                 IF(a.an IS NULL,'N','Y') AS tadmit,
                 IF(a.an IS NULL,' ',a.AN) AS an
                 FROM service s
                 LEFT JOIN person p ON p.hospcode = s.hospcode AND p.pid =s.pid
-                LEFT JOIN chospcode h ON h.hospcode = s.hospcode
+                LEFT JOIN chospital  h ON h.hoscode = s.hospcode
 		LEFT JOIN tmp_admission a ON a.HOSPCODE = s.HOSPCODE AND a.SEQ = s.SEQ
                 WHERE  p.cid = '$cid'
                 ORDER BY date_serv DESC";
