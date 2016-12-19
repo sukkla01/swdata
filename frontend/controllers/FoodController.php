@@ -29,7 +29,7 @@ class FoodController extends \yii\web\Controller {
                 LEFT JOIN patient p ON p.hn = i.hn
                 LEFT JOIN iptadm a ON a.an = i.an
                 LEFT JOIN an_stat s ON s.an = i.an
-                LEFT JOIN (SELECT MAX(fooddate) AS fooddate,an FROM food_detail_01  GROUP BY an) AS f ON f.an = i.an
+                LEFT JOIN (SELECT MAX(fooddate) AS fooddate,an FROM food_detail_01 WHERE an > 590000001 GROUP BY an) AS f ON f.an = i.an
                 LEFT JOIN food_detail_01 f2 ON f2.an = f.an AND f2.fooddate = f.fooddate
                 LEFT JOIN nutrition_items n ON n.icode = f2.icode
                 LEFT JOIN opdscreen o ON o.vn = i.vn

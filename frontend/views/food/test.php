@@ -18,7 +18,7 @@ $form = ActiveForm::begin(['enableClientValidation' => true,
                 'data-pjax' => true
         ]]);
 ?>
-<?php Pjax::begin(['id' => 'tfood']);  ?>
+<?php Pjax::begin(['id' => 'tfood']); ?>
 
 <div class="row" >
     <div class="col-md-12">
@@ -69,18 +69,19 @@ $form = ActiveForm::begin(['enableClientValidation' => true,
     <div class="col-lg-4">
 
         <?=
-        $form->field($model, 'fooddate')->widget(
+        $form->field($model, 'fooddate1')->widget(
                 DatePicker::className(), [
             'language' => 'th',
             'inline' => FALSE,
-            'value' => date('Y-m-d'),
-            'dateFormat' => 'yyyy-MM-dd',
+           // 'value' => date('Y-m-d'),
+            //'dateFormat' => 'yyyy-MM-dd',
             'options' => ['class' => 'form-control'],
             'clientOptions' => [
                 //'value' => '2015-01-01',
+                //'defaultDate' => date('Y-m-d'),
                 'todayHighlight' => true,
                 'autoclose' => true,
-            // 'format' => 'yyyy-mm-dd'
+                'dateFormat' => 'yyyy-mm-dd'
         ]]);
         ?>
     </div>

@@ -12,7 +12,7 @@ use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 ?>
 
-<div class="container" id="ttt">
+
     <div class="row">
         <div class="col-md-12">
             <div class="box box-info">
@@ -202,7 +202,6 @@ use yii\helpers\ArrayHelper;
             <div class="modal-content  "></div>
         </div>
     </div>
-</div>
 
 <?php
 /* Modal::begin([
