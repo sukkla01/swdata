@@ -30,7 +30,7 @@ use kartik\export\ExportMenu;
             'clientOptions' => [
                 'changeMonth' => true,
                 'changeYear' => true,
-                'formate'=> 'yyyy-MM-dd'
+                'dateFormat' => 'yy-mm-dd'
             ],
             
         ]);
@@ -48,7 +48,7 @@ use kartik\export\ExportMenu;
             'clientOptions' => [
                 'changeMonth' => true,
                 'changeYear' => true,
-                'formate'=> 'yyyy-MM-dd'
+                'dateFormat' => 'yy-mm-dd'
             ]
         ]);
                             ?>
