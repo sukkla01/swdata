@@ -21,15 +21,16 @@ use kartik\export\ExportMenu;
                   <?= Html::beginForm(); ?>
                         
                        ประมวลข้อมูลระหว่าง :
-                            <?php
+                             <?php
                             echo yii\jui\DatePicker::widget([
             'name' => 'date1',
             'value' => $date1,
             'language' => 'th',
-            'dateFormat' => 'yyyy-MM-dd',
+            //'dateFormat' => 'yyyy-MM-dd',
             'clientOptions' => [
                 'changeMonth' => true,
                 'changeYear' => true,
+                'dateFormat' => 'yy-mm-dd'
             ],
             
         ]);
@@ -43,10 +44,11 @@ use kartik\export\ExportMenu;
             'name' => 'date2',
             'value' => $date2,
             'language' => 'th',
-            'dateFormat' => 'yyyy-MM-dd',
+            //'dateFormat' => 'yyyy-MM-dd',
             'clientOptions' => [
                 'changeMonth' => true,
                 'changeYear' => true,
+                'dateFormat' => 'yy-mm-dd'
             ]
         ]);
                             ?>

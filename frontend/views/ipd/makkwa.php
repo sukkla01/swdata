@@ -25,10 +25,11 @@ use kartik\export\ExportMenu;
                         'name' => 'date1',
                         'value' => $date1,
                         'language' => 'th',
-                        'dateFormat' => 'yyyy-MM-dd',
+                        //'dateFormat' => 'yyyy-MM-dd',
                         'clientOptions' => [
                             'changeMonth' => true,
                             'changeYear' => true,
+                            'dateFormat' => 'yy-mm-dd'
                         ],
                     ]);
                     ?>
@@ -41,10 +42,11 @@ use kartik\export\ExportMenu;
                         'name' => 'date2',
                         'value' => $date2,
                         'language' => 'th',
-                        'dateFormat' => 'yyyy-MM-dd',
+                        //'dateFormat' => 'yyyy-MM-dd',
                         'clientOptions' => [
                             'changeMonth' => true,
                             'changeYear' => true,
+                            'dateFormat' => 'yy-mm-dd'
                         ]
                     ]);
                     ?>
@@ -96,15 +98,13 @@ use kartik\export\ExportMenu;
                             [
                             'attribute' => 'tname',
                             'label' => 'ชื่อ-สกุล',
-                              
-                                
                         ],
                             [
-                           'attribute' => 'admday',
+                            'attribute' => 'admday',
                             'label' => 'วันนอน',
                         ],
                             [
-                           'attribute' => 'rw',
+                            'attribute' => 'rw',
                             'label' => 'RW',
                         ],
                             [
@@ -116,9 +116,9 @@ use kartik\export\ExportMenu;
                             'label' => 'icd9',
                         ],
                             [
-                           'attribute' => 'cname',
+                            'attribute' => 'cname',
                             'label' => 'หัตถการ',
-                                  'pageSummary' => 'รวมทั้งหมด',
+                            'pageSummary' => 'รวมทั้งหมด',
                         ],
                             [
                             'attribute' => 'pdx',
@@ -132,7 +132,6 @@ use kartik\export\ExportMenu;
                             'pageSummary' => true,
                             'pageSummaryOptions' => ['id' => 'total_sum'],
                         ],
-                           
                     ];
 
                     echo '<div class="col-md-12" align="right" >';
