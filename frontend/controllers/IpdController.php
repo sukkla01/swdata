@@ -390,7 +390,7 @@ class IpdController extends \common\components\AppController {
                 LEFT JOIN drugitems d ON d.icode = o.icode
                 LEFT JOIN patient p ON p.hn = o.hn
                 LEFT JOIN hospcode h ON h.hospcode = t.rfrilct
-                where   i.rxdate BETWEEN '2016-09-01' AND '2016-09-01' 
+                where   i.rxdate  BETWEEN '$date1' AND '$date2'
                         AND i.order_type = 'Hme'
                         AND o.icode < 3000000
                         AND dosageform ='INJECTIONS' ";
