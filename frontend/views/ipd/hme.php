@@ -91,7 +91,7 @@ use kartik\export\ExportMenu;
                             [
                             'attribute' => 'tname',
                             'label' => 'ชื่อ-สกุล',
-                            'pageSummary' => 'รวมทั้งหมด',
+                            
                         ],
                             [
                             'attribute' => 'icode',
@@ -100,6 +100,7 @@ use kartik\export\ExportMenu;
                             [
                             'attribute' => 'dname',
                             'label' => 'รายการยา',
+                             'pageSummary' => 'รวมทั้งหมด',
                         ],
                         [
                             'attribute' => 'qty',
@@ -110,7 +111,7 @@ use kartik\export\ExportMenu;
                             'pageSummaryOptions' => ['id' => 'total_sum'],
                         ],
                             [
-                            'attribute' => 'unitcodt',
+                            'attribute' => 'unitcost',
                             'label' => 'ราคาทุน/vial',
                             'format' => ['decimal', 2],
                             'hAlign' => 'right',

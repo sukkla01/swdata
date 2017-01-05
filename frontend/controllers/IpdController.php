@@ -383,7 +383,7 @@ class IpdController extends \common\components\AppController {
         $sql = "SELECT i.rxdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
 			 o.icode,d.name AS dname,
 			 o.qty,d.unitcost,(o.qty*d.unitcost) AS tcost,ipd_price,(o.qty*ipd_price) AS tprice,
-			 CONCAT(h.hosptype,h.name) AS thos
+			 IF(h.hosptype IS NULL,'',CONCAT(h.hosptype,h.name)) AS thos
                 FROM ipt_order_no i
                 LEFT JOIN ipt t ON t.an=i.an
                 LEFT JOIN opitemrece o ON o.an = i.an AND o.order_no = i.order_no
