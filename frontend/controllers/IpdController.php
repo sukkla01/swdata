@@ -359,6 +359,56 @@ class IpdController extends \common\components\AppController {
         return $this->render('drughome', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
     
+    public function actionHme() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT i.rxdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+			 o.icode,d.name AS dname,
+			 o.qty,d.unitcost,(o.qty*d.unitcost) AS tcost,ipd_price,(o.qty*ipd_price) AS tprice,
+			 CONCAT(h.hosptype,h.name) AS thos
+                FROM ipt_order_no i
+                LEFT JOIN ipt t ON t.an=i.an
+                LEFT JOIN opitemrece o ON o.an = i.an AND o.order_no = i.order_no
+                LEFT JOIN drugitems d ON d.icode = o.icode
+                LEFT JOIN patient p ON p.hn = o.hn
+                LEFT JOIN hospcode h ON h.hospcode = t.rfrilct
+                where   i.rxdate BETWEEN '2016-09-01' AND '2016-09-01' 
+                        AND i.order_type = 'Hme'
+                        AND o.icode < 3000000
+                        AND dosageform ='INJECTIONS' ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('hme', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
+    
     
     
 
