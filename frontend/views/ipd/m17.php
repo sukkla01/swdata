@@ -88,7 +88,17 @@ use kartik\export\ExportMenu;
                         ['class' => 'kartik\grid\SerialColumn'],
                         [
                             'attribute' => 'an',
-                            'label' => 'AN'
+                            'label' => 'AN',
+                            'value' => function($model, $key) {
+                                $an = $model['an'];
+                                return Html::a($an, ['/ipd/m17income', 'an' => $an],
+                                        ['target'=>'_blank'], 
+                                        ['title' => 'สั่งอาหาร']
+                                        );
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'hAlign' => 'middle',
+                            'format' => 'raw',
                         ],
                             [
                             'attribute' => 'hn',
@@ -153,7 +163,7 @@ use kartik\export\ExportMenu;
                         'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
                         //'floatHeader' => true,
                         //'floatHeaderOptions' => ['scrollingTop' => '100'],
-                        'pjax' => true,
+                        //'pjax' => true,
                         'pjaxSettings' => [
                             'neverTimeout' => true,
                         //'beforeGrid' => 'My fancy content before.',

@@ -31,17 +31,18 @@ class IpdController extends \common\components\AppController {
             }
         }
 
-        $sql = "SELECT i.hn,i.an,i.dchdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,d.icd10,c.name AS cname,o.icd9,m.name AS 9name,rw,SUM(sum_price) AS tsum ,a.admday
+        $sql = "SELECT i.hn,i.an,i.dchdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,d.icd10,c.name AS cname,
+                o.icd9,m.name AS 9name,rw,SUM(sum_price) AS tsum ,a.admday
                 FROM  ipt i
                 LEFT JOIN iptdiag d ON d.an=i.an
-                LEFT JOIN iptoprt o ON o.an=i.an
+		LEFT JOIN (SELECT * FROM iptoprt group by an ) o ON o.an=i.an
                 LEFT JOIN patient p ON p.hn=i.hn
                 LEFT JOIN icd101 c ON c.code=d.icd10
                 LEFT JOIN icd9cm1 m ON m.code=o.icd9
                 INNER JOIN opitemrece t ON t.an=i.an
                 LEFT JOIN iptadm a ON a.an=i.an
                 WHERE dchdate BETWEEN '$date1' AND '$date2'
-                                        AND icd10 BETWEEN 'm17' AND 'm179'
+                      AND icd10 BETWEEN 'm17' AND 'm179'
                 GROUP BY i.an ";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
@@ -57,6 +58,54 @@ class IpdController extends \common\components\AppController {
         ]);
         return $this->render('m17', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
+
+    public function actionM17income() {
+        $this->permitRole([1, 3]);
+        $an = $_GET['an'];
+        $sql = "SELECT o.income,i.name AS iname,SUM(sum_price)*1 AS tsum,o.an,o.rxdate
+                FROM opitemrece o
+                LEFT JOIN income i ON i.income = o.income
+                WHERE an='$an'
+                GROUP BY income
+                ORDER BY income ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('m17income', ['dataProvider' => $dataProvider, 'an' => $an]);
+    }
+     public function actionM17detail() {
+        $this->permitRole([1, 3]);
+        $an = $_GET['an'];
+        $income = $_GET['income'];
+        $sql = "SELECT o.icode,s.name AS sname,o.qty,s.cost,sum_price,o.rxdate
+                FROM opitemrece o
+                LEFT JOIN income i ON i.income = o.income
+                LEFT JOIN s_drugitems s ON s.icode=o.icode
+                WHERE an='$an' AND o.income ='$income'";
+                        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('m17detail', ['dataProvider' => $dataProvider, 'an' => $an,'income'=>$income]);
+    }
+    
 
     public function actionH25() {
         $this->permitRole([1, 3]);
@@ -316,7 +365,8 @@ class IpdController extends \common\components\AppController {
         ]);
         return $this->render('uc', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
-     public function actionDrughome() {
+
+    public function actionDrughome() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
@@ -344,7 +394,7 @@ class IpdController extends \common\components\AppController {
                     AND o.pttype IN('20','22') AND o.income ='04'
                 GROUP BY o.icode
                 ORDER BY tqty DESC";
-                        try {
+        try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
             throw new \yii\web\ConflictHttpException('sql error');
@@ -358,7 +408,7 @@ class IpdController extends \common\components\AppController {
         ]);
         return $this->render('drughome', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
-    
+
     public function actionHme() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -408,8 +458,5 @@ class IpdController extends \common\components\AppController {
         ]);
         return $this->render('hme', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
-    
-    
-    
 
 }
