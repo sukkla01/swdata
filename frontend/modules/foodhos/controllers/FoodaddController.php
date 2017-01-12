@@ -68,22 +68,22 @@ class FoodaddController extends Controller {
         $hn = '';
         $ptname = '';
         $aa = 0;
-
-        
+        $anl = '';
+        /// -------------- delete -------------------
         if (isset($_GET['foodid'])) {
             $foodid = $_GET['foodid'];
             echo $foodid;
             $data1 = $connection->createCommand("DELETE FROM food_detail_01 WHERE foodid = '$foodid' ")->execute();
         }
-        
-        
+
+        //----------------------- ข้อมูลทั่วไป -------------
         $sql = "select i.an,i.hn,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
                 t.name AS ptname,i.ward
                 from  ipt i
                 LEFT JOIN patient p ON p.hn=i.hn
                 LEFT JOIN pttype t ON t.pttype = i.pttype
                 WHERE an='$an' ";
-        
+
         $data = $connection->createCommand($sql)
                 ->queryAll();
         for ($i = 0; $i < sizeof($data); $i++) {
@@ -93,10 +93,11 @@ class FoodaddController extends Controller {
             $ward = $data[$i]['ward'];
         }
 
-        
 
+        // ------------ food history -----------
         $sqlhis = "SELECT foodid,fooddate,foodtime,f.an,f.hn,
-                    w.name AS wname,f.icode,n.name AS nname,staff,bedno
+                    w.name AS wname,f.icode,n.name AS nname,staff,bedno,
+                    Congenital_disease,comment,bd,cal
                     FROM food_detail_01 f
                     LEFT JOIN nutrition_items n ON n.icode = f.icode
                     LEFT JOIN ward w ON w.ward = f.ward
@@ -116,12 +117,35 @@ class FoodaddController extends Controller {
             ],
         ]);
 
-        
+
+        //--------- food last ---------
+        if (Yii::$app->request->isPost) {
+            $r = $_POST['FoodDetail01'];
+            $hn_l = $r['hn'];
+            $an_l = $r['an'];
+            $icode_last = $r['icode'];
+            $fooddate_last = $r['fooddate'];
+
+            $sqllast = "SELECT * FROM swdata.food_last WHERE an ='$an'";
+            $datalast = $connection->createCommand($sqllast)
+                    ->queryAll();
+            for ($it = 0; $it < sizeof($datalast); $it++) {
+                $anl = $datalast[$it]['an'];
+            }
+            if ($anl == '') {
+                $datals = $connection->createCommand("INSERT INTO swdata.food_last VALUES (NULL,'$hn_l','$an_l','$icode_last','$fooddate_last')")->execute();
+            } else {
+                $datals = $connection->createCommand("UPDATE swdata.food_last SET icode='$icode_last',fooddate_last='$fooddate_last' WHERE an='$an_l' ")->execute();
+            }
+        }
 
 
-
+        // -------------------- save --------------------------
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->foodid]);
+            //return $this->redirect(['/foodhos', 'ward' => $ward]);
+            return $this->redirect(['success', 'ward' => $ward,
+                        'an' => $an, 'bed' => $bed, 'tname' => $tname,
+                        'hn' => $hn, 'ptname' => $ptname,]);
         } else {
             return $this->render('create', [
                         'dataProvider' => $dataProvider,
@@ -179,6 +203,19 @@ class FoodaddController extends Controller {
 
     public function actionPrint($id) {
         return $this->render(['print', []]);
+    }
+
+    public function actionSuccess() {
+        $ward = $_GET['ward'];
+        $hn = $_GET['hn'];
+        $an = $_GET['an'];
+        $bed = $_GET['bed'];
+        $tname = $_GET['tname'];
+        return $this->render('success', [
+                    'ward' => $ward,
+                        'an' => $an, 'bed' => $bed, 'tname' => $tname,
+                        'hn' => $hn,
+        ]);
     }
 
 }

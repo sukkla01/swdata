@@ -22,7 +22,9 @@ class DefaultController extends Controller
         if (Yii::$app->request->isPost) {
             $ward = $_POST['ward'];
         }
-        
+        if (isset($_GET['ward'])) {
+            $ward = $_GET['ward'];
+        }
         return $this->render('index',['ward'=>$ward]);
         
     }

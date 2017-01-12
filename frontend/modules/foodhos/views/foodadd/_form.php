@@ -61,7 +61,7 @@ use kartik\grid\GridView;
                 </div>
             </div>
             <div class="box-body">
-<?php $form = ActiveForm::begin(); ?>
+                <?php $form = ActiveForm::begin(); ?>
 
 
                 <?= $form->field($model, 'an')->hiddenInput(['maxlength' => true, 'value' => $an])->label(FALSE); ?>
@@ -69,7 +69,7 @@ use kartik\grid\GridView;
                 <?= $form->field($model, 'meal')->hiddenInput(['maxlength' => true, 'value' => 1])->label(FALSE); ?>
                 <?= $form->field($model, 'ward')->hiddenInput(['maxlength' => true, 'value' => $ward])->label(FALSE); ?>
                 <?= $form->field($model, 'fooddate_rec')->hiddenInput(['maxlength' => true, 'value' => date('dmY')])->label(FALSE); ?>
-<?= $form->field($model, 'staff')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->identity->username])->label(FALSE); ?>
+                <?= $form->field($model, 'staff')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->identity->username])->label(FALSE); ?>
 
                 <div class="raw">
                     <div class="col-lg-4">
@@ -133,7 +133,7 @@ use kartik\grid\GridView;
                         ?> 
                     </div>
                     <div class="col-lg-8">
-<?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
+                        <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
                     </div>
                 </div>
 
@@ -175,7 +175,7 @@ use kartik\grid\GridView;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= Html::submitButton($model->isNewRecord ? 'เพิ่ม' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                     </div>
                 </div>
-<?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
 
             </div>
@@ -218,6 +218,22 @@ use kartik\grid\GridView;
                         'label' => 'ผู้บันทึก'
                     ],
                         [
+                        'attribute' => 'Congenital_disease',
+                        'label' => 'โรคประจำตัว'
+                    ],
+                        [
+                        'attribute' => 'comment',
+                        'label' => 'หมายเหตุ'
+                    ],
+                        [
+                        'attribute' => 'bd',
+                        'label' => 'สูตร'
+                    ],
+                        [
+                        'attribute' => 'cal',
+                        'label' => 'ความเข้มข้น'
+                    ],
+                        [
                         'attribute' => 'foodid',
                         'label' => 'ลบ',
                         'value' => function($model, $key) {
@@ -226,11 +242,10 @@ use kartik\grid\GridView;
                             $bed = $model['bedno'];
                             $fooddate = $model['fooddate'];
                             $foodtime = $model['foodtime'];
-                            return Html::a("<span class='badge' style='background-color: #ff0066' ><i class='fa fa-window-close'></i></span>", 
-                                    ['', 'foodid' => $foodid,
+                            return Html::a("<span class='badge' style='background-color: #ff0066' ><i class='fa fa-window-close'></i></span>", ['', 'foodid' => $foodid,
                                         'an' => $an, 'bed' => $bed], [
-                                    'data-confirm' => Yii::t('yii', 'คุณต้องการลบ '.$an.' วันที่ '.$fooddate.' เวลา '.$foodtime.' นี้หรือไม่' ),
-                                    'data-pjax' => '0',   
+                                        'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $an . ' วันที่ ' . $fooddate . ' เวลา ' . $foodtime . ' นี้หรือไม่'),
+                                        'data-pjax' => '0',
                             ]);
                         },
                         'filterType' => GridView::FILTER_COLOR,
