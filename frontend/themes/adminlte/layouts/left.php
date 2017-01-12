@@ -54,6 +54,12 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li>
+                <a href="<?= Url::to('index.php?r=foodhos') ?>">
+                    <i class="fa fa-apple"></i> <span>ระบบสั่งอาหารผู้ป่วยใน</span>
+
+                </a>
+            </li>
+            <li>
                 <a href="http://203.157.82.73/rq_supplies" target="_blank">
                     <i class="fa fa-cart-arrow-down"></i> <span>เสนอความต้องการ</span>
 
