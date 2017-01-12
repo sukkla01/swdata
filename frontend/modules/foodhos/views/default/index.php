@@ -67,7 +67,7 @@ $data = $connection->createCommand($sql)
                 <div class="box-tools pull-right">
 
                     &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger" id="btn_sql"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
-                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql"><h5><i class="fa fa-print"></i>&nbsp;&nbsp;พิมพ์</h5></a>
+                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql" href="<?= Url::to(['/foodhos/default/pdf','ward'=>$ward]) ?>" target="_blank" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
                 </div>
