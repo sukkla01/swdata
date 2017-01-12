@@ -46,6 +46,7 @@ class FoodDetail01 extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['fooddate', 'foodtime', 'icode'], 'required'],
             [['fooddate', 'foodtime'], 'safe'],
             [['an', 'hn', 'meal', 'staff', 'cal'], 'string', 'max' => 50],
             [['ward'], 'string', 'max' => 3],

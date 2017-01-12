@@ -27,9 +27,5 @@ class DefaultController extends Controller
         
     }
     
-     public function actionFoodadd()
-    {
-        $model = new FoodDetail01();
-        
-    }
+     
 }
