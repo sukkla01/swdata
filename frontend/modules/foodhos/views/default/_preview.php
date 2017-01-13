@@ -78,10 +78,10 @@ $daten= Yii::$app->formatter->asDate($time, 'long');
         <tr> 
             <td width="3%" align="center"><?= $i + 1 ?></td> 
             <td width="5%" align="center"><?=$bedno?></td> 
-            <td width="15%" align="left"><?=$tname?></td> 
+            <td width="20%" align="left"><?=$tname?></td> 
             <td width="15%" align="left"><?=$tage?></td> 
             <td width="10%" align="left"><?=$cd?></td> 
-            <td width="30%" align="left"><?=$nname?></td> 
+            <td width="25%" align="left"><?=$nname?></td> 
             <td width="22%" align="left"><?=$comment?></td> 
         </tr> 
 

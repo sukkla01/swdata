@@ -9,14 +9,12 @@ use app\models\FoodDetail01;
 /**
  * Default controller for the `foodh` module
  */
-class DefaultController extends Controller
+class DefaultController extends \common\components\AppController 
 {
-    /**
-     * Renders the index view for the module
-     * @return string
-     */
+    
     public function actionIndex()
     {
+        $this->permitRole([1, 3]);
         $i = '';
         $ward='';
         if (Yii::$app->request->isPost) {

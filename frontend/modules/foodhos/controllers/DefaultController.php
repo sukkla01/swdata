@@ -9,13 +9,35 @@ use kartik\mpdf\Pdf;
 /**
  * Default controller for the `foodhos` module
  */
-class DefaultController extends Controller {
+
+class DefaultController extends \common\components\AppController  {
 
     /**
      * Renders the index view for the module
+     * 
+     * 
      * @return string
      */
+    
+    protected function call($store_name, $arg = NULL) {
+        $sql = "";
+        if ($arg != NULL) {
+            $sql = "call " . $store_name . "(" . $arg . ");";
+        } else {
+            $sql = "call " . $store_name . "();";
+        }
+        $this->exec_sql($sql);
+    }
+    
+    protected function exec_sql($sql) {
+        $affect_row = \Yii::$app->db2->createCommand($sql)->execute();
+        return $affect_row;
+    }
+    
+    
     public function actionIndex() {
+        $this->permitRole([1, 3]);
+        
         $i = '';
         $ward = '';
         if (Yii::$app->request->isPost) {
@@ -24,10 +46,11 @@ class DefaultController extends Controller {
         if (isset($_GET['ward'])) {
             $ward = $_GET['ward'];
         }
-        return $this->render('index', ['ward' => $ward]);
+        return $this->render('index', ['ward' => $ward,'process'=>'N']);
     }
 
     public function actionPdf() {
+        $this->permitRole([1, 3]);
         //$case_molecular = MolecularTest::findOne(['id_case' => $id_case]);
        // $patient_case = PatientCase::findOne(['id_case' => $id_case]);
         $ward = $_GET['ward'];
@@ -68,5 +91,18 @@ class DefaultController extends Controller {
         
         return $pdf->render();
     }
+    
+    public function actionOrderold() {
+        
+        $ward=$_GET['ward'];
+        $user = Yii::$app->user->identity->username;
+        $this->call("Jub_Order_food",$ward,$user);
+        
+        
+        return $this->render('index', ['ward' => $ward,'process'=>'Y']);
+        $ward='';
+    }
+    
+    
 
 }

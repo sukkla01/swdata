@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * FoodaddController implements the CRUD actions for FoodDetail01 model.
  */
-class FoodaddController extends Controller
+class FoodaddController extends \common\components\AppController 
 {
     /**
      * @inheritdoc
@@ -63,6 +63,7 @@ class FoodaddController extends Controller
      */
     public function actionCreate()
     {
+        $this->permitRole([1, 3]);
         $model = new FoodDetail01();
         
         $an=$_GET['an'];

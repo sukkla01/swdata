@@ -4,6 +4,7 @@ use yii\bootstrap\Html;
 use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\bootstrap\ActiveForm;
 ?>
 <?php
 $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
@@ -26,9 +27,16 @@ $data = $connection->createCommand($sql)
             <div class="box-body">
 
 
-
-                <?= Html::beginForm(); ?>
+                
+                <?php
+                ActiveForm::begin([
+                    'method' => 'post',
+                    'action' => Url::to(['/foodhos',['ward'=>$ward]]),
+                ])
+                ?>
+                <div class="col-md-1">หอผู้ป่วย  :</div>
                 <div class="col-md-4">
+                    
                     <?php
                     echo Select2::widget([
                         'name' => 'ward',
@@ -44,7 +52,7 @@ $data = $connection->createCommand($sql)
                 </div>
                 <button class='btn btn-danger'>ประมวลผล</button>
 
-                <?= Html::endForm(); ?>
+                <?php ActiveForm::end();  ?>
 
 
 
@@ -55,7 +63,15 @@ $data = $connection->createCommand($sql)
         </div>
     </div>
 </div>
+<?php if ($process == 'Y') { ?>
+    <div class="col-md-6">
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-check"></i> สั่งอาหารเรียบร้อยแล้ว!</h4>
 
+        </div>    
+    </div>
+<?php } ?>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
@@ -66,8 +82,8 @@ $data = $connection->createCommand($sql)
 
                 <div class="box-tools pull-right">
 
-                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger" id="btn_sql"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
-                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql" href="<?= Url::to(['/foodhos/default/pdf','ward'=>$ward]) ?>" target="_blank" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
+                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger"  href="<?= Url::to(['/foodhos/default/orderold', 'ward' => $ward]) ?>"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
+                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql" href="<?= Url::to(['/foodhos/default/pdf', 'ward' => $ward]) ?>" target="_blank" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
                 </div>
@@ -75,7 +91,7 @@ $data = $connection->createCommand($sql)
             <div class="box-body">
 
                 <table class="table table-hover">
-                    <?php $color = "bgcolor='e6f5ff'"; ?>
+<?php $color = "bgcolor='e6f5ff'"; ?>
                     <tr bgcolor="ccccb3">
                         <th>#</th>
                         <th>HN</th>
@@ -99,6 +115,9 @@ $data = $connection->createCommand($sql)
                         <?php
                         $an = $data[$i]['an'];
                         $bed = $data[$i]['bedno'];
+                        $fooddate = '';
+                        $foodtime = '';
+                        $fname = '';
                         $sqlf = "SELECT fooddate,foodtime,n.name,bd,cal,Congenital_disease,comment,
                                         IF(fooddate=CURDATE(),'Y','N') AS tcheck
                                         FROM food_detail_01  f
@@ -124,22 +143,22 @@ $data = $connection->createCommand($sql)
                             <td><?= $data[$i]['tname'] ?></td>
                             <td><?= $data[$i]['regdate'] ?></td>
                             <td><?= $data[$i]['regtime'] ?></td>
-                            <?php if($tcheck=='Y') { ?>
-                            <td><font color="green"><?=$fname?></font></td>
-                            <td><font color="green"><?=$fooddate.' '.$foodtime?></font></td>
-                            <td><font color="green"><?=$cd?></font></td>
-                            <?php }else{ ?>
-                            <td><font color="red"><?=$fname?></font></td>
-                            <td><font color="red"><?=$fooddate.' '.$foodtime?></font></td>
-                            <td><font color="red"><?=$cd?></font></td>
-                            <?php } ?>
+    <?php if ($tcheck == 'Y') { ?>
+                                <td><font color="green"><?= $fname ?></font></td>
+                                <td><font color="green"><?= $fooddate . ' ' . $foodtime ?></font></td>
+                                <td><font color="green"><?= $cd ?></font></td>
+    <?php } else { ?>
+                                <td><font color="red"><?= $fname ?></font></td>
+                                <td><font color="red"><?= $fooddate . ' ' . $foodtime ?></font></td>
+                                <td><font color="red"><?= $cd ?></font></td>
+    <?php } ?>
                             <td><?= $data[$i]['height'] ?></td>
                             <td><?= $data[$i]['bw'] ?></td>
                             <td><?= $data[$i]['bmi'] ?></td>
-                            <td><a href="<?= Url::to(['/foodhos/foodadd/create','an'=>$an,'bed'=>$bed]) ?>" target="_blank"><i class='fa fa-cart-plus'></i></a></td>
+                            <td><a href="<?= Url::to(['/foodhos/foodadd/create', 'an' => $an, 'bed' => $bed]) ?>" target="_blank"><i class='fa fa-cart-plus'></i></a></td>
 
                         </tr>   
-                    <?php } ?>
+<?php } ?>
 
 
                 </table>
