@@ -5,6 +5,7 @@ use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
+use kartik\alert\Alert;
 ?>
 <?php
 $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
@@ -21,38 +22,49 @@ $connection = Yii::$app->db2;
 $data = $connection->createCommand($sql)
         ->queryAll();
 ?>
+
+<?php
+if ($order_complete == 'Y') {
+    echo Alert::widget([
+        'type' => Alert::TYPE_DANGER,
+        'title' => 'ไม่สามารถสั่งซ้ำได้  ',
+        'titleOptions' => ['icon' => 'info-sign'],
+        'body' => 'เนื่องจากวันนี้มีการสั่งอาหารเดิมแล้ว'
+    ]);
+}
+?>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
             <div class="box-body">
 
 
-                
-                <?php
-                ActiveForm::begin([
-                    'method' => 'post',
-                    'action' => Url::to(['/foodhos',['ward'=>$ward]]),
-                ])
-                ?>
+
+<?php
+ActiveForm::begin([
+    'method' => 'post',
+    'action' => Url::to(['/foodhos', ['ward' => $ward]]),
+])
+?>
                 <div class="col-md-1">หอผู้ป่วย  :</div>
                 <div class="col-md-4">
-                    
-                    <?php
-                    echo Select2::widget([
-                        'name' => 'ward',
-                        'value' => $ward,
-                        'data' => ArrayHelper::map(app\models\Ward::find()->all(), 'ward', 'name'),
-                        'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
-                        'options' => ['placeholder' => ' กรุณาเลือกหอผู้ป่วย...'],
-                        'pluginOptions' => [
-                            'allowClear' => true
-                        ],
-                    ]); // Classic Theme
-                    ?>
+
+<?php
+echo Select2::widget([
+    'name' => 'ward',
+    'value' => $ward,
+    'data' => ArrayHelper::map(app\models\Ward::find()->all(), 'ward', 'name'),
+    'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
+    'options' => ['placeholder' => ' กรุณาเลือกหอผู้ป่วย...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); // Classic Theme
+?>
                 </div>
                 <button class='btn btn-danger'>ประมวลผล</button>
 
-                <?php ActiveForm::end();  ?>
+<?php ActiveForm::end(); ?>
 
 
 
@@ -111,7 +123,7 @@ $data = $connection->createCommand($sql)
 
                     </tr>
 
-                    <?php for ($i = 0; $i < sizeof($data); $i++) { ?>
+<?php for ($i = 0; $i < sizeof($data); $i++) { ?>
                         <?php
                         $an = $data[$i]['an'];
                         $bed = $data[$i]['bedno'];

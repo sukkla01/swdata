@@ -73,7 +73,6 @@ class FoodaddController extends \common\components\AppController  {
         /// -------------- delete -------------------
         if (isset($_GET['foodid'])) {
             $foodid = $_GET['foodid'];
-            echo $foodid;
             $data1 = $connection->createCommand("DELETE FROM food_detail_01 WHERE foodid = '$foodid' ")->execute();
         }
 

@@ -6,11 +6,13 @@ use yii\web\Controller;
 use app\models\FoodDetail01;
 use Yii;
 use kartik\mpdf\Pdf;
+use app\models\FoodProcess;
+use app\models\FoodProcessOrder;
+
 /**
  * Default controller for the `foodhos` module
  */
-
-class DefaultController extends \common\components\AppController  {
+class DefaultController extends \common\components\AppController {
 
     /**
      * Renders the index view for the module
@@ -18,7 +20,6 @@ class DefaultController extends \common\components\AppController  {
      * 
      * @return string
      */
-    
     protected function call($store_name, $arg = NULL) {
         $sql = "";
         if ($arg != NULL) {
@@ -28,16 +29,15 @@ class DefaultController extends \common\components\AppController  {
         }
         $this->exec_sql($sql);
     }
-    
+
     protected function exec_sql($sql) {
         $affect_row = \Yii::$app->db2->createCommand($sql)->execute();
         return $affect_row;
     }
-    
-    
+
     public function actionIndex() {
         $this->permitRole([1, 3]);
-        
+
         $i = '';
         $ward = '';
         if (Yii::$app->request->isPost) {
@@ -46,28 +46,28 @@ class DefaultController extends \common\components\AppController  {
         if (isset($_GET['ward'])) {
             $ward = $_GET['ward'];
         }
-        return $this->render('index', ['ward' => $ward,'process'=>'N']);
+        return $this->render('index', ['ward' => $ward, 'process' => 'N','order_complete'=>'N']);
     }
 
     public function actionPdf() {
         $this->permitRole([1, 3]);
         //$case_molecular = MolecularTest::findOne(['id_case' => $id_case]);
-       // $patient_case = PatientCase::findOne(['id_case' => $id_case]);
+        // $patient_case = PatientCase::findOne(['id_case' => $id_case]);
         $ward = $_GET['ward'];
         $content = $this->renderPartial('_preview', [
             'ward' => $ward
-            //'patient_case' => $patient_case,
+                //'patient_case' => $patient_case,
         ]);
 
         $pdf = new Pdf([
             'mode' => Pdf::MODE_UTF8,
             // A4 paper format 
             'format' => Pdf::FORMAT_A4,
-            'marginLeft' => 10, 
-            'marginRight' =>10, 
+            'marginLeft' => 10,
+            'marginRight' => 10,
             'marginTop' => 1,
-            'marginBottom' => false, 
-            'marginHeader' => false, 
+            'marginBottom' => false,
+            'marginHeader' => false,
             'marginFooter' => false,
             // portrait orientation 
             'orientation' => Pdf::ORIENT_LANDSCAPE,
@@ -88,21 +88,42 @@ class DefaultController extends \common\components\AppController  {
             //'SetFooter'=>['{PAGENO}'], 
             ]
         ]);
-        
+
         return $pdf->render();
     }
-    
+
     public function actionOrderold() {
+
+        $connection = Yii::$app->db;
+        $ward = $_GET['ward'];
+        $c_current='';
         
-        $ward=$_GET['ward'];
-        $user = Yii::$app->user->identity->username;
-        $this->call("Jub_Order_food",$ward,$user);
+        
+        $sql1 = " SELECT d_last FROM food_process_order WHERE ward='$ward' ";
+        $command = Yii::$app->db->createCommand($sql1);
+        $c_current = $command->queryScalar();
+        
+        $sql2 = " SELECT is_running FROM food_process WHERE ward='$ward' ";
+        $command = Yii::$app->db->createCommand($sql2);
+        $running = $command->queryScalar();
+
         
         
-        return $this->render('index', ['ward' => $ward,'process'=>'Y']);
-        $ward='';
+        if ($c_current == date('Y-m-d')) {
+            return $this->render('index', ['ward' => $ward, 'process' => 'N','order_complete'=>'Y']);
+        } else {
+
+
+            if ($running == 'false') {
+
+                $this->call("Jub_Order_food", $ward);
+                //sleep(10);
+                //echo $ward;
+                return $this->render('index', ['ward' => $ward, 'process' => 'Y','order_complete'=>'N']);
+            }else{
+                return $this->render('index', ['ward' => $ward, 'process' => 'N','order_complete'=>'N']);
+            }
+        }
     }
-    
-    
 
 }
