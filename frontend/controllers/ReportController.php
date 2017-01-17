@@ -178,6 +178,58 @@ class ReportController extends \common\components\AppController {
         return $this->render('drugning', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
     
+    
+    public function actionDrugbrimo() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT tt.*,
+                if(inpttype<>0,COUNT(DISTINCT inpttype ),0) AS p1,
+                if(outpttype<>0,COUNT(DISTINCT outpttype ),0) AS p2,
+                SUM(qty) AS tqty
+                FROM (
+                SELECT  o.pttype,p.name,
+                IF(v.hospmain='10725',o.hn,0) AS Inpttype,
+                IF(v.hospmain<>'10725',o.hn,0) AS Outpttype,
+                o.qty
+                FROM opitemrece  o
+                LEFT JOIN ovst v ON v.vn = o.vn
+                LEFT JOIN pttype p ON p.pttype = o.pttype
+                WHERE rxdate BETWEEN '$date1' and '$date2'
+                                        AND o.icode = '1510007' ) AS tt
+                GROUP BY pttype";
+                        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 50
+            ],
+        ]);
+        return $this->render('drugbrimo', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
+    
     public function actionAntibac() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');

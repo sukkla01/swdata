@@ -1,0 +1,169 @@
+<?php
+/* @var $this yii\web\View */
+
+use yii\bootstrap\Html;
+use kartik\widgets\DatePicker;
+//use kartik\grid\GridView;
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
+?>
+
+<div class="body-content">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-body">
+
+
+
+                    <?= Html::beginForm(); ?>
+
+                    ประมวลข้อมูลระหว่าง :
+                    <?php
+                    echo yii\jui\DatePicker::widget([
+                        'name' => 'date1',
+                        'value' => $date1,
+                        'language' => 'th',
+                        //'dateFormat' => 'yyyy-MM-dd',
+                        'clientOptions' => [
+                            'changeMonth' => true,
+                            'changeYear' => true,
+                            'dateFormat' => 'yy-mm-dd'
+                        ],
+                    ]);
+                    ?>
+
+                    ถึง
+
+
+                    <?php
+                    echo yii\jui\DatePicker::widget([
+                        'name' => 'date2',
+                        'value' => $date2,
+                        'language' => 'th',
+                        //'dateFormat' => 'yyyy-MM-dd',
+                        'clientOptions' => [
+                            'changeMonth' => true,
+                            'changeYear' => true,
+                            'dateFormat' => 'yy-mm-dd'
+                        ]
+                    ]);
+                    ?>
+
+                    <button class='btn btn-danger'>ประมวลผล</button>
+
+                    <?= Html::endForm(); ?>
+
+
+
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title"> <i class='glyphicon glyphicon-search'></i> 	รายงานการใช้ยาปฏิชีวนะ</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+
+                    <?php
+                    $gridColumns = [
+                            ['class' => 'kartik\grid\SerialColumn'],
+                            [
+                            'attribute' => 'pttype',
+                            'label' => 'รหัส',
+                        //'pageSummary' => 'รวมทั้งหมด',
+                        //'contentOptions' => ['class' => 'text-center'],
+                        ],
+                            [
+                            'attribute' => 'name',
+                            'label' => 'สิทธิ์การรักษา',
+                            'pageSummary' => 'รวมทั้งหมด',
+                            'headerOptions' => ['class' => 'text-center']
+                        ],
+                            [
+                            'attribute' => 'p2',
+                            'label' => 'นอกเขต/คน',
+                            'format' => ['decimal', 0],
+                            'hAlign' => 'right',
+                            'pageSummary' => true,
+                            'pageSummaryOptions' => ['id' => 'total_sum'],
+                        ],
+                            [
+                            'attribute' => 'p1',
+                            'label' => 'ในเขต/คน',
+                            'format' => ['decimal', 0],
+                            'hAlign' => 'right',
+                            'pageSummary' => true,
+                            'pageSummaryOptions' => ['id' => 'total_sum'],
+                        ],
+                            [
+                            'attribute' => 'tqty',
+                            'label' => 'จำนวน/ขวด',
+                            'format' => ['decimal', 0],
+                            'hAlign' => 'right',
+                            'pageSummary' => true,
+                            'pageSummaryOptions' => ['id' => 'total_sum'],
+                        ],
+                    ];
+
+                    echo '<div class="col-md-12" align="right" >';
+                    echo ExportMenu::widget([
+                        'dataProvider' => $dataProvider,
+                        'columns' => $gridColumns
+                    ]);
+                    echo '</div>';
+                    echo GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        //'filterModel' => $searchModel,
+                        'autoXlFormat' => true,
+                        'export' => [
+                            'fontAwesome' => true,
+                            'showConfirmAlert' => false,
+                            'target' => GridView::TARGET_BLANK
+                        ],
+                        'responsive' => true,
+                        'hover' => true,
+                        'columns' => $gridColumns,
+                        'resizableColumns' => true,
+                        //'floatHeader' => true,
+                        //'floatHeaderOptions' => ['scrollingTop' => '100'],
+                        'pjax' => true,
+                        'pjaxSettings' => [
+                            'neverTimeout' => true,
+                        //'beforeGrid' => 'My fancy content before.',
+                        //'afterGrid' => 'My fancy content after.',
+                        ],
+                        'showPageSummary' => true,
+                            // 'pageSummary' => \app\components\PTotal::pageTotal($dataProvider->models,'price'),
+                    ]);
+                    ?>
+
+
+
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
