@@ -25,7 +25,8 @@ $sql = "SELECT a.bedno,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
             LEFT JOIN food_detail_01 f ON f.an = i.an AND f.fooddate = CURDATE()
             LEFT JOIN nutrition_items n ON n.icode = f.icode
             LEFT JOIN ward w ON w.ward = i.ward
-            WHERE i.dchdate IS NULL AND w.spclty ='$ward'";
+            WHERE i.dchdate IS NULL AND w.spclty ='$ward'
+            ORDER BY  a.bedno ";
 $connection = Yii::$app->db2;
 $data = $connection->createCommand($sql)
         ->queryAll();

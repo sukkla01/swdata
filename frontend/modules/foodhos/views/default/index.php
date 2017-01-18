@@ -6,8 +6,27 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use kartik\alert\Alert;
+use yii\bootstrap\Modal;
 ?>
 <?php
+$tan = '';
+$sql = "SELECT f.an,
+                COUNT(foodid)  as tcount
+                FROM food_detail_01  f
+                WHERE f.fooddate=CURDATE() 
+                AND f.ward='$ward'
+                GROUP BY an,fooddate
+                HAVING tcount >1  ";
+$connection = Yii::$app->db2;
+$data = $connection->createCommand($sql)
+        ->queryAll();
+for ($i = 0; $i < sizeof($data); $i++) {
+    $tan = $data[$i]['an'];
+}
+
+
+
+
 $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,
                 i.regdate,i.regtime
@@ -17,7 +36,8 @@ $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 LEFT JOIN iptadm a ON a.an = i.an
                 LEFT JOIN an_stat s ON s.an = i.an
                 LEFT JOIN opdscreen o ON o.vn = i.vn
-                WHERE i.dchdate IS NULL AND i.ward ='$ward'";
+                WHERE i.dchdate IS NULL AND i.ward ='$ward' 
+                ORDER BY  bedno    ";
 $connection = Yii::$app->db2;
 $data = $connection->createCommand($sql)
         ->queryAll();
@@ -40,31 +60,31 @@ if ($order_complete == 'Y') {
 
 
 
-<?php
-ActiveForm::begin([
-    'method' => 'post',
-    'action' => Url::to(['/foodhos', ['ward' => $ward]]),
-])
-?>
+                <?php
+                ActiveForm::begin([
+                    'method' => 'post',
+                    'action' => Url::to(['/foodhos', ['ward' => $ward]]),
+                ])
+                ?>
                 <div class="col-md-1">หอผู้ป่วย  :</div>
                 <div class="col-md-4">
 
-<?php
-echo Select2::widget([
-    'name' => 'ward',
-    'value' => $ward,
-    'data' => ArrayHelper::map(app\models\Ward::find()->all(), 'ward', 'name'),
-    'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
-    'options' => ['placeholder' => ' กรุณาเลือกหอผู้ป่วย...'],
-    'pluginOptions' => [
-        'allowClear' => true
-    ],
-]); // Classic Theme
-?>
+                    <?php
+                    echo Select2::widget([
+                        'name' => 'ward',
+                        'value' => $ward,
+                        'data' => ArrayHelper::map(app\models\Ward::find()->all(), 'ward', 'name'),
+                        'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
+                        'options' => ['placeholder' => ' กรุณาเลือกหอผู้ป่วย...'],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]); // Classic Theme
+                    ?>
                 </div>
                 <button class='btn btn-danger'>ประมวลผล</button>
 
-<?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
 
 
@@ -95,7 +115,13 @@ echo Select2::widget([
                 <div class="box-tools pull-right">
 
                     &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger"  href="<?= Url::to(['/foodhos/default/orderold', 'ward' => $ward]) ?>"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
-                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql" href="<?= Url::to(['/foodhos/default/pdf', 'ward' => $ward]) ?>" target="_blank" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
+                    <?php if ($tan <> '') { ?>
+                        <a style="font-weight: bold;" class="btn btn-success" data-toggle="modal" data-target="#myModal" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
+                    <?php } else { ?>
+                        &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql" data-dismiss="modal" href="<?= Url::to(['/foodhos/default/pdf', 'ward' => $ward]) ?>" target="_blank" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
+                    <?php } ?>
+
+
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
                 </div>
@@ -103,7 +129,7 @@ echo Select2::widget([
             <div class="box-body">
 
                 <table class="table table-hover">
-<?php $color = "bgcolor='e6f5ff'"; ?>
+                    <?php $color = "bgcolor='e6f5ff'"; ?>
                     <tr bgcolor="ccccb3">
                         <th>#</th>
                         <th>HN</th>
@@ -123,13 +149,15 @@ echo Select2::widget([
 
                     </tr>
 
-<?php for ($i = 0; $i < sizeof($data); $i++) { ?>
+                    <?php for ($i = 0; $i < sizeof($data); $i++) { ?>
                         <?php
                         $an = $data[$i]['an'];
                         $bed = $data[$i]['bedno'];
                         $fooddate = '';
                         $foodtime = '';
                         $fname = '';
+                        $tcheck = 'N';
+                        $cd = '';
                         $sqlf = "SELECT fooddate,foodtime,n.name,bd,cal,Congenital_disease,comment,
                                         IF(fooddate=CURDATE(),'Y','N') AS tcheck
                                         FROM food_detail_01  f
@@ -155,22 +183,22 @@ echo Select2::widget([
                             <td><?= $data[$i]['tname'] ?></td>
                             <td><?= $data[$i]['regdate'] ?></td>
                             <td><?= $data[$i]['regtime'] ?></td>
-    <?php if ($tcheck == 'Y') { ?>
+                            <?php if ($tcheck == 'Y') { ?>
                                 <td><font color="green"><?= $fname ?></font></td>
                                 <td><font color="green"><?= $fooddate . ' ' . $foodtime ?></font></td>
                                 <td><font color="green"><?= $cd ?></font></td>
-    <?php } else { ?>
+                            <?php } else { ?>
                                 <td><font color="red"><?= $fname ?></font></td>
                                 <td><font color="red"><?= $fooddate . ' ' . $foodtime ?></font></td>
                                 <td><font color="red"><?= $cd ?></font></td>
-    <?php } ?>
+                            <?php } ?>
                             <td><?= $data[$i]['height'] ?></td>
                             <td><?= $data[$i]['bw'] ?></td>
                             <td><?= $data[$i]['bmi'] ?></td>
                             <td><a href="<?= Url::to(['/foodhos/foodadd/create', 'an' => $an, 'bed' => $bed]) ?>" target="_blank"><i class='fa fa-cart-plus'></i></a></td>
 
                         </tr>   
-<?php } ?>
+                    <?php } ?>
 
 
                 </table>
@@ -180,5 +208,70 @@ echo Select2::widget([
 
             </div>
         </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-ban" ></i>ไม่สามารถสั่งพิมพ์ได้ เนื่องจากมีการสั่งอาหารซ้ำ ดังนี้</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="modal-body">
+                        <?php
+                        $tan = '';
+                        $sql = "SELECT f.an,f.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                            COUNT(foodid)  as tcount
+                            FROM food_detail_01  f
+                            LEFT JOIN patient p ON p.hn=f.hn
+                            WHERE f.fooddate=CURDATE() 
+                            AND f.ward='$ward'
+                            GROUP BY an,fooddate
+                            HAVING tcount >1 ";
+                        $connection = Yii::$app->db2;
+                        $data = $connection->createCommand($sql)
+                                ->queryAll();
+                        ?>
+                        <table class="table">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>#</th>
+                                    <th>AN</th>
+                                    <th>HN</th>
+                                    <th>ชื่อ-สกุล</th>
+                                    <th>จำนวนการสั่งวันนี้/ครั้ง</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php for ($i = 0; $i < sizeof($data); $i++) { ?>
+                                    <tr>
+                                        <th scope="row"><?= $i + 1 ?></th>
+                                        <td><?= $data[$i]['an']; ?></td>
+                                        <td><?= $data[$i]['hn']; ?></td>
+                                        <td><?= $data[$i]['tname']; ?></td>
+                                        <td><?= $data[$i]['tcount']; ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
     </div>
 </div>

@@ -69,7 +69,7 @@ $form = ActiveForm::begin(['enableClientValidation' => true,
     <div class="col-lg-4">
 
         <?=
-        $form->field($model, 'fooddate1')->widget(
+        $form->field($model, 'fooddate')->widget(
                 DatePicker::className(), [
             'language' => 'th',
             'inline' => FALSE,
