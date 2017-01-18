@@ -133,7 +133,7 @@ class FoodaddController extends \common\components\AppController  {
                 $anl = $datalast[$it]['an'];
             }
             if ($anl == '') {
-                $datals = $connection->createCommand("INSERT INTO swdata.food_last VALUES (NULL,'$hn_l','$an_l','$icode_last','$fooddate_last')")->execute();
+                $datals = $connection->createCommand("INSERT INTO swdata.food_last VALUES ('$hn_l','$an_l','$icode_last','$fooddate_last')")->execute();
             } else {
                 $datals = $connection->createCommand("UPDATE swdata.food_last SET icode='$icode_last',fooddate_last='$fooddate_last' WHERE an='$an_l' ")->execute();
             }
