@@ -222,7 +222,7 @@ if ($order_complete == 'Y') {
             
             <div class="panel panel-danger">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-ban" ></i>ไม่สามารถสั่งพิมพ์ได้ เนื่องจากมีการสั่งอาหารซ้ำ ดังนี้</h3>
+                    <h3 class="panel-title"><i class="fa fa-ban" ></i>&nbsp;&nbsp;ไม่สามารถสั่งพิมพ์ได้ เนื่องจากมีการสั่งอาหารซ้ำ ดังนี้</h3>
                 </div>
                 <div class="panel-body">
                     <div class="modal-body">
