@@ -55,29 +55,13 @@ class DefaultController extends \common\components\AppController {
     }
 
     public function actionPdf() {
-        $this->permitRole([1, 3]);
+        //$//this->permitRole([1, 3]);
         //$case_molecular = MolecularTest::findOne(['id_case' => $id_case]);
         // $patient_case = PatientCase::findOne(['id_case' => $id_case]);
         $ward = $_GET['ward'];
         $tan = '';
 
-        $sql = "SELECT f.an,
-                COUNT(foodid)  as tcount
-                FROM food_detail_01  f
-                WHERE f.fooddate=CURDATE() 
-                AND f.ward='61'
-                GROUP BY an,fooddate
-                HAVING tcount >1  ";
-        $connection = Yii::$app->db2;
-        $data = $connection->createCommand($sql)
-                ->queryAll();
-        for ($i = 0; $i < sizeof($data); $i++) {
-            $tan = $data[$i]['an'];
-        }
-
-        if ($tan <> '') {
-            
-        } else {
+    
 
 
 
@@ -118,7 +102,7 @@ class DefaultController extends \common\components\AppController {
 
 
             return $pdf->render();
-        }
+      
     }
     
      public function actionTmodal() {

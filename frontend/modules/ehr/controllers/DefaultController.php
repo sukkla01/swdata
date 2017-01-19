@@ -7,12 +7,12 @@ use Yii;
 use yii\data\ArrayDataProvider;
 
 
-class DefaultController extends Controller {
+class DefaultController extends \common\components\AppController {
 
   
     public function actionIndex() {
 
-        // connect database
+        $this->permitRole([1,2,3]);
         $connection = Yii::$app->db3;
 
         $tname = '';
