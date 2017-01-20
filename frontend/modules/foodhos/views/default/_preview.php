@@ -69,7 +69,7 @@ $daten= Yii::$app->formatter->asDate($time, 'long');
         $nname = $data[$i]['nname'];
         $comment = $data[$i]['comment'];
         $tbed = substr($bedno,0,1);
-         if($tbed=='s' or $tbed=='6' or $tbed=='t' and substr($bedno,0,2)<>'tr' ) {
+         if($tbed=='s' or $tbed=='6' or $tbed=='t' and substr($bedno,0,2)<>'tr' and substr($bedno,0,2)<>'sw' ) {
              $excu = $excu+1;
          }else{
             $normal = $normal+1; 
