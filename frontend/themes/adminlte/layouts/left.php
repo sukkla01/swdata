@@ -60,12 +60,12 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li>
-                <a href="http://203.157.82.73/rq_supplies" target="_blank">
+                <a href="http://122.154.235.70/rq_supplies" target="_blank">
                     <i class="fa fa-cart-arrow-down"></i> <span>เสนอความต้องการ</span>
 
                 </a>
             </li><li>
-                <a href="http://203.157.82.73/swsalary1" target="_blank">
+                <a href="http://122.154.235.70/swsalary1" target="_blank">
                     <i class="fa fa-money"></i> <span>ระบบเงินเดือนออนไลน์</span>
 
                 </a>
