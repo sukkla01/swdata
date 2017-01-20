@@ -16,7 +16,7 @@ use yii\helpers\Html;
 
 
 $sql = "SELECT a.bedno,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
-            CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,
+            CONCAT(s.age_y) AS tage,
             f.Congenital_disease as cd,CONCAT(f.bd,' ',f.cal,' ',n.name) AS nname,f.comment
             FROM ipt i
             LEFT JOIN patient p ON p.hn = i.hn
@@ -26,6 +26,7 @@ $sql = "SELECT a.bedno,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
             LEFT JOIN nutrition_items n ON n.icode = f.icode
             LEFT JOIN ward w ON w.ward = i.ward
             WHERE i.dchdate IS NULL AND w.spclty ='$ward'
+                #AND n.name IS NOT NULL
             ORDER BY  a.bedno ";
 $connection = Yii::$app->db2;
 $data = $connection->createCommand($sql)
@@ -36,6 +37,26 @@ $time = time();
 
 $daten= Yii::$app->formatter->asDate($time, 'long');
 
+
+ $tsql ="SELECT i.bedno
+            FROM food_detail_01 f
+            LEFT JOIN iptadm i ON i.an= f.an
+            LEFT JOIN ipt it ON it.an=f.an
+            WHERE f.fooddate = CURDATE() AND f.ward ='$ward' AND it.dchdate IS NULL ";
+$tdata = $connection->createCommand($tsql)
+        ->queryAll(); 
+for ($ti = 0; $ti < sizeof($tdata); $ti++) {
+    $bedno = $tdata[$ti]['bedno'];
+    $tbed = substr($bedno,0,1);
+            
+         if(($tbed=='s' or $tbed=='6' or $tbed=='t') and substr($bedno,0,2)<>'tr' and substr($bedno,0,2)<>'sw' ) {
+             $excu = $excu+1;
+         }else{
+             $normal = $normal+1; 
+         }
+}
+
+
 ?>
 
 <table> 
@@ -44,18 +65,18 @@ $daten= Yii::$app->formatter->asDate($time, 'long');
             <?= Html::img(Yii::getAlias('@frontend') . '/web/images/srisangworn.jpg', ['width' => 120]) ?> 
         </td> 
         <td> 
-            <h2>ใบสั่งอาหารผู้ป่วยใน วันที่ <?php echo $daten ?></h2> <br />
-            <h2>หอผู้ป่วย <?=$t_ward?> </h2> 
+            <h3>ใบสั่งอาหารผู้ป่วยใน วันที่ <?php echo $daten ?></h3> <br />
+            <h3>หอผู้ป่วย <?=$t_ward?> </h3> 
         </td> 
     </tr> 
 </table>
 
 <table class="table_bordered" width="100%" border="0" cellpadding="2" cellspacing="0"> 
     <tr> 
-        <td>No.</td> 
+        <td height="30">No.</td> 
         <td>เตียง</td> 
         <td>ชื่อ-สกุล</td> 
-        <td>อายุ</td> 
+        <td>อายุ/ปี</td> 
         <td>โรคประจำตัว</td> 
         <td>รายการอาหาร</td> 
         <td>หมายเหตุ</td> 
@@ -68,27 +89,30 @@ $daten= Yii::$app->formatter->asDate($time, 'long');
         $cd = $data[$i]['cd'];
         $nname = $data[$i]['nname'];
         $comment = $data[$i]['comment'];
-        $tbed = substr($bedno,0,1);
-         if($tbed=='s' or $tbed=='6' or $tbed=='t' and substr($bedno,0,2)<>'tr' and substr($bedno,0,2)<>'sw' ) {
-             $excu = $excu+1;
-         }else{
-            $normal = $normal+1; 
-         }
-        
+       
         ?>
         <tr> 
-            <td width="3%" align="center"><?= $i + 1 ?></td> 
+            <td width="3%"  align="center" height="28"><?= $i + 1 ?></td> 
             <td width="5%" align="center"><?=$bedno?></td> 
             <td width="20%" align="left"><?=$tname?></td> 
-            <td width="15%" align="left"><?=$tage?></td> 
+            <td width="5%" align="center"><?=$tage?></td> 
             <td width="10%" align="left"><?=$cd?></td> 
-            <td width="25%" align="left"><?=$nname?></td> 
+            <td width="35%" align="left"><?=$nname?></td> 
             <td width="22%" align="left"><?=$comment?></td> 
         </tr> 
 
     <?php } ?>
     <tr> 
-            <td width="3%" align="center"><?= $i + 1 ?> </td> 
+            <td width="3%" align="center" height="28"><?= $i + 1 ?> </td> 
+            <td ></td> 
+            <td></td> 
+            <td></td> 
+            <td></td> 
+            <td></td> 
+            <td></td> 
+        </tr> 
+         <tr> 
+            <td width="3%" align="center" height="28"><?= $i + 2 ?> </td> 
             <td></td> 
             <td></td> 
             <td></td> 
@@ -97,16 +121,7 @@ $daten= Yii::$app->formatter->asDate($time, 'long');
             <td></td> 
         </tr> 
          <tr> 
-            <td width="3%" align="center"><?= $i + 2 ?> </td> 
-            <td></td> 
-            <td></td> 
-            <td></td> 
-            <td></td> 
-            <td></td> 
-            <td></td> 
-        </tr> 
-         <tr> 
-            <td width="3%" align="center"> <?= $i + 3 ?></td> 
+            <td width="3%" align="center" height="28"> <?= $i + 3 ?></td> 
             <td></td> 
             <td></td> 
             <td></td> 

@@ -13,8 +13,9 @@ $tan = '';
 $sql = "SELECT f.an,
                 COUNT(foodid)  as tcount
                 FROM food_detail_01  f
+                LEFT JOIN ipt i ON i.an=f.an
                 WHERE f.fooddate=CURDATE() 
-                AND f.ward='$ward'
+                AND f.ward='$ward' AND i.dchdate IS NULL
                 GROUP BY an,fooddate
                 HAVING tcount >1  ";
 $connection = Yii::$app->db2;
@@ -229,11 +230,13 @@ if ($order_complete == 'Y') {
                         <?php
                         $tan = '';
                         $sql = "SELECT f.an,f.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
-                            COUNT(foodid)  as tcount
+                            COUNT(foodid)  as tcount,bedno
                             FROM food_detail_01  f
                             LEFT JOIN patient p ON p.hn=f.hn
+			    LEFT JOIN ipt i ON i.an=f.an
+                            left join iptadm d on d.an = f.an
                             WHERE f.fooddate=CURDATE() 
-                            AND f.ward='$ward'
+                            AND f.ward='$ward' AND i.dchdate IS NULL
                             GROUP BY an,fooddate
                             HAVING tcount >1 ";
                         $connection = Yii::$app->db2;
@@ -244,6 +247,7 @@ if ($order_complete == 'Y') {
                             <thead class="thead-inverse">
                                 <tr>
                                     <th>#</th>
+                                    <th>เตียง</th>
                                     <th>AN</th>
                                     <th>HN</th>
                                     <th>ชื่อ-สกุล</th>
@@ -254,10 +258,12 @@ if ($order_complete == 'Y') {
                                 <?php for ($i = 0; $i < sizeof($data); $i++) { ?>
                                     <tr>
                                         <th scope="row"><?= $i + 1 ?></th>
+                                        <td><?= $data[$i]['bedno']; ?></td>
                                         <td><?= $data[$i]['an']; ?></td>
                                         <td><?= $data[$i]['hn']; ?></td>
+                                        
                                         <td><?= $data[$i]['tname']; ?></td>
-                                        <td><?= $data[$i]['tcount']; ?></td>
+                                        <td align="center"><?= $data[$i]['tcount']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

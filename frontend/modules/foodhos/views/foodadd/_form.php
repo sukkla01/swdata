@@ -79,16 +79,17 @@ use kartik\grid\GridView;
                                 DatePicker::className(), [
                             'language' => 'th',
                             'inline' => FALSE,
-                            'value' => date('Y-m-d'),
                             'dateFormat' => 'yyyy-MM-dd',
-                            'options' => ['class' => 'form-control'],
+                            'options' => ['class' => 'form-control','value' => '2015-01-01',],
                             'clientOptions' => [
+                                
                                 //'value' => '2015-01-01',
-                                //'defaultDate' => date('Y-m-d'),
+                                //'defaultDate' => '2016-01-01',
                                 'todayHighlight' => true,
                                 'autoclose' => true,
                                 'dateFormat' => 'yyyy-mm-dd'
-                        ]]);
+                        ],
+                                    'value' => date('Y-m-d'),]);
                         ?>
                     </div>
                     <div class="col-lg-2">
@@ -235,6 +236,23 @@ use kartik\grid\GridView;
                     ],
                         [
                         'attribute' => 'foodid',
+                        'label' => 'แก้ไข',
+                        'value' => function($model, $key) {
+                            $foodid = $model['foodid'];
+                            $an = $model['an'];
+                            $bed = $model['bedno'];
+                            $fooddate = $model['fooddate'];
+                            $foodtime = $model['foodtime'];
+                            return Html::a("<i class='fa fa-pencil'></i>", ['', 'foodid' => $foodid,
+                                        'an' => $an, 'bed' => $bed,'tstatus'=>'e'], [
+                            ]);
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    ],
+                        [
+                        'attribute' => 'foodid',
                         'label' => 'ลบ',
                         'value' => function($model, $key) {
                             $foodid = $model['foodid'];
@@ -242,8 +260,8 @@ use kartik\grid\GridView;
                             $bed = $model['bedno'];
                             $fooddate = $model['fooddate'];
                             $foodtime = $model['foodtime'];
-                            return Html::a("<span class='badge' style='background-color: #ff0066' ><i class='fa fa-window-close'></i></span>", ['', 'foodid' => $foodid,
-                                        'an' => $an, 'bed' => $bed], [
+                            return Html::a("<i class='fa fa-window-close'></i>", ['', 'foodid' => $foodid,
+                                        'an' => $an, 'bed' => $bed,'tstatus'=>'d'], [
                                         'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $an . ' วันที่ ' . $fooddate . ' เวลา ' . $foodtime . ' นี้หรือไม่'),
                                         'data-pjax' => '0',
                             ]);
