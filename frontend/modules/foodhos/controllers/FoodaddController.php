@@ -75,6 +75,11 @@ class FoodaddController extends \common\components\AppController  {
             $foodid = $_GET['foodid'];
             $data1 = $connection->createCommand("DELETE FROM food_detail_01 WHERE foodid = '$foodid' ")->execute();
         }
+        //---------------- edit --------------------
+        if (isset($_GET['foodid']) and ($_GET['tstatus'])=='d') {
+            $foodid = $_GET['foodid'];
+           $sql="";
+        }
 
         //----------------------- ข้อมูลทั่วไป -------------
         $sql = "select i.an,i.hn,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,

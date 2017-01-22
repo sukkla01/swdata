@@ -42,7 +42,7 @@ $daten= Yii::$app->formatter->asDate($time, 'long');
             FROM food_detail_01 f
             LEFT JOIN iptadm i ON i.an= f.an
             LEFT JOIN ipt it ON it.an=f.an
-            WHERE f.fooddate = CURDATE() AND f.ward ='$ward' AND it.dchdate IS NULL ";
+            WHERE f.fooddate = CURDATE() AND it.ward ='$ward' AND it.dchdate IS NULL ";
 $tdata = $connection->createCommand($tsql)
         ->queryAll(); 
 for ($ti = 0; $ti < sizeof($tdata); $ti++) {
@@ -62,7 +62,7 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
 <table> 
     <tr> 
         <td> 
-            <?= Html::img(Yii::getAlias('@frontend') . '/web/images/srisangworn.jpg', ['width' => 120]) ?> 
+            <?= Html::img(Yii::getAlias('@frontend') . '/web/images/srisangworn.jpg', ['width' => 80]) ?> 
         </td> 
         <td> 
             <h3>ใบสั่งอาหารผู้ป่วยใน วันที่ <?php echo $daten ?></h3> <br />
