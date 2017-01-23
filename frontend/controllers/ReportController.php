@@ -351,13 +351,18 @@ class ReportController extends \common\components\AppController {
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        $sql = "SELECT o.hn,o.vstdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,icd10,v.age_y
+        $sql = "SELECT *
+                FROM (
+                SELECT o.hn,o.vstdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,icd10,v.age_y
                 FROM ovstdiag o
                 LEFT JOIN patient p on p.hn= o.hn
                 LEFT JOIN vn_stat v ON v.vn = o.vn
                 WHERE o.vstdate BETWEEN '$date1' AND '$date2'
-                       AND (icd10 BETWEEN 'n181' AND 'n185' OR icd10 ='n189')
-                GROUP BY o.hn  ";
+                      AND (icd10 BETWEEN 'n181' AND 'n185' OR icd10 ='n189')
+                GROUP BY o.hn ) AS a
+                LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic IN('013','029') ) AS t on t.hn = a.hn
+                WHERE  t.hn IS NULL
+                 ";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
