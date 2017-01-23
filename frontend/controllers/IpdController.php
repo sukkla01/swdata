@@ -507,5 +507,52 @@ class IpdController extends \common\components\AppController {
         ]);
         return $this->render('dch15', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
+    
+    
+    public function actionDrughme22() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT i.hn,i.an,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,o.rxdate,o.icode,d.name AS dname,o.qty,o.sum_price
+                FROM ipt i 
+                LEFT JOIN ipt_order_no n ON n.an = i.an
+                LEFT JOIN opitemrece o ON o.an = i.an AND o.order_no = n.order_no
+                LEFT JOIN drugitems d ON d.icode = o.icode
+                LEFT JOIN patient p ON p.hn = i.hn
+                WHERE i.dchdate BETWEEN '$date1' AND '$date2'
+                      AND i.pttype ='22'
+                      AND n.order_type ='Hme'
+                ORDER By i.an ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('drughme22', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
 
 }
