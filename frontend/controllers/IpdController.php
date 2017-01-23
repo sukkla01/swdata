@@ -458,5 +458,54 @@ class IpdController extends \common\components\AppController {
         ]);
         return $this->render('hme', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
+    
+    
+    public function actionDch15() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT i.dchdate ,i.hn,i.an,DATEDIFF(CURDATE(),i.dchdate)  AS tday,
+                CONCAT(p.pname,p.fname,' ',p.lname) AS tname,w.name AS wname,t.name AS dname
+                FROM ipt i
+                LEFT JOIN an_stat a ON a.an = i.an
+                LEFT JOIN iptdiag d ON d.an=i.an
+                LEFT JOIN patient p ON p.hn=i.hn
+                LEFT JOIN ward w ON w.ward = i.ward
+                LEFT JOIN doctor t ON t.code=i.dch_doctor
+                WHERE i.dchdate BETWEEN '$date1' AND '$date2'
+                                        AND (pdx = '' OR pdx IS NULL)
+                HAVING tday >15
+                ORDER BY wname";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('dch15', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
 
 }

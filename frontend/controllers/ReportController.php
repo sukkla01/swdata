@@ -152,7 +152,7 @@ class ReportController extends \common\components\AppController {
             }
         }
         $sql = "SELECT  v.hn,v.vn,v.income,v.vstdate,v.pttype,
-                        o.staff,
+                        d.staff,
                         s.name as spclty_name,
                         p.last_visit,p.admit,
                         substring(os.cc,1,255) as cc,
