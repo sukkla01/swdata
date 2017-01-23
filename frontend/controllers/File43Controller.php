@@ -1,17 +1,16 @@
 <?php
 
 namespace frontend\controllers;
+
 use Yii;
 
-class File43Controller extends \common\components\AppController
-{
-    public function actionIndex()
-    {
+class File43Controller extends \common\components\AppController {
+
+    public function actionIndex() {
         return $this->render('index');
     }
-    
-    public function actionN001()
-    {
+
+    public function actionN001() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
@@ -75,7 +74,52 @@ order by 14 desc ";
         ]);
         return $this->render('n001', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
-    
-   
+
+    public function actionN002() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT p.patient_hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,c1.test_date, v1.vagina_cancer_test_name,
+                       v2.vagina_test_place_name,
+                       IF(v3.vagina_cancer_result_name is null,'',v3.vagina_cancer_result_name) as tlab
+                FROM person_women_vagina_cancer_test c1
+                LEFT JOIN vagina_cancer_test v1 ON v1.vagina_cancer_test_id = c1.vagina_cancer_test_id
+                LEFT JOIN vagina_test_place v2 ON v2.vagina_test_place_id = c1.vagina_test_place_id
+                LEFT JOIN person_women w ON w.person_women_id = c1.person_women_id
+                LEFT JOIN person p ON p.person_id = w.person_id
+                LEFT JOIN vagina_cancer_result v3 ON v3.vagina_cancer_result_id  = c1.vagina_cancer_result_id
+                WHERE c1.test_date BETWEEN '$date1' AND '$date2'
+                ORDER BY c1.vagina_cancer_result_id";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('n002', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
 
 }
