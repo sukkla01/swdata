@@ -73,7 +73,12 @@ class FoodaddController extends \common\components\AppController  {
         /// -------------- delete -------------------
         if (isset($_GET['foodid']) and ($_GET['tstatus'])=='d') {
             $foodid = $_GET['foodid'];
+            $anl=$_GET['an'];
+            $hnl=$_GET['hn'];
+            $icodel=$_GET['icode'];
+            $usern =Yii::$app->user->identity->username;
             $data1 = $connection->createCommand("DELETE FROM food_detail_01 WHERE foodid = '$foodid' ")->execute();
+            $data2 = $connection->createCommand(" INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'delete','$icodel','$anl','$hnl','','$usern') ")->execute();
         }
         //---------------- edit --------------------
         if (isset($_GET['foodid']) and ($_GET['tstatus'])=='d') {
@@ -130,6 +135,8 @@ class FoodaddController extends \common\components\AppController  {
             $an_l = $r['an'];
             $icode_last = $r['icode'];
             $fooddate_last = $r['fooddate'];
+            $foodtime = $r['foodtime'];
+            $cd = $r['Congenital_disease'];
 
             $sqllast = "SELECT * FROM swdata.food_last WHERE an ='$an'";
             $datalast = $connection->createCommand($sqllast)
@@ -138,9 +145,9 @@ class FoodaddController extends \common\components\AppController  {
                 $anl = $datalast[$it]['an'];
             }
             if ($anl == '') {
-                $datals = $connection->createCommand("INSERT INTO swdata.food_last VALUES ('$hn_l','$an_l','$icode_last','$fooddate_last')")->execute();
+                $datals = $connection->createCommand("INSERT INTO swdata.food_last VALUES ('$hn_l','$an_l','$icode_last','$fooddate_last','$foodtime','$cd')")->execute();
             } else {
-                $datals = $connection->createCommand("UPDATE swdata.food_last SET icode='$icode_last',fooddate_last='$fooddate_last' WHERE an='$an_l' ")->execute();
+                $datals = $connection->createCommand("UPDATE swdata.food_last SET icode='$icode_last',fooddate_last='$fooddate_last',foodtime='$foodtime',Congenital_disease='$cd' WHERE an='$an_l' ")->execute();
             }
         }
 
@@ -148,6 +155,9 @@ class FoodaddController extends \common\components\AppController  {
         // -------------------- save --------------------------
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //return $this->redirect(['/foodhos', 'ward' => $ward]);
+            $usern =Yii::$app->user->identity->username;
+         
+             $data3 = $connection->createCommand(" INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'Add','$icode_last','$an_l','$hn_l','','$usern') ")->execute();
             return $this->redirect(['success', 'ward' => $ward,
                         'an' => $an, 'bed' => $bed, 'tname' => $tname,
                         'hn' => $hn, 'ptname' => $ptname,]);

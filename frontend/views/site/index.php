@@ -5,6 +5,7 @@ $this->title = 'My Yii Application';
 
 use yii\helpers\Url;
 use miloschuman\highcharts\Highcharts;
+
 //use kongoon\c3js\C3JS;
 //use scotthuangzl\googlechart\GoogleChart;
 //use sjaakp\gcharts\LineChart;
@@ -22,7 +23,7 @@ for ($nu = 0; $nu < sizeof($data); $nu++) {
     $ht = $data[$nu]['ht'];
     $dmht = $data[$nu]['dmht'];
 }
-//print_r($tyear1)
+
 ?>
 <div class="site-index">
 

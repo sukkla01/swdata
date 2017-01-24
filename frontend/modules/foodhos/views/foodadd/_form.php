@@ -260,8 +260,10 @@ use kartik\grid\GridView;
                             $bed = $model['bedno'];
                             $fooddate = $model['fooddate'];
                             $foodtime = $model['foodtime'];
+                            $hn = $model['hn'];
+                            $icode = $model['icode'];
                             return Html::a("<i class='fa fa-window-close'></i>", ['', 'foodid' => $foodid,
-                                        'an' => $an, 'bed' => $bed,'tstatus'=>'d'], [
+                                        'an' => $an,'hn'=>$hn,'icode'=>$icode,'bed' => $bed,'tstatus'=>'d'], [
                                         'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $an . ' วันที่ ' . $fooddate . ' เวลา ' . $foodtime . ' นี้หรือไม่'),
                                         'data-pjax' => '0',
                             ]);
