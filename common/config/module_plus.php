@@ -13,5 +13,8 @@ return [
     'foodhos' => [
         'class' => 'frontend\modules\foodhos\Foodhos',
     ],
+    'food' => [
+        'class' => 'frontend\modules\food\Food',
+    ],
 ];
 

@@ -23,6 +23,13 @@ return [
             'password' => '0810432245',
             'charset' => 'utf8',
         ],
+         'db4' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=192.168.1.13;dbname=addtimessw',
+            'username' => 'admin',
+            'password' => 'ictsrisangworn',
+            'charset' => 'utf8',
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
