@@ -138,11 +138,77 @@ class ReportsmoController extends \common\components\AppController {
             'pagination' => [
                 'pageSize' => 20
             ],
-            'sort' => [
+            /*'sort' => [
                 'attributes' => count($rawData[0]) > 0 ? array_keys($rawData[0]) : array()
-            ]
+            ]*/
         ]);
         return $this->render('notclinic', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
+    }
+    
+     public function actionDmxray() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT *
+                FROM (
+                SELECT o.hn,o.vn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
+                p.moopart,p.tmbpart,p.amppart,p.chwpart,v.age_y,'OPD' AS type,
+                x.order_date_time,xray_list
+                FROM ovstdiag o
+                INNER JOIN xray_head x ON x.vn = o.vn
+                LEFT JOIN patient p ON p.hn = o.hn
+                LEFT JOIN vn_stat v ON v.vn = o.vn
+                LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
+                WHERE o.vstdate BETWEEN '$date1' AND '$date2'
+                      AND icd10 BETWEEN 'e10' AND 'e149'
+                      AND v.age_y >60
+                UNION ALL
+                SELECT i.hn,i.an,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
+                p.moopart,p.tmbpart,p.amppart,p.chwpart,a.age_y,'IPD' AS type,
+                x.order_date_time,xray_list
+                FROM ipt i 
+                LEFT JOIN iptdiag d ON d.an=i.an
+                INNER JOIN xray_head x ON x.vn = i.an
+                LEFT JOIN patient p ON p.hn = i.hn
+                LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
+                LEFT JOIN an_stat a ON a.an = i.an
+                WHERE i.dchdate BETWEEN '$date1' AND '$date2'
+                      AND icd10 BETWEEN 'e10' AND 'e149'
+                      AND a.age_y >60 ) AS tt
+                ORDER BY tt.chwpart,tt.amppart,tt.tmbpart,tt.moopart";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+            
+        ]);
+        return $this->render('dmxray', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
 
     public function actionIndex() {
