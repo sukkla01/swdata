@@ -44,6 +44,10 @@ class DefaultController extends Controller {
             $anl = $_GET['an'];
             $hnl = $_GET['hn'];
             $icodel = $_GET['icode'];
+            $icode = '';
+            $fooddate = null;
+            $foodtime = null;
+            $Congenital_disease = '';
             $usern = Yii::$app->user->identity->username;
             $data1 = $connection->createCommand("DELETE FROM food_detail_01 WHERE foodid = '$foodid' ")->execute();
             $data2 = $connection->createCommand(" INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'delete','$icodel','$anl','$hnl','','$usern') ")->execute();
@@ -244,7 +248,7 @@ class DefaultController extends Controller {
 
 
         if ($c_current == date('Y-m-d')) {
-            return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'Y','dataProvider'=>$dataProvider]);
+            return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'Y', 'dataProvider' => $dataProvider]);
         } else {
 
 
@@ -253,9 +257,9 @@ class DefaultController extends Controller {
                 $this->call("Jub_Order_food", $ward);
                 //sleep(10);
                 //echo $ward;
-                return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N','dataProvider'=>$dataProvider]);
+                return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N', 'dataProvider' => $dataProvider]);
             } else {
-                return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'N','dataProvider'=>$dataProvider]);
+                return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'N', 'dataProvider' => $dataProvider]);
             }
         }
     }
