@@ -92,6 +92,10 @@ use kartik\export\ExportMenu;
                             'attribute' => 'vn',
                             'label' => 'VN/AN'
                         ],
+                         [
+                            'attribute' => 'cid',
+                            'label' => 'cid'
+                        ],
                             [
                             'attribute' => 'tname',
                             'header' => 'ชื่อ-สกุล'

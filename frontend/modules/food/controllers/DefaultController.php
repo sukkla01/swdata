@@ -26,9 +26,17 @@ class DefaultController extends Controller
         $i = '';
         $ward='';
 
+         if (isset($_GET['ward']) and $_GET['modal']==1) {
+            $ward = $_GET['ward'];
+            if(strlen($ward)==1){
+                $ward='0'.$ward;
+            }
+            
+        }
         if (Yii::$app->request->isPost) {
             $ward = $_POST['ward'];
         }
+        
 
             $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,

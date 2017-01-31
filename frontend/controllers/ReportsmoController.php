@@ -168,7 +168,7 @@ class ReportsmoController extends \common\components\AppController {
 
         $sql = "SELECT *
                 FROM (
-                SELECT o.hn,o.vn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                SELECT o.hn,o.vn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,p.cid,
                 CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
                 p.moopart,p.tmbpart,p.amppart,p.chwpart,v.age_y,'OPD' AS type,
                 x.order_date_time,xray_list
@@ -181,7 +181,7 @@ class ReportsmoController extends \common\components\AppController {
                       AND icd10 BETWEEN 'e10' AND 'e149'
                       AND v.age_y >60
                 UNION ALL
-                SELECT i.hn,i.an,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                SELECT i.hn,i.an,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,p.cid,
                 CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
                 p.moopart,p.tmbpart,p.amppart,p.chwpart,a.age_y,'IPD' AS type,
                 x.order_date_time,xray_list

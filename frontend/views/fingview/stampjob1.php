@@ -158,12 +158,7 @@ use kartik\export\ExportMenu;
                             // 'pageSummary' => \app\components\PTotal::pageTotal($dataProvider->models,'price'),
                     ]);
                     ?>
-
-
-
-
-
-
+ 
                 </div>
 
             </div>
