@@ -70,17 +70,7 @@ class FoodaddController extends \common\components\AppController  {
         $ptname = '';
         $aa = 0;
         $anl = '';
-        /// -------------- delete -------------------
-        if (isset($_GET['foodid']) and ($_GET['tstatus'])=='d') {
-            console.log('test');
-            $foodid = $_GET['foodid'];
-            $anl=$_GET['an'];
-            $hnl=$_GET['hn'];
-            $icodel=$_GET['icode'];
-            $usern =Yii::$app->user->identity->username;
-            $data1 = $connection->createCommand("DELETE FROM food_detail_01 WHERE foodid = '$foodid' ")->execute();
-            $data2 = $connection->createCommand(" INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'delete','$icodel','$anl','$hnl','','$usern') ")->execute();
-        }
+        
         //---------------- edit --------------------
         if (isset($_GET['foodid']) and ($_GET['tstatus'])=='d') {
             $foodid = $_GET['foodid'];
@@ -108,7 +98,7 @@ class FoodaddController extends \common\components\AppController  {
         // ------------ food history -----------
         $sqlhis = "SELECT foodid,fooddate,foodtime,f.an,f.hn,
                     w.name AS wname,f.icode,n.name AS nname,staff,bedno,
-                    Congenital_disease,comment,bd,cal
+                    Congenital_disease,comment,bd,cal,f.ward
                     FROM food_detail_01 f
                     LEFT JOIN nutrition_items n ON n.icode = f.icode
                     LEFT JOIN ward w ON w.ward = f.ward

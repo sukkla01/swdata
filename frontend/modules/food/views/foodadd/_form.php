@@ -270,10 +270,12 @@ use kartik\grid\GridView;
                             $foodtime = $model['foodtime'];
                             $hn = $model['hn'];
                             $icode = $model['icode'];
-                            return Html::a("<i class='fa fa-window-close'></i>", ['/food/', 'foodid' => $foodid,
-                                        'an' => $an, 'hn' => $hn, 'icode' => $icode, 'bed' => $bed, 'tstatus' => 'd'], [
+                            $ward = $model['ward'];
+                            return Html::a("<i class='fa fa-window-close'></i>", ['/food','foodid'=>$foodid,'tstatus'=>'d',
+                                                                                    'an'=>$an,'icode'=>$icode,'hn'=>$hn,'ward'=>$ward,'modal'=>1],[
+                                         
                                         'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $an . ' วันที่ ' . $fooddate . ' เวลา ' . $foodtime . ' นี้หรือไม่'),
-                                        'data-pjax' => '0',
+                                        'class' => 'delete'
                             ]);
                         },
                         'filterType' => GridView::FILTER_COLOR,
@@ -315,6 +317,15 @@ $('#taf').click(function() {
                     
                            window.location='./index.php?r=food&ward=' + $ward+'&modal=1';
                 });
+        
+function init_click_handlers(){
+  $(".delete").click(function() {
+
+  console.log("gggggggg");
+  });
+
+  }
+  init_click_handlers(); 
 JS;
 $this->registerJs($script);
 ?>

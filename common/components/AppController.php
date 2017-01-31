@@ -33,7 +33,8 @@ class AppController extends \yii\web\Controller {
              
         }
         if( !in_array($r,$role)){
-            throw  new \yii\web\ForbiddenHttpException("ไม่ได้รับอนุญาต กรุณาติดต่อผู้ดูแลระบบ");
+            //throw  new \yii\web\ForbiddenHttpException("ไม่ได้รับอนุญาต กรุณาติดต่อผู้ดูแลระบบ");
+            return $this->redirect('index.php?r=site/login');
         }         
         
     }

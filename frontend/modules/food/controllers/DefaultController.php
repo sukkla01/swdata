@@ -3,42 +3,68 @@
 namespace frontend\modules\food\controllers;
 
 use yii\web\Controller;
-
 use Yii;
 use app\models\FoodDetail01;
 
 /**
  * Default controller for the `food` module
  */
-class DefaultController extends Controller
-{
+class DefaultController extends Controller {
+
     /**
      * Renders the index view for the module
      * @return string
      */
-    public function actionIndex()
-    {
-       
+    public function actionIndex() {
+
+        $connection = Yii::$app->db2;
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
         $tdate = date('Y-m-d H:m:s');
         $dataProvider[] = '';
         $i = '';
-        $ward='';
+        $ward = '';
+        $tstatus = '';
 
-         if (isset($_GET['ward']) and $_GET['modal']==1) {
+        if (isset($_GET['ward']) and $_GET['modal'] == 1) {
             $ward = $_GET['ward'];
-            if(strlen($ward)==1){
-                $ward='0'.$ward;
+            if (strlen($ward) == 1) {
+                $ward = '0' . $ward;
             }
-            
         }
         if (Yii::$app->request->isPost) {
             $ward = $_POST['ward'];
         }
-        
 
-            $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+
+        /// -------------- delete -------------------
+        if (isset($_GET['foodid']) and ( $_GET['tstatus']) == 'd') {
+            $foodid = $_GET['foodid'];
+            $anl = $_GET['an'];
+            $hnl = $_GET['hn'];
+            $icodel = $_GET['icode'];
+            $usern = Yii::$app->user->identity->username;
+            $data1 = $connection->createCommand("DELETE FROM food_detail_01 WHERE foodid = '$foodid' ")->execute();
+            $data2 = $connection->createCommand(" INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'delete','$icodel','$anl','$hnl','','$usern') ")->execute();
+            $sqld = "SELECT icode,fooddate,foodtime,Congenital_disease
+                    FROM food_detail_01 
+                    WHERE an='$anl'
+                    ORDER BY foodid DESC
+                    LIMIT 1";
+            $datad = $connection->createCommand($sqld)
+                    ->queryAll();
+            for ($i1 = 0; $i1 < sizeof($datad); $i1++) {
+                $icode = $datad[$i1]['icode'];
+                $fooddate = $datad[$i1]['fooddate'];
+                $foodtime = $datad[$i1]['foodtime'];
+                $Congenital_disease = $datad[$i1]['Congenital_disease'];
+            }
+            $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode='$icode',fooddate_last='$fooddate',foodtime='$foodtime',Congenital_disease='$Congenital_disease'  WHERE an ='$anl' ")->execute();
+            
+        }
+
+
+        $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,
                 i.regdate,i.regtime,f.icode,
                 n.name  AS nname,
@@ -53,22 +79,22 @@ class DefaultController extends Controller
                 LEFT JOIN swdata.food_last f ON f.an = i.an
                 LEFT JOIN nutrition_items n ON n.icode = f.icode
                 LEFT JOIN opdscreen o ON o.vn = i.vn
-                WHERE i.dchdate IS NULL AND i.ward ='$ward'  ";
+                WHERE i.dchdate IS NULL AND i.ward ='$ward' 
+                ORDER BY bedno  ";
 
-           
-        
-                 try {
-                $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
-            } catch (\yii\db\Exception $e) {
-                throw new \yii\web\ConflictHttpException('sql error');
-            }
-            $dataProvider = new \yii\data\ArrayDataProvider([
-                //'key' => 'hoscode',
-                'allModels' => $rawData,
-                'pagination' => [
-                    'pageSize' => 50
-                ],
-            ]);
+
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 50
+            ],
+        ]);
 
 
 
@@ -77,10 +103,61 @@ class DefaultController extends Controller
         if (\Yii::$app->getRequest()->isAjax) {
             return $this->renderAjax('test', ['model' => $model,]);
         } else {
-            return $this->render('index', ['dataProvider' => $dataProvider,'ward'=>$ward]);
+            return $this->render('index', ['dataProvider' => $dataProvider, 'ward' => $ward]);
         }
     }
     
+    public function actionPdf() {
+        //$//this->permitRole([1, 3]);
+        //$case_molecular = MolecularTest::findOne(['id_case' => $id_case]);
+        // $patient_case = PatientCase::findOne(['id_case' => $id_case]);
+        $ward = $_GET['ward'];
+        $tan = '';
+
+    
+
+
+
+            $content = $this->renderPartial('_preview', [
+                'ward' => $ward
+                    //'patient_case' => $patient_case,
+            ]);
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8,
+                // A4 paper format 
+                'format' => Pdf::FORMAT_A4,
+                'marginLeft' => 5,
+                'marginRight' => 5,
+                'marginTop' => 1,
+                'marginBottom' => false,
+                'marginHeader' => false,
+                'marginFooter' => false,
+                // portrait orientation 
+                'orientation' => Pdf::ORIENT_PORTRAIT,
+                // stream to browser inline 
+                'destination' => Pdf::DEST_BROWSER,
+                // your html content input 
+                'content' => $content,
+                // format content from your own css file if needed or use the 
+                // enhanced bootstrap css built by Krajee for mPDF formatting 
+                'cssFile' => '@frontend/web/css/pdf.css',
+                // any css to be embedded if required 
+                'cssInline' => '.bd{border:1.5px solid; text-align: center;} .ar{text-align:right} .imgbd{border:1px solid}',
+                // set mPDF properties on the fly 
+                'options' => ['title' => 'ใบสั่งอาหาร รพ.ศรีสังวรสุโขทัย '],
+                // call mPDF methods on the fly 
+                'methods' => [
+                //'SetHeader'=>[''], 
+                //'SetFooter'=>['{PAGENO}'], 
+                ]
+            ]);
+
+
+            return $pdf->render();
+      
+    }
+
     public function actionTest() {
         //$id= $_GET['id'];
         $model = new FoodDetail01();
@@ -116,4 +193,5 @@ class DefaultController extends Controller
                         'hn' => $hn, 'ptname' => $ptname, 'ward' => $ward]);
         }
     }
+
 }
