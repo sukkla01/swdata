@@ -45,8 +45,8 @@ class DefaultController extends Controller {
             $hnl = $_GET['hn'];
             $icodel = $_GET['icode'];
             $icode = '';
-            $fooddate = null;
-            $foodtime = null;
+            $fooddate = '';
+            $foodtime = '';
             $Congenital_disease = '';
             $usern = Yii::$app->user->identity->username;
             $data1 = $connection->createCommand("DELETE FROM food_detail_01 WHERE foodid = '$foodid' ")->execute();
@@ -64,12 +64,17 @@ class DefaultController extends Controller {
                 $foodtime = $datad[$i1]['foodtime'];
                 $Congenital_disease = $datad[$i1]['Congenital_disease'];
             }
-            $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode='$icode',fooddate_last='$fooddate',foodtime='$foodtime',Congenital_disease='$Congenital_disease'  WHERE an ='$anl' ")->execute();
+            if($fooddate==''){
+              $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode=null,fooddate_last=null,foodtime=null,Congenital_disease=null  WHERE an ='$anl' ")->execute();  
+            }else {
+              $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode='$icode',fooddate_last='$fooddate',foodtime='$foodtime',Congenital_disease='$Congenital_disease'  WHERE an ='$anl' ")->execute();  
+            }
+            
         }
 
 
         $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
-                CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,
+                CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,f.foodtime,
                 i.regdate,i.regtime,f.icode,
                 n.name  AS nname,
                 IF(congenital_disease IS NULL,'',congenital_disease) AS congenital_disease,
@@ -214,7 +219,7 @@ class DefaultController extends Controller {
 
 
         $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
-                CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,
+                CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,f.foodtime,
                 i.regdate,i.regtime,f.icode,
                 n.name  AS nname,
                 IF(congenital_disease IS NULL,'',congenital_disease) AS congenital_disease,

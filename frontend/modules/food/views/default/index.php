@@ -171,9 +171,9 @@ if ($order_complete == 'Y') {
                         'value' => function ($model, $key, $index, $widget) {
                             $cdate = date('Y-m-d');
                             if ($model['fooddate'] == $cdate) {
-                                return "<font class='text-green'>" . $model['fooddate'] . "</font>";
+                                return "<font class='text-green'>" . $model['fooddate'].' '.$model['foodtime'] . "</font>";
                             } else {
-                                return "<font class='text-red'>" . $model['fooddate'] . "</font>";
+                                return "<font class='text-red'>" . $model['fooddate'].' '.$model['foodtime'] . "</font>";
                             }
                         },
                         'filterType' => GridView::FILTER_COLOR,
