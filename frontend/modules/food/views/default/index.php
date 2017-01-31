@@ -11,7 +11,11 @@ use yii\widgets\Pjax;
 use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use kartik\alert\Alert;
 ?>
+
+
+
 <?php
         $tan = '';
         $sql = "SELECT f.an,
@@ -30,6 +34,28 @@ use yii\helpers\Url;
         }
 ?>
 
+
+<?php
+if ($order_complete == 'Y') {
+    echo Alert::widget([
+        'type' => Alert::TYPE_DANGER,
+        'title' => 'ไม่สามารถสั่งซ้ำได้  ',
+        'titleOptions' => ['icon' => 'info-sign'],
+        'body' => 'เนื่องจากวันนี้มีการสั่งอาหารเดิมแล้ว'
+    ]);
+}
+?>
+
+<?php if ($process == 'Y') { ?>
+    <div class="col-md-6">
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-check"></i> สั่งอาหารเรียบร้อยแล้ว!</h4>
+
+        </div>    
+    </div>
+<?php } ?>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
@@ -37,7 +63,12 @@ use yii\helpers\Url;
 
 
 
-                <?= Html::beginForm(); ?>
+                 <?php
+                ActiveForm::begin([
+                    'method' => 'post',
+                    'action' => Url::to(['/food', ['ward' => $ward]]),
+                ])
+                ?>
                 <div class="col-md-4">
                     <?php
                     echo Select2::widget([
@@ -54,7 +85,7 @@ use yii\helpers\Url;
                 </div>
                 <button class='btn btn-danger'>ประมวลผล</button>
 
-                <?= Html::endForm(); ?>
+                <?php ActiveForm::end(); ?>
 
 
 
@@ -75,11 +106,11 @@ use yii\helpers\Url;
 
                 <div class="box-tools pull-right">
 
-                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger" id="btn_sql"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
+                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger"  href="<?= Url::to(['/food/default/orderold', 'ward' => $ward]) ?>"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
                     <?php if ($tan <> '') { ?>
                         <a style="font-weight: bold;" class="btn btn-success" data-toggle="modal" data-target="#myModal" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
                     <?php } else { ?>
-                        &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql" data-dismiss="modal" href="<?= Url::to(['/foodhos/default/pdf', 'ward' => $ward]) ?>" target="_blank" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
+                        &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql" data-dismiss="modal" href="<?= Url::to(['/food/default/pdf', 'ward' => $ward]) ?>" target="_blank" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
                     <?php } ?>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
@@ -264,6 +295,7 @@ use yii\helpers\Url;
                         $connection = Yii::$app->db2;
                         $data = $connection->createCommand($sql)
                                 ->queryAll();
+                        
                         ?>
                         <table class="table">
                             <thead class="thead-inverse">
@@ -292,7 +324,7 @@ use yii\helpers\Url;
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

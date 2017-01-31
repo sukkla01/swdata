@@ -5,6 +5,7 @@ namespace frontend\modules\food\controllers;
 use yii\web\Controller;
 use Yii;
 use app\models\FoodDetail01;
+use kartik\mpdf\Pdf;
 
 /**
  * Default controller for the `food` module
@@ -60,7 +61,6 @@ class DefaultController extends Controller {
                 $Congenital_disease = $datad[$i1]['Congenital_disease'];
             }
             $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode='$icode',fooddate_last='$fooddate',foodtime='$foodtime',Congenital_disease='$Congenital_disease'  WHERE an ='$anl' ")->execute();
-            
         }
 
 
@@ -103,10 +103,10 @@ class DefaultController extends Controller {
         if (\Yii::$app->getRequest()->isAjax) {
             return $this->renderAjax('test', ['model' => $model,]);
         } else {
-            return $this->render('index', ['dataProvider' => $dataProvider, 'ward' => $ward]);
+            return $this->render('index', ['dataProvider' => $dataProvider, 'ward' => $ward, 'process' => 'N', 'order_complete' => 'N']);
         }
     }
-    
+
     public function actionPdf() {
         //$//this->permitRole([1, 3]);
         //$case_molecular = MolecularTest::findOne(['id_case' => $id_case]);
@@ -114,48 +114,47 @@ class DefaultController extends Controller {
         $ward = $_GET['ward'];
         $tan = '';
 
-    
 
 
 
-            $content = $this->renderPartial('_preview', [
-                'ward' => $ward
-                    //'patient_case' => $patient_case,
-            ]);
 
-            $pdf = new Pdf([
-                'mode' => Pdf::MODE_UTF8,
-                // A4 paper format 
-                'format' => Pdf::FORMAT_A4,
-                'marginLeft' => 5,
-                'marginRight' => 5,
-                'marginTop' => 1,
-                'marginBottom' => false,
-                'marginHeader' => false,
-                'marginFooter' => false,
-                // portrait orientation 
-                'orientation' => Pdf::ORIENT_PORTRAIT,
-                // stream to browser inline 
-                'destination' => Pdf::DEST_BROWSER,
-                // your html content input 
-                'content' => $content,
-                // format content from your own css file if needed or use the 
-                // enhanced bootstrap css built by Krajee for mPDF formatting 
-                'cssFile' => '@frontend/web/css/pdf.css',
-                // any css to be embedded if required 
-                'cssInline' => '.bd{border:1.5px solid; text-align: center;} .ar{text-align:right} .imgbd{border:1px solid}',
-                // set mPDF properties on the fly 
-                'options' => ['title' => 'ใบสั่งอาหาร รพ.ศรีสังวรสุโขทัย '],
-                // call mPDF methods on the fly 
-                'methods' => [
-                //'SetHeader'=>[''], 
-                //'SetFooter'=>['{PAGENO}'], 
-                ]
-            ]);
+        $content = $this->renderPartial('_preview', [
+            'ward' => $ward
+                //'patient_case' => $patient_case,
+        ]);
+
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_UTF8,
+            // A4 paper format 
+            'format' => Pdf::FORMAT_A4,
+            'marginLeft' => 5,
+            'marginRight' => 5,
+            'marginTop' => 1,
+            'marginBottom' => false,
+            'marginHeader' => false,
+            'marginFooter' => false,
+            // portrait orientation 
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            // stream to browser inline 
+            'destination' => Pdf::DEST_BROWSER,
+            // your html content input 
+            'content' => $content,
+            // format content from your own css file if needed or use the 
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@frontend/web/css/pdf.css',
+            // any css to be embedded if required 
+            'cssInline' => '.bd{border:1.5px solid; text-align: center;} .ar{text-align:right} .imgbd{border:1px solid}',
+            // set mPDF properties on the fly 
+            'options' => ['title' => 'ใบสั่งอาหาร รพ.ศรีสังวรสุโขทัย '],
+            // call mPDF methods on the fly 
+            'methods' => [
+            //'SetHeader'=>[''], 
+            //'SetFooter'=>['{PAGENO}'], 
+            ]
+        ]);
 
 
-            return $pdf->render();
-      
+        return $pdf->render();
     }
 
     public function actionTest() {
@@ -191,6 +190,73 @@ class DefaultController extends Controller {
             return $this->renderAjax('test', ['model' => $model,
                         'an' => $an, 'bed' => $bed, 'tname' => $tname,
                         'hn' => $hn, 'ptname' => $ptname, 'ward' => $ward]);
+        }
+    }
+
+    public function actionOrderold() {
+
+        $connection = Yii::$app->db;
+        $ward = $_GET['ward'];
+        $c_current = '';
+
+
+        $sql1 = " SELECT d_last FROM food_process_order WHERE ward='$ward' ";
+        $command = Yii::$app->db->createCommand($sql1);
+        $c_current = $command->queryScalar();
+
+        $sql2 = " SELECT is_running FROM food_process WHERE ward='$ward' ";
+        $command = Yii::$app->db->createCommand($sql2);
+        $running = $command->queryScalar();
+
+
+        $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,
+                i.regdate,i.regtime,f.icode,
+                n.name  AS nname,
+                IF(congenital_disease IS NULL,'',congenital_disease) AS congenital_disease,
+		IF(o.height IS NULL,'',o.height) AS height,
+		IF(o.bw IS NULL,'',o.bw) AS bw,
+		IF(o.bmi IS NULL,'',o.bmi) AS bmi
+                FROM ipt i
+                LEFT JOIN patient p ON p.hn = i.hn
+                LEFT JOIN iptadm a ON a.an = i.an
+                LEFT JOIN an_stat s ON s.an = i.an
+                LEFT JOIN swdata.food_last f ON f.an = i.an
+                LEFT JOIN nutrition_items n ON n.icode = f.icode
+                LEFT JOIN opdscreen o ON o.vn = i.vn
+                WHERE i.dchdate IS NULL AND i.ward ='$ward' 
+                ORDER BY bedno  ";
+
+
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 50
+            ],
+        ]);
+
+
+
+        if ($c_current == date('Y-m-d')) {
+            return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'Y','dataProvider'=>$dataProvider]);
+        } else {
+
+
+            if ($running == 'false') {
+
+                $this->call("Jub_Order_food", $ward);
+                //sleep(10);
+                //echo $ward;
+                return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N','dataProvider'=>$dataProvider]);
+            } else {
+                return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'N','dataProvider'=>$dataProvider]);
+            }
         }
     }
 
