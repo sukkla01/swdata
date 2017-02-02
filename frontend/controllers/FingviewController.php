@@ -118,12 +118,12 @@ class FingviewController extends  \common\components\AppController {
         $sql = "SELECT c.Badgenumber,
                 IF(u.username IS NULL,'',u.username) as username
                 ,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew,
-                if (time(CHECKTIME) BETWEEN '14:00:00' and '16:30:00','ในเวลา','สาย') as WrokTime
+                if (time(CHECKTIME) BETWEEN '13:30:00' and '16:30:00','ในเวลา','สาย') as WrokTime
                 from checkinout c
                 INNER JOIN USERINFO u on u.Badgenumber=c.Badgenumber
                 INNER JOIN dep d on d.DEPTID=u.DEFAULTDEPTID
                 where c.VERIFYCODE='0' 
-                and CHECKTIME BETWEEN concat('$date1',' 14:00:00') and  concat('$date2',' 18:30:00')
+                and CHECKTIME BETWEEN concat('$date1',' 13:30:00') and  concat('$date2',' 18:30:00')
                 GROUP BY c.Badgenumber
                 ORDER BY c.checktime ASC ";
                             try {

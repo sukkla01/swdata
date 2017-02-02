@@ -7,10 +7,12 @@ use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\widgets\Pjax;
 use kartik\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\FoodDetail01 */
 /* @var $form yii\widgets\ActiveForm */
+$ward = '64';
 ?>
 <div class="row" >
     <div class="col-md-12">
@@ -58,11 +60,11 @@ use kartik\grid\GridView;
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
+                    </button>
                 </div>
             </div>
             <div class="box-body">
-                <?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id'=>'foodF']); ?>
 
 
                 <?= $form->field($model, 'an')->hiddenInput(['maxlength' => true, 'value' => $an])->label(FALSE); ?>
@@ -70,7 +72,7 @@ use kartik\grid\GridView;
                 <?= $form->field($model, 'meal')->hiddenInput(['maxlength' => true, 'value' => 1])->label(FALSE); ?>
                 <?= $form->field($model, 'ward')->hiddenInput(['maxlength' => true, 'value' => $ward])->label(FALSE); ?>
                 <?= $form->field($model, 'fooddate_rec')->hiddenInput(['maxlength' => true, 'value' => date('dmY')])->label(FALSE); ?>
-                <?= $form->field($model, 'staff')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->identity->username])->label(FALSE); ?>
+<?= $form->field($model, 'staff')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->identity->username])->label(FALSE); ?>
 
                 <div class="raw">
                     <div class="col-lg-4">
@@ -108,19 +110,18 @@ use kartik\grid\GridView;
                     <div class="col-lg-6">
                         <?=
                         $form->field($model, 'icode')->widget(Select2::className(), [
-                            'initValueText' =>'ssss',
+                            'initValueText' => 'ssss',
                             'value' => '1',
                             'data' =>
                             ArrayHelper::map(app\models\NutritionItems::find()->all(), 'icode', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->',
-                                //'onchange' => 'alert (this.value)',
-                                ],
+                            //'onchange' => 'alert (this.value)',
+                            ],
                             'pluginOptions' =>
                                 [
                                 'allowClear' => true
                             ],
-                            
                         ]);
                         ?> 
                     </div>
@@ -141,7 +142,7 @@ use kartik\grid\GridView;
                         ?> 
                     </div>
                     <div class="col-lg-8">
-                        <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
+<?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
                     </div>
                 </div>
 
@@ -183,7 +184,7 @@ use kartik\grid\GridView;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= Html::submitButton($model->isNewRecord ? 'เพิ่ม' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                     </div>
                 </div>
-                <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 
             </div>
@@ -198,8 +199,8 @@ use kartik\grid\GridView;
                 <h3 class="box-title">ประวัติการสั่งอาหาร</h3>
 
                 <div class="box-tools pull-right">
-                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
                 </div>
             </div>
             <div class="box-body">
@@ -214,10 +215,10 @@ use kartik\grid\GridView;
                         [
                         'attribute' => 'foodtime',
                         'label' => 'เวลาสั่งอาอาร'
-                    ], /*[
-                        'attribute' => 'wname',
-                        'header' => 'ward'
-                    ],*/
+                    ], /* [
+                      'attribute' => 'wname',
+                      'header' => 'ward'
+                      ], */
                         [
                         'attribute' => 'nname',
                         'label' => 'รายการอาหาร'
@@ -242,7 +243,24 @@ use kartik\grid\GridView;
                         'attribute' => 'cal',
                         'label' => 'ความเข้มข้น'
                     ],
-                       /* [
+                    /* [
+                      'attribute' => 'foodid',
+                      'label' => 'แก้ไข',
+                      'value' => function($model, $key) {
+                      $foodid = $model['foodid'];
+                      $an = $model['an'];
+                      $bed = $model['bedno'];
+                      $fooddate = $model['fooddate'];
+                      $foodtime = $model['foodtime'];
+                      return Html::a("<i class='fa fa-pencil'></i>", ['', 'foodid' => $foodid,
+                      'an' => $an, 'bed' => $bed, 'tstatus' => 'e'], [
+                      ]);
+                      },
+                      'filterType' => GridView::FILTER_COLOR,
+                      'hAlign' => 'middle',
+                      'format' => 'raw',
+                      ], */
+                        [
                         'attribute' => 'foodid',
                         'label' => 'แก้ไข',
                         'value' => function($model, $key) {
@@ -251,14 +269,22 @@ use kartik\grid\GridView;
                             $bed = $model['bedno'];
                             $fooddate = $model['fooddate'];
                             $foodtime = $model['foodtime'];
-                            return Html::a("<i class='fa fa-pencil'></i>", ['', 'foodid' => $foodid,
-                                        'an' => $an, 'bed' => $bed, 'tstatus' => 'e'], [
+                            $hn = $model['hn'];
+                            $icode = $model['icode'];
+                            $ward = $model['ward'];
+                            return Html::a("<i class='fa fa-pencil-square-o'></i>", ['/food', 'id' => $foodid], [
+                                        //'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $an . ' วันที่ ' . $fooddate . ' เวลา ' . $foodtime . ' นี้หรือไม่'),
+                                        'class' => ['edit', 'id' => 1],
+                                        'title' => 'สั่งอาหาร',
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modalvote11',
+                                        'data-whatever' => $foodid,
                             ]);
                         },
                         'filterType' => GridView::FILTER_COLOR,
                         'hAlign' => 'middle',
                         'format' => 'raw',
-                    ],*/
+                    ],
                         [
                         'attribute' => 'foodid',
                         'label' => 'ลบ',
@@ -271,9 +297,8 @@ use kartik\grid\GridView;
                             $hn = $model['hn'];
                             $icode = $model['icode'];
                             $ward = $model['ward'];
-                            return Html::a("<i class='fa fa-window-close'></i>", ['/food','foodid'=>$foodid,'tstatus'=>'d',
-                                                                                    'an'=>$an,'icode'=>$icode,'hn'=>$hn,'ward'=>$ward,'modal'=>1],[
-                                         
+                            return Html::a("<i class='fa fa-window-close'></i>", ['/food', 'foodid' => $foodid, 'tstatus' => 'd',
+                                        'an' => $an, 'icode' => $icode, 'hn' => $hn, 'ward' => $ward, 'modal' => 1], [
                                         'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $an . ' วันที่ ' . $fooddate . ' เวลา ' . $foodtime . ' นี้หรือไม่'),
                                         'class' => 'delete'
                             ]);
@@ -287,6 +312,21 @@ use kartik\grid\GridView;
                 echo GridView::widget([
                     'dataProvider' => $dataProvider,
                     //'filterModel' => $searchModel,
+                    'rowOptions' => function($model) {
+                        $url = Url::to(['controller/action', 'id' => $model['foodid']]);
+                        $id= $model['foodid']   ;
+                         $an=$model['an'];
+                        $fooddate=$model['fooddate'];
+                        $foodtime=$model['foodtime'];
+                        $icode=$model['icode'];
+                        $Congenital_disease=$model['Congenital_disease'];
+                        $bd=$model['bd'];
+                        $cal=$model['cal'];
+                        $comment=$model['comment'];
+                        return [
+                            'onclick' => "edit($id,$an,'$fooddate','$foodtime','$icode','$Congenital_disease','$bd','$cal','$comment')"
+                        ];
+                    },
                     'autoXlFormat' => true,
                     'columns' => $gridColumns,
                     'resizableColumns' => true,
@@ -318,10 +358,23 @@ $('#taf').click(function() {
                            window.location='./index.php?r=food&ward=' + $ward+'&modal=1';
                 });
         
+   $('#edit').click(function() {
+                    
+                          console.log(document.location);
+                });
+        
+  function edit(id,an,fooddate,foodtime,icode,Congenital_disease,bd,cal,comment){
+        //document.getElementById("fooddetail01-comment").setAttribute('value','My default value');
+        document.getElementById("fooddetail01-comment").value = comment;
+        //console.log(current);
+       // console.log(an);
+}      
+    
+        
 function init_click_handlers(){
-  $(".delete").click(function() {
-
-  console.log("gggggggg");
+  $(".edit").click(function() {
+      // lol = document.getElementById('lolz');
+  console.log(document.getElementById('gg'));
   });
 
   }

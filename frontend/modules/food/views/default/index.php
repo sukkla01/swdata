@@ -204,7 +204,8 @@ if ($order_complete == 'Y') {
                         'value' => function($model, $key) {
                             $an = $model['an'];
                             $bed = $model['bedno'];
-                            return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-cart-plus'></i></span>", ['/food/foodadd/create', 'an' => $an, 'bed' => $bed], [
+                            $ward = $model['ward'];
+                            return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-cart-plus'></i></span>", ['/food/foodadd/create', 'an' => $an, 'bed' => $bed,'ward'=>$ward], [
                                         'class' => 'activity-add-link',
                                         'title' => 'สั่งอาหาร',
                                         'data-toggle' => 'modal',

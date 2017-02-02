@@ -65,6 +65,7 @@ class FoodaddController extends \common\components\AppController  {
 
         $an = $_GET['an'];
         $bed = $_GET['bed'];
+        $tward = $_GET['ward'];
         $tname = '';
         $hn = '';
         $ptname = '';
@@ -98,7 +99,7 @@ class FoodaddController extends \common\components\AppController  {
         // ------------ food history -----------
         $sqlhis = "SELECT foodid,fooddate,foodtime,f.an,f.hn,
                     w.name AS wname,f.icode,n.name AS nname,staff,bedno,
-                    Congenital_disease,comment,bd,cal,f.ward
+                    Congenital_disease,comment,bd,cal,$tward as ward
                     FROM food_detail_01 f
                     LEFT JOIN nutrition_items n ON n.icode = f.icode
                     LEFT JOIN ward w ON w.ward = f.ward

@@ -16,6 +16,23 @@ class DefaultController extends Controller {
      * Renders the index view for the module
      * @return string
      */
+    
+     protected function call($store_name, $arg = NULL) {
+        $sql = "";
+        if ($arg != NULL) {
+            $sql = "call " . $store_name . "(" . $arg . ");";
+        } else {
+            $sql = "call " . $store_name . "();";
+        }
+        $this->exec_sql($sql);
+    }
+    
+     protected function exec_sql($sql) {
+        $affect_row = \Yii::$app->db2->createCommand($sql)->execute();
+        return $affect_row;
+    }
+
+    
     public function actionIndex() {
 
         $connection = Yii::$app->db2;
@@ -75,7 +92,7 @@ class DefaultController extends Controller {
 
         $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,f.foodtime,
-                i.regdate,i.regtime,f.icode,
+                i.regdate,i.regtime,f.icode,i.ward,
                 n.name  AS nname,
                 IF(congenital_disease IS NULL,'',congenital_disease) AS congenital_disease,
 		IF(o.height IS NULL,'',o.height) AS height,
@@ -220,7 +237,7 @@ class DefaultController extends Controller {
 
         $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,f.foodtime,
-                i.regdate,i.regtime,f.icode,
+                i.regdate,i.regtime,f.icode,i.ward,
                 n.name  AS nname,
                 IF(congenital_disease IS NULL,'',congenital_disease) AS congenital_disease,
 		IF(o.height IS NULL,'',o.height) AS height,
@@ -260,7 +277,7 @@ class DefaultController extends Controller {
             if ($running == 'false') {
 
                 $this->call("Jub_Order_food", $ward);
-                //sleep(10);
+                sleep(10);
                 //echo $ward;
                 return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N', 'dataProvider' => $dataProvider]);
             } else {
