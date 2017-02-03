@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * FoodaddController implements the CRUD actions for FoodDetail01 model.
  */
-class FoodaddController extends \common\components\AppController  {
+class FoodaddController extends \common\components\AppController {
 
     /**
      * @inheritdoc
@@ -71,11 +71,11 @@ class FoodaddController extends \common\components\AppController  {
         $ptname = '';
         $aa = 0;
         $anl = '';
-        
+
         //---------------- edit --------------------
-        if (isset($_GET['foodid']) and ($_GET['tstatus'])=='d') {
+        if (isset($_GET['foodid']) and ( $_GET['tstatus']) == 'd') {
             $foodid = $_GET['foodid'];
-           $sql="";
+            $sql = "";
         }
 
         //----------------------- ข้อมูลทั่วไป -------------
@@ -147,13 +147,13 @@ class FoodaddController extends \common\components\AppController  {
         // -------------------- save --------------------------
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //return $this->redirect(['/foodhos', 'ward' => $ward]);
-            $usern =Yii::$app->user->identity->username;
-         
-             $data3 = $connection->createCommand(" INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'Add','$icode_last','$an_l','$hn_l','','$usern') ")->execute();
-             return $this->redirect(['/food/', 'ward' => $ward,'modal'=>1]);
-             /*return $this->redirect(['/', 'ward' => $ward,
-                        'an' => $an, 'bed' => $bed, 'tname' => $tname,
-                        'hn' => $hn, 'ptname' => $ptname,]);*/
+            $usern = Yii::$app->user->identity->username;
+
+            $data3 = $connection->createCommand(" INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'Add','$icode_last','$an_l','$hn_l','','$usern') ")->execute();
+            return $this->redirect(['/food/', 'ward' => $ward, 'modal' => 1]);
+            /* return $this->redirect(['/', 'ward' => $ward,
+              'an' => $an, 'bed' => $bed, 'tname' => $tname,
+              'hn' => $hn, 'ptname' => $ptname,]); */
         } else {
             return $this->renderAjax('create', [
                         'dataProvider' => $dataProvider,
@@ -170,16 +170,56 @@ class FoodaddController extends \common\components\AppController  {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
-        $model = $this->findModel($id);
+    public function actionUpdate() {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->foodid]);
-        } else {
-            return $this->render('update', [
-                        'model' => $model,
-            ]);
+        $connection = Yii::$app->db2;
+        //$model = $this->findModel($id);
+
+        /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
+          return $this->redirect(['view', 'id' => $model->foodid]);
+          } else {
+          return $this->render('update', [
+          'model' => $model,
+          ]);
+          } */
+
+        $id = $_GET['id'];
+        $icode =$_GET['icode'];
+        $Congenital_disease = $_GET['cd'];
+        $comment = $_GET['comment'];
+        $bd = $_GET['bd'];
+        $cal =$_GET['cal'];
+
+
+
+
+
+        $sqlu = "UPDATE food_detail_01 SET icode ='$icode',Congenital_disease='$Congenital_disease',comment='$comment',bd='$bd',cal='$cal' WHERE foodid='$id'";
+        
+
+        try {
+            $datau = $connection->createCommand($sqlu)->execute();
+           
+        } catch (\yii\db\Exception $e) {
+            $datau = 'error';
         }
+        
+        
+        $sql = "SELECT *
+                FROM food_detail_01 f
+                WHERE foodid='$id'";
+        $data = $connection->createCommand($sql)
+                ->queryAll();
+        for ($i = 0; $i < sizeof($data); $i++) {
+            $an = $data[$i]['an'];
+            $fooddate = $data[$i]['fooddate'];
+            $foodtime = $data[$i]['foodtime'];
+        }
+        
+        $datals = $connection->createCommand("UPDATE swdata.food_last SET icode='$icode',fooddate_last='$fooddate',foodtime='$foodtime',Congenital_disease='$Congenital_disease' WHERE an='$an' ")->execute();
+
+
+        return $datau;
     }
 
     /**
@@ -214,7 +254,7 @@ class FoodaddController extends \common\components\AppController  {
     }
 
     public function actionSuccess() {
-        
+
         $this->permitRole([1, 3]);
         $ward = $_GET['ward'];
         $hn = $_GET['hn'];
@@ -223,8 +263,8 @@ class FoodaddController extends \common\components\AppController  {
         $tname = $_GET['tname'];
         return $this->render('success', [
                     'ward' => $ward,
-                        'an' => $an, 'bed' => $bed, 'tname' => $tname,
-                        'hn' => $hn,
+                    'an' => $an, 'bed' => $bed, 'tname' => $tname,
+                    'hn' => $hn,
         ]);
     }
 

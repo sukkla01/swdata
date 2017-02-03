@@ -64,15 +64,15 @@ $ward = '64';
                 </div>
             </div>
             <div class="box-body">
-<?php $form = ActiveForm::begin(['id'=>'foodF']); ?>
+                <?php $form = ActiveForm::begin(['id' => 'foodF']); ?>
 
-
+                <?= $form->field($model, 'foodid')->hiddenInput(['maxlength' => true, 'value' => NULL])->label(FALSE); ?>
                 <?= $form->field($model, 'an')->hiddenInput(['maxlength' => true, 'value' => $an])->label(FALSE); ?>
                 <?= $form->field($model, 'hn')->hiddenInput(['maxlength' => true, 'value' => $hn])->label(FALSE); ?>
                 <?= $form->field($model, 'meal')->hiddenInput(['maxlength' => true, 'value' => 1])->label(FALSE); ?>
                 <?= $form->field($model, 'ward')->hiddenInput(['maxlength' => true, 'value' => $ward])->label(FALSE); ?>
                 <?= $form->field($model, 'fooddate_rec')->hiddenInput(['maxlength' => true, 'value' => date('dmY')])->label(FALSE); ?>
-<?= $form->field($model, 'staff')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->identity->username])->label(FALSE); ?>
+                <?= $form->field($model, 'staff')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->user->identity->username])->label(FALSE); ?>
 
                 <div class="raw">
                     <div class="col-lg-4">
@@ -111,11 +111,12 @@ $ward = '64';
                         <?=
                         $form->field($model, 'icode')->widget(Select2::className(), [
                             'initValueText' => 'ssss',
-                            'value' => '1',
+                            'value' => '5000025',
                             'data' =>
                             ArrayHelper::map(app\models\NutritionItems::find()->all(), 'icode', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->',
+                                'value' => '5000025',
                             //'onchange' => 'alert (this.value)',
                             ],
                             'pluginOptions' =>
@@ -141,13 +142,7 @@ $ward = '64';
                         ]);
                         ?> 
                     </div>
-                    <div class="col-lg-8">
-<?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
-                    </div>
-                </div>
-
-                <div class="raw">
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <?=
                         $form->field($model, 'bd')->widget(Select2::className(), ['data' =>
                             ArrayHelper::map(app\models\NurBd::find()->all(), 'name', 'name'),
@@ -160,9 +155,7 @@ $ward = '64';
                         ]);
                         ?> 
                     </div>
-
-
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <?=
                         $form->field($model, 'cal')->widget(Select2::className(), ['data' =>
                             ArrayHelper::map(app\models\NurCal::find()->all(), 'name', 'name'),
@@ -177,14 +170,25 @@ $ward = '64';
                     </div>
 
                 </div>
+
+                <div class="raw">
+
+                    <div class="col-lg-12">
+                        <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
+                    </div>
+
+
+
+                </div>
                 <br>
 
                 <div class="row">
                     <div class="col-lg-6">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= Html::submitButton($model->isNewRecord ? 'เพิ่ม' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= Html::submitButton($model->isNewRecord ? 'เพิ่ม' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'addt']) ?>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<button type="button"  id="editf" class="btn btn-warning" onclick="link1()" disabled>แก้ไข</button> 
                     </div>
                 </div>
-<?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
 
             </div>
@@ -243,23 +247,6 @@ $ward = '64';
                         'attribute' => 'cal',
                         'label' => 'ความเข้มข้น'
                     ],
-                    /* [
-                      'attribute' => 'foodid',
-                      'label' => 'แก้ไข',
-                      'value' => function($model, $key) {
-                      $foodid = $model['foodid'];
-                      $an = $model['an'];
-                      $bed = $model['bedno'];
-                      $fooddate = $model['fooddate'];
-                      $foodtime = $model['foodtime'];
-                      return Html::a("<i class='fa fa-pencil'></i>", ['', 'foodid' => $foodid,
-                      'an' => $an, 'bed' => $bed, 'tstatus' => 'e'], [
-                      ]);
-                      },
-                      'filterType' => GridView::FILTER_COLOR,
-                      'hAlign' => 'middle',
-                      'format' => 'raw',
-                      ], */
                         [
                         'attribute' => 'foodid',
                         'label' => 'แก้ไข',
@@ -314,15 +301,15 @@ $ward = '64';
                     //'filterModel' => $searchModel,
                     'rowOptions' => function($model) {
                         $url = Url::to(['controller/action', 'id' => $model['foodid']]);
-                        $id= $model['foodid']   ;
-                         $an=$model['an'];
-                        $fooddate=$model['fooddate'];
-                        $foodtime=$model['foodtime'];
-                        $icode=$model['icode'];
-                        $Congenital_disease=$model['Congenital_disease'];
-                        $bd=$model['bd'];
-                        $cal=$model['cal'];
-                        $comment=$model['comment'];
+                        $id = $model['foodid'];
+                        $an = $model['an'];
+                        $fooddate = $model['fooddate'];
+                        $foodtime = $model['foodtime'];
+                        $icode = $model['icode'];
+                        $Congenital_disease = $model['Congenital_disease'];
+                        $bd = $model['bd'];
+                        $cal = $model['cal'];
+                        $comment = $model['comment'];
                         return [
                             'onclick' => "edit($id,$an,'$fooddate','$foodtime','$icode','$Congenital_disease','$bd','$cal','$comment')"
                         ];
@@ -344,6 +331,7 @@ $ward = '64';
 <div class="modal-footer">
 
     <button type="button" class="btn btn-danger" id="clan" data-dismiss="modal">ปิด</button>
+
 </div>
 
 
@@ -362,23 +350,73 @@ $('#taf').click(function() {
                     
                           console.log(document.location);
                 });
+   $('#fooddetail01-icode').change(function() {
+        //alert('ddd');
+       });
         
   function edit(id,an,fooddate,foodtime,icode,Congenital_disease,bd,cal,comment){
-        //document.getElementById("fooddetail01-comment").setAttribute('value','My default value');
-        document.getElementById("fooddetail01-comment").value = comment;
+        
+         document.getElementById("fooddetail01-foodid").value = id;
+         document.getElementById("fooddetail01-fooddate").value = fooddate;
+         document.getElementById("fooddetail01-foodtime").value = foodtime;
+         document.getElementById("fooddetail01-icode").value = icode;
+         document.getElementById("fooddetail01-congenital_disease").value = Congenital_disease;
+         document.getElementById("fooddetail01-comment").value = comment;
+         document.getElementById("fooddetail01-bd").value = bd;
+        document.getElementById("fooddetail01-cal").value = cal;
+        
+        
+        document.getElementById("addt").disabled = true;
+        document.getElementById("editf").disabled = false;
+        
+      
+        
+        
+        //document.getElementById("fooddetail01-icode").selectedIndex = 5;
+        
+        //document.getElementById('fooddetail01-icode').getElementsByTagName('option')[5].selected = 'selected'
+   
+   //var  tt = $("#fooddetail01-icode").val(icode);
+   //     alert(icode);
+        
+        
+        
+        
+        
+        //setSelectedIndex(document.getElementById("fooddetail01-icode"),5);
         //console.log(current);
        // console.log(an);
-}      
+};   
+        
+        
+        function link1(){
+            var foodid = document.getElementById("fooddetail01-foodid").value;
+            var icode = document.getElementById("fooddetail01-icode").value ;
+            var cd = document.getElementById("fooddetail01-congenital_disease").value ;
+            var comment = document.getElementById("fooddetail01-comment").value;
+            var bd = document.getElementById("fooddetail01-bd").value;
+            var cal = document.getElementById("fooddetail01-cal").value;
+            
+        
+        
+        $.ajax({
+            type: 'POST', url: './index.php?r=food/foodadd/update&id='+foodid+'&icode='+icode+'&cd='+cd+'&comment='+comment+'&bd='+bd+'&cal='+cal, dataType: 'json',
+                data: {
+                    
+                    
+                }, success: function(se) {
+                    if(se>0){
+                      alert('แก้ไขเรียบร้อยแล้ว');      
+        }              window.location='./index.php?r=food&ward=' + $ward +'&modal=1';
+                 }
+        }); 
+
+        
+        };
     
         
-function init_click_handlers(){
-  $(".edit").click(function() {
-      // lol = document.getElementById('lolz');
-  console.log(document.getElementById('gg'));
-  });
 
-  }
-  init_click_handlers(); 
+   
 JS;
 $this->registerJs($script);
 ?>
