@@ -83,7 +83,7 @@ $ward = '64';
                             'language' => 'th',
                             'inline' => FALSE,
                             'dateFormat' => 'yyyy-MM-dd',
-                            'options' => ['class' => 'form-control', 'value' => '2015-01-01',],
+                            'options' => ['class' => 'form-control', 'value' => date('Y-m-d'),],
                             'clientOptions' => [
                                 //'value' => '2015-01-01',
                                 //'defaultDate' => '2016-01-01',
@@ -110,13 +110,13 @@ $ward = '64';
                     <div class="col-lg-6">
                         <?=
                         $form->field($model, 'icode')->widget(Select2::className(), [
-                            'initValueText' => 'ssss',
-                            'value' => '5000025',
+                            //'initValueText' => 'ssss',
+                            //'value' => '5000025',
                             'data' =>
                             ArrayHelper::map(app\models\NutritionItems::find()->all(), 'icode', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->',
-                                'value' => '5000025',
+                                //'value' => '5000025',
                             //'onchange' => 'alert (this.value)',
                             ],
                             'pluginOptions' =>
