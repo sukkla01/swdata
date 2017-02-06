@@ -12,7 +12,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\FoodDetail01 */
 /* @var $form yii\widgets\ActiveForm */
-$ward = '64';
+//$ward = '64';
 ?>
 <div class="row" >
     <div class="col-md-12">
