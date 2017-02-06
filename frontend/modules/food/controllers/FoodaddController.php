@@ -173,6 +173,8 @@ class FoodaddController extends \common\components\AppController {
     public function actionUpdate() {
 
         $connection = Yii::$app->db2;
+
+        $usern = Yii::$app->user->identity->username;
         //$model = $this->findModel($id);
 
         /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -184,27 +186,26 @@ class FoodaddController extends \common\components\AppController {
           } */
 
         $id = $_GET['id'];
-        $icode =$_GET['icode'];
+        $icode = $_GET['icode'];
         $Congenital_disease = $_GET['cd'];
         $comment = $_GET['comment'];
         $bd = $_GET['bd'];
-        $cal =$_GET['cal'];
+        $cal = $_GET['cal'];
 
 
 
 
 
         $sqlu = "UPDATE food_detail_01 SET icode ='$icode',Congenital_disease='$Congenital_disease',comment='$comment',bd='$bd',cal='$cal' WHERE foodid='$id'";
-        
+
 
         try {
             $datau = $connection->createCommand($sqlu)->execute();
-           
         } catch (\yii\db\Exception $e) {
             $datau = 'error';
         }
-        
-        
+
+
         $sql = "SELECT *
                 FROM food_detail_01 f
                 WHERE foodid='$id'";
@@ -212,11 +213,62 @@ class FoodaddController extends \common\components\AppController {
                 ->queryAll();
         for ($i = 0; $i < sizeof($data); $i++) {
             $an = $data[$i]['an'];
+            $hn = $data[$i]['hn'];
             $fooddate = $data[$i]['fooddate'];
             $foodtime = $data[$i]['foodtime'];
         }
-        
+
         $datals = $connection->createCommand("UPDATE swdata.food_last SET icode='$icode',fooddate_last='$fooddate',foodtime='$foodtime',Congenital_disease='$Congenital_disease' WHERE an='$an' ")->execute();
+        if ($datals > 0) {
+            $data2 = $connection->createCommand("INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'edit','$icode','$an','$hn','','$usern') ")->execute();
+        }
+
+
+        //------------- begin notify --------------
+
+        define('LINE_API', "https://notify-api.line.me/api/notify");
+        define('LINE_TOKEN', '4JMbcxPuLoRFjrHa2K5wY1ijkeGUCaJFp9RCRTvGNI4');
+        $connection = Yii::$app->db2;
+        $sqlm = "SELECT CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,n.name AS nname,f.logdate,logtime
+                        FROM food_log_01 f
+                        LEFT JOIN nutrition_items n ON n.icode = f.icode
+                        LEFT JOIN patient p ON p.hn = f.hn
+                        WHERE an ='$an'  AND modifytype='edit'
+                        ORDER BY f.logdate,logtime DESC 
+                        LIMIT 1 ";
+        $datam = $connection->createCommand($sqlm)
+                ->queryAll();
+        for ($im = 0; $im < sizeof($datam); $im++) {
+            $tname = $datam[$im]['tname'];
+            $nname = $datam[$im]['nname'];
+            $logdate = $datam[$im]['logdate'];
+            $logtime = $datam[$im]['logtime'];
+        }
+        $getip = Yii::$app->getRequest()->getUserIP();
+
+        function notify_message($message) {
+
+            $queryData = array('message' => $message);
+            $queryData = http_build_query($queryData, '', '&');
+            $headerOptions = array(
+                'http' => array(
+                    'method' => 'POST',
+                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n"
+                    . "Authorization: Bearer " . LINE_TOKEN . "\r\n"
+                    . "Content-Length: " . strlen($queryData) . "\r\n",
+                    'content' => $queryData
+                )
+            );
+            $context = stream_context_create($headerOptions);
+            $result = file_get_contents(LINE_API, FALSE, $context);
+            $res = json_decode($result);
+            //return $res;
+        }
+
+        $res = notify_message($tname.' เตียง '.' เปลี่ยนอาหารเป็น '.$nname.' วันที่ '.$logdate.' เวลา '.$logtime);
+        //var_dump($res);
+        //------------- end notify --------------
+
 
 
         return $datau;
