@@ -54,7 +54,7 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li>
-                <a href="<?= Url::to('index.php?r=foodhos') ?>">
+                <a href="<?= Url::to('index.php?r=food') ?>">
                     <i class="fa fa-apple"></i> <span>ระบบสั่งอาหารผู้ป่วยใน</span>
 
                 </a>
@@ -90,7 +90,7 @@ use yii\helpers\Url;
                                     ?>
                                 </small>
                             </span>รายงานใหม่</a></li>
-                    <li><a href="http://203.157.82.75/datasrisangworn" target="_blank"><i class="fa fa-circle-o"></i>รายงานเก่า</a></li>
+                    <li><a href="http://192.168.1.13/datasrisangworn" target="_blank"><i class="fa fa-circle-o"></i>รายงานเก่า</a></li>
                 </ul>
             </li>
             <li class="treeview">
