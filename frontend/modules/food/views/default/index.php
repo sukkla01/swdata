@@ -47,10 +47,10 @@ if ($order_complete == 'Y') {
 ?>
 
 <?php if ($process == 'Y') { ?>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="alert alert-success alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <h4><i class="icon fa fa-check"></i> สั่งอาหารเรียบร้อยแล้ว!</h4>
+            <h4><i class="icon fa fa-check"></i> สั่งอาหารเรียบร้อยแล้ว!  refresh ข้อมูลโดยการกด ประมวลผล</h4>
 
         </div>    
     </div>

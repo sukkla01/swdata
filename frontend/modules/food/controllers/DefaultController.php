@@ -277,7 +277,7 @@ class DefaultController extends Controller {
             if ($running == 'false') {
 
                 $this->call("Jub_Order_food", $ward);
-                sleep(10);
+                //sleep(10);
                 //echo $ward;
                 return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N', 'dataProvider' => $dataProvider]);
             } else {
