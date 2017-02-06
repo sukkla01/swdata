@@ -333,11 +333,28 @@ use yii\helpers\Url;
 
     <button type="button" class="btn btn-danger" id="clan" data-dismiss="modal">ปิด</button>
 
-</div>
-
 
 <?php
 $script = <<< JS
+        var an = $an;
+ document.getElementById("addt").disabled = false;        
+ $(document).ready(function() {
+    
+   $.ajax({
+            type: 'POST', url: './index.php?r=food/foodadd/btnadd&an='+an, dataType: 'json',
+                data: {
+                    
+                    
+                }, success: function(se) {
+                    if(se>0){
+                       document.getElementById("addt").disabled = true; 
+                      alert('วันนี้มีก่ีสั่งอาหารแล้ว');      
+        }             
+                 }
+        }); 
+   
+});
+        
 $('#taf').click(function() {
                     
                            window.location='./index.php?r=food&ward=' + $ward +'&modal=1';

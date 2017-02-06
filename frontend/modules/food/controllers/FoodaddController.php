@@ -61,6 +61,7 @@ class FoodaddController extends \common\components\AppController {
     public function actionCreate() {
         $this->permitRole([1, 3]);
         $connection = Yii::$app->db2;
+        $usern = Yii::$app->user->identity->username;
         $model = new FoodDetail01();
 
         $an = $_GET['an'];
@@ -80,10 +81,11 @@ class FoodaddController extends \common\components\AppController {
 
         //----------------------- ข้อมูลทั่วไป -------------
         $sql = "select i.an,i.hn,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
-                t.name AS ptname,i.ward
+                t.name AS ptname,i.ward,w.name as wname
                 from  ipt i
                 LEFT JOIN patient p ON p.hn=i.hn
                 LEFT JOIN pttype t ON t.pttype = i.pttype
+                LEFT JOIN ward w ON w.ward = i.ward
                 WHERE an='$an' ";
 
         $data = $connection->createCommand($sql)
@@ -93,6 +95,7 @@ class FoodaddController extends \common\components\AppController {
             $hn = $data[$i]['hn'];
             $ptname = $data[$i]['ptname'];
             $ward = $data[$i]['ward'];
+            $wname = $data[$i]['wname'];
         }
 
 
@@ -141,6 +144,52 @@ class FoodaddController extends \common\components\AppController {
             } else {
                 $datals = $connection->createCommand("UPDATE swdata.food_last SET icode='$icode_last',fooddate_last='$fooddate_last',foodtime='$foodtime',Congenital_disease='$cd' WHERE an='$an_l' ")->execute();
             }
+
+
+            //------------- begin notify --------------
+            $sql2 = " SELECT value FROM food_setting WHERE type='line_token' ";
+            $command = Yii::$app->db->createCommand($sql2);
+            $linetoken = $command->queryScalar();
+
+            $sql3 = " SELECT name FROM nutrition_items WHERE icode ='$icode_last' ";
+            $command = Yii::$app->db2->createCommand($sql3);
+            $nname = $command->queryScalar();
+
+
+            $sql4 = " SELECT COUNT(an) FROM food_detail_01 WHERE an='$an_l'";
+            $command = Yii::$app->db2->createCommand($sql4);
+            $newcase = $command->queryScalar();
+
+            if($newcase==0) {
+
+                define('LINE_API', "https://notify-api.line.me/api/notify");
+                define('LINE_TOKEN', $linetoken);
+                $connection = Yii::$app->db2;
+                $getip = Yii::$app->getRequest()->getUserIP();
+
+                function notify_message($message) {
+
+                    $queryData = array('message' => $message);
+                    $queryData = http_build_query($queryData, '', '&');
+                    $headerOptions = array(
+                        'http' => array(
+                            'method' => 'POST',
+                            'header' => "Content-Type: application/x-www-form-urlencoded\r\n"
+                            . "Authorization: Bearer " . LINE_TOKEN . "\r\n"
+                            . "Content-Length: " . strlen($queryData) . "\r\n",
+                            'content' => $queryData
+                        )
+                    );
+                    $context = stream_context_create($headerOptions);
+                    $result = file_get_contents(LINE_API, FALSE, $context);
+                    $res = json_decode($result);
+                    //return $res;
+                }
+
+                $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bed . ' เพิ่มอาหารใหม่ ' . $nname . ' วันที่ ' . $fooddate_last . ' เวลา ' . $foodtime . ' โดย ' . $usern);
+                //var_dump($res);
+                //------------- end notify --------------
+            }
         }
 
 
@@ -170,6 +219,15 @@ class FoodaddController extends \common\components\AppController {
      * @param integer $id
      * @return mixed
      */
+    public function actionBtnadd() {
+        $an=$_GET['an'];
+        $sql ="SELECT COUNT(an) AS tcount FROM food_detail_01 WHERE an='$an' AND  fooddate = CURDATE() ";
+        $command = Yii::$app->db2->createCommand($sql);
+        $btncount = $command->queryScalar();
+
+        return $btncount ;
+        
+    }
     public function actionUpdate() {
 
         $connection = Yii::$app->db2;
@@ -277,7 +335,7 @@ class FoodaddController extends \common\components\AppController {
             //return $res;
         }
 
-        $res = notify_message($tname.' ตึก '.$wname.' เตียง '.$bedno.' เปลี่ยนอาหารเป็น '.$nname.' วันที่ '.$logdate.' เวลา '.$logtime.' โดย '.$staff);
+        $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bedno . ' เปลี่ยนอาหารเป็น ' . $nname . ' วันที่ ' . $logdate . ' เวลา ' . $logtime . ' โดย ' . $staff);
         //var_dump($res);
         //------------- end notify --------------
 
