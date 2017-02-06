@@ -225,17 +225,26 @@ class FoodaddController extends \common\components\AppController {
 
 
         //------------- begin notify --------------
+        $sql2 = " SELECT value FROM food_setting WHERE type='line_token' ";
+        $command = Yii::$app->db->createCommand($sql2);
+        $linetoken = $command->queryScalar();
+
 
         define('LINE_API', "https://notify-api.line.me/api/notify");
-        define('LINE_TOKEN', '4JMbcxPuLoRFjrHa2K5wY1ijkeGUCaJFp9RCRTvGNI4');
+        define('LINE_TOKEN', $linetoken);
         $connection = Yii::$app->db2;
-        $sqlm = "SELECT CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,n.name AS nname,f.logdate,logtime
+        $sqlm = "SELECT CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,n.name AS nname,f.logdate,logtime,i.bedno,
+			 w.name AS wname,f.staff
                         FROM food_log_01 f
                         LEFT JOIN nutrition_items n ON n.icode = f.icode
                         LEFT JOIN patient p ON p.hn = f.hn
-                        WHERE an ='$an'  AND modifytype='edit'
+			LEFT JOIN  iptadm i ON i.an = f.an
+			LEFT JOIN ipt t ON t.an=f.an
+			LEFT JOIN ward w ON w.ward = t.ward
+                        WHERE f.an ='$an'  AND modifytype='edit'
                         ORDER BY f.logdate,logtime DESC 
-                        LIMIT 1 ";
+                        LIMIT 1
+ ";
         $datam = $connection->createCommand($sqlm)
                 ->queryAll();
         for ($im = 0; $im < sizeof($datam); $im++) {
@@ -243,6 +252,9 @@ class FoodaddController extends \common\components\AppController {
             $nname = $datam[$im]['nname'];
             $logdate = $datam[$im]['logdate'];
             $logtime = $datam[$im]['logtime'];
+            $bedno = $datam[$im]['bedno'];
+            $wname = $datam[$im]['wname'];
+            $staff = $datam[$im]['staff'];
         }
         $getip = Yii::$app->getRequest()->getUserIP();
 
@@ -265,7 +277,7 @@ class FoodaddController extends \common\components\AppController {
             //return $res;
         }
 
-        $res = notify_message($tname.' เตียง '.' เปลี่ยนอาหารเป็น '.$nname.' วันที่ '.$logdate.' เวลา '.$logtime);
+        $res = notify_message($tname.' ตึก '.$wname.' เตียง '.$bedno.' เปลี่ยนอาหารเป็น '.$nname.' วันที่ '.$logdate.' เวลา '.$logtime.' โดย '.$staff);
         //var_dump($res);
         //------------- end notify --------------
 
