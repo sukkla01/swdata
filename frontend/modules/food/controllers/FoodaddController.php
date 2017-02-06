@@ -234,7 +234,7 @@ class FoodaddController extends \common\components\AppController {
         define('LINE_TOKEN', $linetoken);
         $connection = Yii::$app->db2;
         $sqlm = "SELECT CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,n.name AS nname,f.logdate,logtime,i.bedno,
-			 w.name AS wname,f.staff
+			 w.name AS wname,f.loginname as staff
                         FROM food_log_01 f
                         LEFT JOIN nutrition_items n ON n.icode = f.icode
                         LEFT JOIN patient p ON p.hn = f.hn
