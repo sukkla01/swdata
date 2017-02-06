@@ -108,6 +108,7 @@ $ward = '64';
                         ?>
                     </div>
                     <div class="col-lg-6">
+                        
                         <?=
                         $form->field($model, 'icode')->widget(Select2::className(), [
                             //'initValueText' => 'ssss',
