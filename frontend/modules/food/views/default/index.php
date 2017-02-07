@@ -17,8 +17,8 @@ use kartik\alert\Alert;
 
 
 <?php
-        $tan = '';
-        $sql = "SELECT f.an,
+$tan = '';
+$sql = "SELECT f.an,
                         COUNT(foodid)  as tcount
                         FROM food_detail_01  f
                         LEFT JOIN ipt i ON i.an=f.an
@@ -26,12 +26,12 @@ use kartik\alert\Alert;
                         AND f.ward='$ward' AND i.dchdate IS NULL
                         GROUP BY an,fooddate
                         HAVING tcount >1  ";
-        $connection = Yii::$app->db2;
-        $data = $connection->createCommand($sql)
-                ->queryAll();
-        for ($i = 0; $i < sizeof($data); $i++) {
-            $tan = $data[$i]['an'];
-        }
+$connection = Yii::$app->db2;
+$data = $connection->createCommand($sql)
+        ->queryAll();
+for ($i = 0; $i < sizeof($data); $i++) {
+    $tan = $data[$i]['an'];
+}
 ?>
 
 
@@ -63,7 +63,7 @@ if ($order_complete == 'Y') {
 
 
 
-                 <?php
+                <?php
                 ActiveForm::begin([
                     'method' => 'post',
                     'action' => Url::to(['/food', ['ward' => $ward]]),
@@ -171,9 +171,9 @@ if ($order_complete == 'Y') {
                         'value' => function ($model, $key, $index, $widget) {
                             $cdate = date('Y-m-d');
                             if ($model['fooddate'] == $cdate) {
-                                return "<font class='text-green'>" . $model['fooddate'].' '.$model['foodtime'] . "</font>";
+                                return "<font class='text-green'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
                             } else {
-                                return "<font class='text-red'>" . $model['fooddate'].' '.$model['foodtime'] . "</font>";
+                                return "<font class='text-red'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
                             }
                         },
                         'filterType' => GridView::FILTER_COLOR,
@@ -192,7 +192,9 @@ if ($order_complete == 'Y') {
                     ],
                         [
                         'attribute' => 'bw',
-                        'label' => 'น้ำหนัก'
+                        'label' => 'น้ำหนัก',
+                        'format' => ['decimal', 0],
+                        'hAlign' => 'center',
                     ],
                         [
                         'attribute' => 'bmi',
@@ -205,7 +207,7 @@ if ($order_complete == 'Y') {
                             $an = $model['an'];
                             $bed = $model['bedno'];
                             $ward = $model['ward'];
-                            return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-cart-plus'></i></span>", ['/food/foodadd/create', 'an' => $an, 'bed' => $bed,'ward'=>$ward], [
+                            return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-cart-plus'></i></span>", ['/food/foodadd/create', 'an' => $an, 'bed' => $bed, 'ward' => $ward], [
                                         'class' => 'activity-add-link',
                                         'title' => 'สั่งอาหาร',
                                         'data-toggle' => 'modal',
@@ -296,7 +298,6 @@ if ($order_complete == 'Y') {
                         $connection = Yii::$app->db2;
                         $data = $connection->createCommand($sql)
                                 ->queryAll();
-                        
                         ?>
                         <table class="table">
                             <thead class="thead-inverse">

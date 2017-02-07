@@ -187,6 +187,7 @@ use yii\helpers\Url;
                     <div class="col-lg-6">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= Html::submitButton($model->isNewRecord ? 'เพิ่ม' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'addt']) ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;<button type="button"  id="editf" class="btn btn-warning" onclick="link1()" disabled>แก้ไข</button> 
+                        &nbsp;&nbsp;&nbsp;&nbsp;<button type="button"  id="dis" class="btn btn-danger"  >จำหน่าย</button> 
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>
@@ -336,10 +337,15 @@ use yii\helpers\Url;
 
 <?php
 $script = <<< JS
-        var an = $an;
- document.getElementById("addt").disabled = false;        
+        
+//------------ บุ่มเพิ่ม --------------------
+ var an = $an;
+ document.getElementById("addt").disabled = false;    
+ document.getElementById("fooddetail01-cal").disabled = true; 
  $(document).ready(function() {
     
+        
+        
    $.ajax({
             type: 'POST', url: './index.php?r=food/foodadd/btnadd&an='+an, dataType: 'json',
                 data: {
@@ -348,30 +354,48 @@ $script = <<< JS
                 }, success: function(se) {
                     if(se>0){
                        document.getElementById("addt").disabled = true; 
-                      alert('วันนี้มีก่ีสั่งอาหารแล้ว');      
+                      alert('วันนี้มีการสั่งอาหารแล้ว');      
         }             
                  }
         }); 
+    $.ajax({
+            type: 'POST', url: './index.php?r=food/foodadd/btndis2&an='+an, dataType: 'json',
+                data: {
+                    
+                    
+                }, success: function(se) {
+                    if(se>0){
+                       document.getElementById("dis").disabled = true; 
+                       document.getElementById("dis").firstChild.data  = "ยกเลิกจำหน่าย"; 
+        }             
+                 }
+        }); 
+        
    
 });
-        
+ //----------- ปุ่มปิด -------------------------       
 $('#taf').click(function() {
                     
                            window.location='./index.php?r=food&ward=' + $ward +'&modal=1';
                 });
-   $('#clan').click(function() {
+        
+ //----------- ปุ่มปิด -------------------------   
+$('#clan').click(function() {
                     
                            window.location='./index.php?r=food&ward=' + $ward+'&modal=1';
                 });
         
+        
+//---------  ปุ่มแก้ไข ----------------------------------------        
    $('#edit').click(function() {
                     
                           console.log(document.location);
-                });
+    });
    $('#fooddetail01-icode').change(function() {
         //alert('ddd');
        });
         
+ //---------------- การกดแก้ไข
   function edit(id,an,fooddate,foodtime,icode,Congenital_disease,bd,cal,comment){
         
          document.getElementById("fooddetail01-foodid").value = id;
@@ -388,22 +412,9 @@ $('#taf').click(function() {
         document.getElementById("editf").disabled = false;
         
       
+       
         
         
-        //document.getElementById("fooddetail01-icode").selectedIndex = 5;
-        
-        //document.getElementById('fooddetail01-icode').getElementsByTagName('option')[5].selected = 'selected'
-   
-   //var  tt = $("#fooddetail01-icode").val(icode);
-   //     alert(icode);
-        
-        
-        
-        
-        
-        //setSelectedIndex(document.getElementById("fooddetail01-icode"),5);
-        //console.log(current);
-       // console.log(an);
 };   
         
         
@@ -431,6 +442,27 @@ $('#taf').click(function() {
 
         
         };
+        
+        
+ $('#dis').click(function() {
+     $.ajax({
+            type: 'POST', url: './index.php?r=food/foodadd/btndis&an='+an, dataType: 'json',
+                data: {
+                    
+                    
+                }, success: function(se) {
+                    if(se>0){
+                       
+                      alert('จำหน่ายเรียบร้อยแล้ว');      
+                      document.getElementById("dis").disabled = true; 
+        }             
+                 },err(){
+                    console.log('ddd');
+        }
+        }); 
+   
+        
+ });
     
         
 

@@ -140,7 +140,7 @@ class FoodaddController extends \common\components\AppController {
                 $anl = $datalast[$it]['an'];
             }
             if ($anl == '') {
-                $datals = $connection->createCommand("INSERT INTO swdata.food_last VALUES ('$hn_l','$an_l','$icode_last','$fooddate_last','$foodtime','$cd')")->execute();
+                $datals = $connection->createCommand("INSERT INTO swdata.food_last VALUES ('$hn_l','$an_l','$icode_last','$fooddate_last','$foodtime','$cd',NULL)")->execute();
             } else {
                 $datals = $connection->createCommand("UPDATE swdata.food_last SET icode='$icode_last',fooddate_last='$fooddate_last',foodtime='$foodtime',Congenital_disease='$cd' WHERE an='$an_l' ")->execute();
             }
@@ -228,6 +228,32 @@ class FoodaddController extends \common\components\AppController {
         return $btncount ;
         
     }
+    public function actionBtndis() {
+        $an=$_GET['an'];
+        $connection = Yii::$app->db;
+        /*$sql ="SELECT dis FROM food_last WHERE an='$an'";
+        $command = Yii::$app->db->createCommand($sql);
+        $btndis= $command->queryScalar();*/
+        $datals = $connection->createCommand("UPDATE food_last SET dis='Y' WHERE an='$an'")->execute();
+
+        return $datals ;
+        
+    }
+    
+    public function actionBtndis2() {
+        $an=$_GET['an'];
+        $connection = Yii::$app->db;
+        $sql ="SELECT COUNT(an) FROM food_last WHERE an='$an' AND dis ='Y' ";
+        $command = Yii::$app->db->createCommand($sql);
+        $btndis= $command->queryScalar();
+
+        return $btndis ;
+        
+    }
+    
+    
+    
+    
     public function actionUpdate() {
 
         $connection = Yii::$app->db2;
