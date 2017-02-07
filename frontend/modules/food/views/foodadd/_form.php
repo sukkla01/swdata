@@ -341,7 +341,7 @@ $script = <<< JS
 //------------ บุ่มเพิ่ม --------------------
  var an = $an;
  document.getElementById("addt").disabled = false;    
- document.getElementById("fooddetail01-cal").disabled = true; 
+ //document.getElementById("fooddetail01-cal").disabled = true; 
  $(document).ready(function() {
     
         
