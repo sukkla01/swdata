@@ -160,7 +160,7 @@ class DefaultController extends Controller {
             'marginHeader' => false,
             'marginFooter' => false,
             // portrait orientation 
-            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'orientation' => Pdf::ORIENT_LANDSCAPE,
             // stream to browser inline 
             'destination' => Pdf::DEST_BROWSER,
             // your html content input 

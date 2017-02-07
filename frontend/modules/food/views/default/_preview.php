@@ -74,11 +74,11 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
 
 <table class="table_bordered" width="100%" border="0" cellpadding="2" cellspacing="0"> 
     <tr> 
-        <td height="30">No</td> 
-        <td>เตียง</td> 
+        <td height="30" align="center" >No</td> 
+        <td align="center">เตียง</td> 
         <td>ชื่อ-สกุล</td> 
-        <td>อายุ/ปี</td> 
-        <td>โรคประจำตัว</td> 
+        <td align="center">อายุ/ปี</td> 
+        <td align="center">โรคประจำตัว</td> 
         <td>รายการอาหาร</td> 
         <td>หมายเหตุ</td> 
     </tr> 
@@ -93,9 +93,9 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
        
         ?>
         <tr> 
-            <td width="8%"  align="center" height="32"><?= $i + 1 ?></td> 
-            <td width="8%" align="center"><?=$bedno?></td> 
-            <td width="25%" align="left"><?=$tname?></td> 
+            <td width="3%"  align="center" height="32"><?= $i + 1 ?></td> 
+            <td width="5%" align="center"><?=$bedno?></td> 
+            <td width="25%" align="left">&nbsp; <?=$tname?></td> 
             <td width="8%" align="center"><?=$tage?></td> 
             <td width="10%" align="left"><?=$cd?></td> 
             <td width="35%" align="left"><?=$nname?></td> 

@@ -239,6 +239,8 @@ if ($order_complete == 'Y') {
                         'target' => GridView::TARGET_BLANK
                     ],
                     'columns' => $gridColumns,
+                    'responsive' => true,
+                    'hover' => true,
                     'resizableColumns' => true,
                         // 'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
                         //'floatHeader' => true,
