@@ -17,7 +17,8 @@ use yii\helpers\Html;
 
 $sql = "SELECT a.bedno,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
             CONCAT(s.age_y) AS tage,
-            f.Congenital_disease as cd,CONCAT(f.bd,' ',f.cal,' ',n.name) AS nname,f.comment
+            f.Congenital_disease as cd,CONCAT(f.bd,' ',f.cal,' ',n.name) AS nname,f.comment,
+            IF(l.dis = 'Y','จำหน่ายแล้ว','') AS tdis
             FROM ipt i
             LEFT JOIN patient p ON p.hn = i.hn
             LEFT JOIN iptadm a ON a.an = i.an
@@ -25,6 +26,7 @@ $sql = "SELECT a.bedno,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
             LEFT JOIN food_detail_01 f ON f.an = i.an AND f.fooddate = CURDATE()
             LEFT JOIN nutrition_items n ON n.icode = f.icode
             LEFT JOIN ward w ON w.ward = i.ward
+            LEFT JOIN swdata.food_last l ON l.an = i.an
             WHERE i.dchdate IS NULL AND w.spclty ='$ward'
                 #AND n.name IS NOT NULL
             ORDER BY  a.bedno ";
@@ -90,6 +92,7 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
         $cd = $data[$i]['cd'];
         $nname = $data[$i]['nname'];
         $comment = $data[$i]['comment'];
+        $tdis = $data[$i]['tdis'];
        
         ?>
         <tr> 
@@ -99,7 +102,7 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
             <td width="8%" align="center"><?=$tage?></td> 
             <td width="10%" align="left"><?=$cd?></td> 
             <td width="35%" align="left"><?=$nname?></td> 
-            <td width="22%" align="left"><?=$comment?></td> 
+            <td width="22%" align="left"><?=$comment.' '.$tdis?></td> 
         </tr> 
 
     <?php } ?>

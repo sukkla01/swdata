@@ -345,7 +345,7 @@ $script = <<< JS
  $(document).ready(function() {
     
         
-        
+   //-------- เช็คว่าวันนี้มีการสั่งอาหารแล้วหรือยัง -------------------     
    $.ajax({
             type: 'POST', url: './index.php?r=food/foodadd/btnadd&an='+an, dataType: 'json',
                 data: {
@@ -358,6 +358,8 @@ $script = <<< JS
         }             
                  }
         }); 
+        
+    //-------- เช็คว่าสั่งจำหน่ายแล้วหรือยัง -------------------      
     $.ajax({
             type: 'POST', url: './index.php?r=food/foodadd/btndis2&an='+an, dataType: 'json',
                 data: {
@@ -365,7 +367,8 @@ $script = <<< JS
                     
                 }, success: function(se) {
                     if(se>0){
-                       document.getElementById("dis").disabled = true; 
+                        //document.getElementById('dis').style.visibility = 'hidden';
+                       //document.getElementById("dis").disabled = true; 
                        document.getElementById("dis").firstChild.data  = "ยกเลิกจำหน่าย"; 
         }             
                  }
@@ -395,7 +398,7 @@ $('#clan').click(function() {
         //alert('ddd');
        });
         
- //---------------- การกดแก้ไข
+ //---------------- การกดแก้ไข ---------------------
   function edit(id,an,fooddate,foodtime,icode,Congenital_disease,bd,cal,comment){
         
          document.getElementById("fooddetail01-foodid").value = id;
@@ -443,24 +446,46 @@ $('#clan').click(function() {
         
         };
         
-        
+ 
+ //-------------------- ปุ่มจำหน่าย ------------------------------------------
  $('#dis').click(function() {
-     $.ajax({
-            type: 'POST', url: './index.php?r=food/foodadd/btndis&an='+an, dataType: 'json',
-                data: {
-                    
-                    
-                }, success: function(se) {
-                    if(se>0){
-                       
-                      alert('จำหน่ายเรียบร้อยแล้ว');      
-                      document.getElementById("dis").disabled = true; 
-        }             
-                 },err(){
-                    console.log('ddd');
-        }
-        }); 
+        var tcheck = document.getElementById("dis").firstChild.data;
+        if(tcheck=='ยกเลิกจำหน่าย'){
+           $.ajax({
+                type: 'POST', url: './index.php?r=food/foodadd/btndiscan&an='+an, dataType: 'json',
+                    data: {
+
+
+                    }, success: function(se) {
+                        if(se>0){
+
+                          alert('ยกเลิกจำหน่ายเรียบร้อยแล้ว'); 
+                          document.getElementById("dis").firstChild.data  = "จำหน่าย";
+                    }             
+                     }
+            }); 
+        
+        }else {
+            $.ajax({
+                type: 'POST', url: './index.php?r=food/foodadd/btndis&an='+an, dataType: 'json',
+                    data: {
+
+
+                    }, success: function(se) {
+                        if(se>0){
+
+                          alert('จำหน่ายเรียบร้อยแล้ว'); 
+                          document.getElementById("dis").firstChild.data  = "ยกเลิกจำหน่าย";
+                          //document.getElementById('dis').style.visibility = 'hidden';
+                          //document.getElementById("dis").disabled = true; 
+                    }             
+                     },err(){
+                        console.log('ddd');
+                }
+            }); 
    
+        }
+     
         
  });
     

@@ -250,6 +250,17 @@ class FoodaddController extends \common\components\AppController {
         return $btndis ;
         
     }
+     public function actionBtndiscan() {
+        $an=$_GET['an'];
+        $connection = Yii::$app->db;
+        /*$sql ="SELECT dis FROM food_last WHERE an='$an'";
+        $command = Yii::$app->db->createCommand($sql);
+        $btndis= $command->queryScalar();*/
+        $datals = $connection->createCommand("UPDATE food_last SET dis=NULL WHERE an='$an'")->execute();
+
+        return $datals ;
+        
+    }
     
     
     
