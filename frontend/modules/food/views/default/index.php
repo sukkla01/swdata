@@ -63,29 +63,29 @@ if ($order_complete == 'Y') {
 
 
 
-<?php
-ActiveForm::begin([
-    'method' => 'post',
-    'action' => Url::to(['/food', ['ward' => $ward]]),
-])
-?>
-                <div class="col-md-4">
                 <?php
-                echo Select2::widget([
-                    'name' => 'ward',
-                    'value' => $ward,
-                    'data' => ArrayHelper::map(app\models\Ward::find()->all(), 'ward', 'name'),
-                    'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
-                    'options' => ['placeholder' => ' กรุณาเลือกหอผู้ป่วย...'],
-                    'pluginOptions' => [
-                        'allowClear' => true
-                    ],
-                ]); // Classic Theme
+                ActiveForm::begin([
+                    'method' => 'post',
+                    'action' => Url::to(['/food', ['ward' => $ward]]),
+                ])
                 ?>
+                <div class="col-md-4">
+                    <?php
+                    echo Select2::widget([
+                        'name' => 'ward',
+                        'value' => $ward,
+                        'data' => ArrayHelper::map(app\models\Ward::find()->all(), 'ward', 'name'),
+                        'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
+                        'options' => ['placeholder' => ' กรุณาเลือกหอผู้ป่วย...'],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]); // Classic Theme
+                    ?>
                 </div>
                 <button class='btn btn-danger'>ประมวลผล</button>
 
-<?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
 
 
@@ -107,7 +107,7 @@ ActiveForm::begin([
                 <div class="box-tools pull-right">
 
                     &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger"  href="<?= Url::to(['/food/default/orderold', 'ward' => $ward]) ?>"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
-<?php if ($tan <> '') { ?>
+                    <?php if ($tan <> '') { ?>
                         <a style="font-weight: bold;" class="btn btn-success" data-toggle="modal" data-target="#myModal" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
                     <?php } else { ?>
                         &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-success" id="btn_sql" data-dismiss="modal" href="<?= Url::to(['/food/default/pdf', 'ward' => $ward]) ?>" target="_blank" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
@@ -121,178 +121,178 @@ ActiveForm::begin([
             <div class="box-body">
 
 
-<?php
-$gridColumns = [
-        ['class' => 'kartik\grid\SerialColumn'],
-        [
-        'attribute' => 'hn',
-        'label' => 'HN'
-    ],
-        [
-        'attribute' => 'an',
-        'label' => 'AN',
-        'value' => function ($model, $key, $index, $widget) {
-            $cdate = date('Y-m-d');
-            if ($model['dis'] == 'Y') {
-                return "<font class='text-red'>" . $model['an'] . "</font>";
-            } else {
-                return "<font class='text-black'>" . $model['an'] . "</font>";
-            }
-        },
-        'filterType' => GridView::FILTER_COLOR,
-        'hAlign' => 'middle',
-        'format' => 'raw',
-    //'width' => '150px',
-    //'noWrap' => true
-    ],
-        [
-        'attribute' => 'bedno',
-        'label' => 'เตียง',
-        'value' => function ($model, $key, $index, $widget) {
-            $cdate = date('Y-m-d');
-            if ($model['dis'] == 'Y') {
-                return "<font class='text-red'>" . $model['bedno'] . "</font>";
-            } else {
-                return "<font class='text-black'>" . $model['bedno'] . "</font>";
-            }
-        },
-        'filterType' => GridView::FILTER_COLOR,
-        'hAlign' => 'middle',
-        'format' => 'raw',
-    //'width' => '150px',
-    //'noWrap' => true
-    ],
-        [
-        'attribute' => 'tname',
-        'label' => 'ชื่อ-สกุล',
-        'value' => function ($model, $key, $index, $widget) {
-            $cdate = date('Y-m-d');
-            if ($model['dis'] == 'Y') {
-                return "<font class='text-red'>" . $model['tname'] . "</font>";
-            } else {
-                return "<font class='text-black'>" . $model['tname'] . "</font>";
-            }
-        },
-        'filterType' => GridView::FILTER_COLOR,
-        'hAlign' => 'middle',
-        'format' => 'raw',
-    //'width' => '150px',
-    //'noWrap' => true
-    ],
-        [
-        'attribute' => 'regdate',
-        'label' => 'วันที่ Admit'
-    ],
-        [
-        'attribute' => 'regtime',
-        'label' => 'เวลา Admit'
-    ],
-        [
-        'attribute' => 'nname',
-        'label' => 'รายการอาหาร',
-        'value' => function ($model, $key, $index, $widget) {
-            $cdate = date('Y-m-d');
-            if ($model['fooddate'] == $cdate) {
-                return "<font class='text-green'>" . $model['nname'] . "</font>";
-            } else {
-                return "<font class='text-red'>" . $model['nname'] . "</font>";
-            }
-        },
-        'filterType' => GridView::FILTER_COLOR,
-        'hAlign' => 'middle',
-        'format' => 'raw',
-    //'width' => '150px',
-    //'noWrap' => true
-    ],
-        [
-        'attribute' => 'fooddate',
-        'label' => 'วันที่สั่งอาหารล่าสุด',
-        'value' => function ($model, $key, $index, $widget) {
-            $cdate = date('Y-m-d');
-            if ($model['fooddate'] == $cdate) {
-                return "<font class='text-green'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
-            } else {
-                return "<font class='text-red'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
-            }
-        },
-        'filterType' => GridView::FILTER_COLOR,
-        'hAlign' => 'middle',
-        'format' => 'raw',
-    //'width' => '150px',
-    //'noWrap' => true
-    ],
-        [
-        'attribute' => 'congenital_disease',
-        'label' => 'โรคประจำตัว'
-    ],
-        [
-        'attribute' => 'height',
-        'label' => 'สูง'
-    ],
-        [
-        'attribute' => 'bw',
-        'label' => 'น้ำหนัก',
-        'format' => ['decimal', 0],
-        'hAlign' => 'center',
-    ],
-        [
-        'attribute' => 'bmi',
-        'label' => 'bmi'
-    ],
-        [
-        'attribute' => 'an',
-        'label' => '#',
-        'value' => function($model, $key) {
-            $an = $model['an'];
-            $bed = $model['bedno'];
-            $ward = $model['ward'];
-            return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-cart-plus'></i></span>", ['/food/foodadd/create', 'an' => $an, 'bed' => $bed, 'ward' => $ward], [
-                        'class' => 'activity-add-link',
-                        'title' => 'สั่งอาหาร',
-                        'data-toggle' => 'modal',
-                        'data-target' => '#modalvote',
-                            //'data-whatever'=>$model['an'],
-                            //'data-id' => $model['an'],
-            ]);
-        },
-        'filterType' => GridView::FILTER_COLOR,
-        'hAlign' => 'middle',
-        'format' => 'raw',
-    ],
-];
-/*
-  echo '<div class="col-md-12" align="right" >';
-  echo ExportMenu::widget([
-  'dataProvider' => $dataProvider,
-  'columns' => $gridColumns
-  ]);
-  echo '</div>'; */
-Pjax::begin(['id' => 'tfood']);
-echo GridView::widget([
-    'dataProvider' => $dataProvider,
-    //'filterModel' => $searchModel,
-    'autoXlFormat' => true,
-    'export' => [
-        'fontAwesome' => true,
-        'showConfirmAlert' => false,
-        'target' => GridView::TARGET_BLANK
-    ],
-    'columns' => $gridColumns,
-    'responsive' => true,
-    'hover' => true,
-    'resizableColumns' => true,
-        // 'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
-        //'floatHeader' => true,
-        //'floatHeaderOptions' => ['scrollingTop' => '100'],
-        // 'pjax' => true,
-        //'pjaxSettings' => [
-        //    'neverTimeout' => true,
-        //'beforeGrid' => 'My fancy content before.',
-        //'afterGrid' => 'My fancy content after.',
-        //],
-]);
-Pjax::end();
-?>
+                <?php
+                $gridColumns = [
+                        ['class' => 'kartik\grid\SerialColumn'],
+                        [
+                        'attribute' => 'hn',
+                        'label' => 'HN'
+                    ],
+                        [
+                        'attribute' => 'an',
+                        'label' => 'AN',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['dis'] == 'Y') {
+                                return "<font class='text-red'>" . $model['an'] . "</font>";
+                            } else {
+                                return "<font class='text-black'>" . $model['an'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
+                    ],
+                        [
+                        'attribute' => 'bedno',
+                        'label' => 'เตียง',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['dis'] == 'Y') {
+                                return "<font class='text-red'>" . $model['bedno'] . "</font>";
+                            } else {
+                                return "<font class='text-black'>" . $model['bedno'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
+                    ],
+                        [
+                        'attribute' => 'tname',
+                        'label' => 'ชื่อ-สกุล',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['dis'] == 'Y') {
+                                return "<font class='text-red'>" . $model['tname'] . "</font>";
+                            } else {
+                                return "<font class='text-black'>" . $model['tname'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
+                    ],
+                        [
+                        'attribute' => 'regdate',
+                        'label' => 'วันที่ Admit'
+                    ],
+                        [
+                        'attribute' => 'regtime',
+                        'label' => 'เวลา Admit'
+                    ],
+                        [
+                        'attribute' => 'nname',
+                        'label' => 'รายการอาหาร',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['fooddate'] == $cdate) {
+                                return "<font class='text-green'>" . $model['nname'] . "</font>";
+                            } else {
+                                return "<font class='text-red'>" . $model['nname'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
+                    ],
+                        [
+                        'attribute' => 'fooddate',
+                        'label' => 'วันที่สั่งอาหารล่าสุด',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['fooddate'] == $cdate) {
+                                return "<font class='text-green'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
+                            } else {
+                                return "<font class='text-red'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
+                    ],
+                        [
+                        'attribute' => 'congenital_disease',
+                        'label' => 'โรคประจำตัว'
+                    ],
+                        [
+                        'attribute' => 'height',
+                        'label' => 'สูง'
+                    ],
+                        [
+                        'attribute' => 'bw',
+                        'label' => 'น้ำหนัก',
+                        'format' => ['decimal', 0],
+                        'hAlign' => 'center',
+                    ],
+                        [
+                        'attribute' => 'bmi',
+                        'label' => 'bmi'
+                    ],
+                        [
+                        'attribute' => 'an',
+                        'label' => '#',
+                        'value' => function($model, $key) {
+                            $an = $model['an'];
+                            $bed = $model['bedno'];
+                            $ward = $model['ward'];
+                            return Html::a("<span class='badge' style='background-color: #0099ff' ><i class='fa fa-cart-plus'></i></span>", ['/food/foodadd/create', 'an' => $an, 'bed' => $bed, 'ward' => $ward], [
+                                        'class' => 'activity-add-link',
+                                        'title' => 'สั่งอาหาร',
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modalvote',
+                                            //'data-whatever'=>$model['an'],
+                                            //'data-id' => $model['an'],
+                            ]);
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    ],
+                ];
+                /*
+                  echo '<div class="col-md-12" align="right" >';
+                  echo ExportMenu::widget([
+                  'dataProvider' => $dataProvider,
+                  'columns' => $gridColumns
+                  ]);
+                  echo '</div>'; */
+                Pjax::begin(['id' => 'tfood']);
+                echo GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    //'filterModel' => $searchModel,
+                    'autoXlFormat' => true,
+                    'export' => [
+                        'fontAwesome' => true,
+                        'showConfirmAlert' => false,
+                        'target' => GridView::TARGET_BLANK
+                    ],
+                    'columns' => $gridColumns,
+                    'responsive' => true,
+                    'hover' => true,
+                    'resizableColumns' => true,
+                        // 'resizeStorageKey' => Yii::$app->user->id . '-' . date("m"),
+                        //'floatHeader' => true,
+                        //'floatHeaderOptions' => ['scrollingTop' => '100'],
+                        // 'pjax' => true,
+                        //'pjaxSettings' => [
+                        //    'neverTimeout' => true,
+                        //'beforeGrid' => 'My fancy content before.',
+                        //'afterGrid' => 'My fancy content after.',
+                        //],
+                ]);
+                Pjax::end();
+                ?>
 
 
 
@@ -324,9 +324,9 @@ Pjax::end();
                 </div>
                 <div class="panel-body">
                     <div class="modal-body">
-<?php
-$tan = '';
-$sql = "SELECT f.an,f.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                        <?php
+                        $tan = '';
+                        $sql = "SELECT f.an,f.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                             COUNT(foodid)  as tcount,bedno
                             FROM food_detail_01  f
                             LEFT JOIN patient p ON p.hn=f.hn
@@ -336,10 +336,10 @@ $sql = "SELECT f.an,f.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                             AND f.ward='$ward' AND i.dchdate IS NULL
                             GROUP BY an,fooddate
                             HAVING tcount >1 ";
-$connection = Yii::$app->db2;
-$data = $connection->createCommand($sql)
-        ->queryAll();
-?>
+                        $connection = Yii::$app->db2;
+                        $data = $connection->createCommand($sql)
+                                ->queryAll();
+                        ?>
                         <table class="table">
                             <thead class="thead-inverse">
                                 <tr>
@@ -352,7 +352,7 @@ $data = $connection->createCommand($sql)
                                 </tr>
                             </thead>
                             <tbody>
-<?php for ($i = 0; $i < sizeof($data); $i++) { ?>
+                                <?php for ($i = 0; $i < sizeof($data); $i++) { ?>
                                     <tr>
                                         <th scope="row"><?= $i + 1 ?></th>
                                         <td><?= $data[$i]['bedno']; ?></td>
@@ -362,7 +362,7 @@ $data = $connection->createCommand($sql)
                                         <td><?= $data[$i]['tname']; ?></td>
                                         <td align="center"><?= $data[$i]['tcount']; ?></td>
                                     </tr>
-<?php } ?>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
@@ -389,31 +389,37 @@ $data = $connection->createCommand($sql)
 
 
 <?php
-$sql3 = " SELECT name FROM ward WHERE ward ='$ward' ";
-$command = Yii::$app->db2->createCommand($sql3);
-$wname = $command->queryScalar();
-echo Notification::widget([
-    'type' => 'info',
-    'title' => 'ยินดีต้อนรับระบบสั่งอาหารผู้ป่วยใน',
-    'message' => 'หอผู้ป่วย : ' . $wname,
-    'options' => [
-        "closeButton" => FALSE,
-        "debug" => false,
-        "newestOnTop" => true,
-        "progressBar" => true,
-        "positionClass" => "toast-top-center",
-        "preventDuplicates" => false,
-        "onclick" => NULL,
-        "showDuration" => "300",
-        "hideDuration" => "1000",
-        "timeOut" => "8000",
-        "extendedTimeOut" => "100",
-        "showEasing" => "swing",
-        "hideEasing" => "linear",
-        "showMethod" => "fadeIn",
-        "hideMethod" => "fadeOut"
-    ]
-]);
+ if(isset($_GET['modal'])){
+     $modal = $_GET['modal'];
+ }
+
+if($modal<>'1') {
+    $sql3 = " SELECT name FROM ward WHERE ward ='$ward' ";
+    $command = Yii::$app->db2->createCommand($sql3);
+    $wname = $command->queryScalar();
+    echo Notification::widget([
+        'type' => 'info',
+        'title' => 'ยินดีต้อนรับระบบสั่งอาหารผู้ป่วยใน',
+        'message' => 'หอผู้ป่วย : ' . $wname,
+        'options' => [
+            "closeButton" => FALSE,
+            "debug" => false,
+            "newestOnTop" => true,
+            "progressBar" => true,
+            "positionClass" => "toast-top-center",
+            "preventDuplicates" => false,
+            "onclick" => NULL,
+            "showDuration" => "300",
+            "hideDuration" => "1000",
+            "timeOut" => "5000",
+            "extendedTimeOut" => "100",
+            "showEasing" => "swing",
+            "hideEasing" => "linear",
+            "showMethod" => "fadeIn",
+            "hideMethod" => "fadeOut"
+        ]
+    ]);
+}
 ?>
 
 

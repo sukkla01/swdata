@@ -129,7 +129,7 @@ class DefaultController extends Controller {
         if (\Yii::$app->getRequest()->isAjax) {
             return $this->renderAjax('test', ['model' => $model,]);
         } else {
-            return $this->render('index', ['dataProvider' => $dataProvider, 'ward' => $ward, 'process' => 'N', 'order_complete' => 'N']);
+            return $this->render('index', ['dataProvider' => $dataProvider, 'ward' => $ward, 'process' => 'N', 'order_complete' => 'N','modal'=>0]);
         }
     }
 
