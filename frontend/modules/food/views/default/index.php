@@ -130,15 +130,54 @@ if ($order_complete == 'Y') {
                     ],
                         [
                         'attribute' => 'an',
-                        'label' => 'AN'
+                        'label' => 'AN',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['dis'] == 'Y') {
+                                return "<font class='text-red'>" . $model['an'] . "</font>";
+                            } else {
+                                return "<font class='text-black'>" . $model['an'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
                     ],
                         [
                         'attribute' => 'bedno',
-                        'label' => 'เตียง'
+                        'label' => 'เตียง',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['dis'] == 'Y') {
+                                return "<font class='text-red'>" . $model['bedno'] . "</font>";
+                            } else {
+                                return "<font class='text-black'>" . $model['bedno'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
                     ],
                         [
                         'attribute' => 'tname',
-                        'label' => 'ชื่อ-สกุล'
+                        'label' => 'ชื่อ-สกุล',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['dis'] == 'Y') {
+                                return "<font class='text-red'>" . $model['tname'] . "</font>";
+                            } else {
+                                return "<font class='text-black'>" . $model['tname'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
                     ],
                         [
                         'attribute' => 'regdate',
@@ -285,9 +324,9 @@ if ($order_complete == 'Y') {
                 </div>
                 <div class="panel-body">
                     <div class="modal-body">
-                        <?php
-                        $tan = '';
-                        $sql = "SELECT f.an,f.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+<?php
+$tan = '';
+$sql = "SELECT f.an,f.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                             COUNT(foodid)  as tcount,bedno
                             FROM food_detail_01  f
                             LEFT JOIN patient p ON p.hn=f.hn
@@ -297,10 +336,10 @@ if ($order_complete == 'Y') {
                             AND f.ward='$ward' AND i.dchdate IS NULL
                             GROUP BY an,fooddate
                             HAVING tcount >1 ";
-                        $connection = Yii::$app->db2;
-                        $data = $connection->createCommand($sql)
-                                ->queryAll();
-                        ?>
+$connection = Yii::$app->db2;
+$data = $connection->createCommand($sql)
+        ->queryAll();
+?>
                         <table class="table">
                             <thead class="thead-inverse">
                                 <tr>
@@ -313,7 +352,7 @@ if ($order_complete == 'Y') {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php for ($i = 0; $i < sizeof($data); $i++) { ?>
+<?php for ($i = 0; $i < sizeof($data); $i++) { ?>
                                     <tr>
                                         <th scope="row"><?= $i + 1 ?></th>
                                         <td><?= $data[$i]['bedno']; ?></td>
@@ -323,7 +362,7 @@ if ($order_complete == 'Y') {
                                         <td><?= $data[$i]['tname']; ?></td>
                                         <td align="center"><?= $data[$i]['tcount']; ?></td>
                                     </tr>
-                                <?php } ?>
+<?php } ?>
                             </tbody>
                         </table>
                     </div>

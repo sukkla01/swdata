@@ -82,14 +82,14 @@ use yii\helpers\Url;
                                 DatePicker::className(), [
                             'language' => 'th',
                             'inline' => FALSE,
-                            'dateFormat' => 'yyyy-MM-dd',
+                            //'dateFormat' => 'yyyy-MM-dd',
                             'options' => ['class' => 'form-control', 'value' => date('Y-m-d'),],
                             'clientOptions' => [
                                 //'value' => '2015-01-01',
                                 //'defaultDate' => '2016-01-01',
                                 'todayHighlight' => true,
                                 'autoclose' => true,
-                                'dateFormat' => 'yyyy-mm-dd'
+                                'dateFormat' => 'yy-mm-dd'
                             ],
                             'value' => date('Y-m-d'),]);
                         ?>
@@ -108,7 +108,7 @@ use yii\helpers\Url;
                         ?>
                     </div>
                     <div class="col-lg-6">
-                        
+
                         <?=
                         $form->field($model, 'icode')->widget(Select2::className(), [
                             //'initValueText' => 'ssss',
@@ -117,7 +117,7 @@ use yii\helpers\Url;
                             ArrayHelper::map(app\models\NutritionItems::find()->all(), 'icode', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->',
-                                //'value' => '5000025',
+                            //'value' => '5000025',
                             //'onchange' => 'alert (this.value)',
                             ],
                             'pluginOptions' =>
@@ -335,15 +335,18 @@ use yii\helpers\Url;
     <button type="button" class="btn btn-danger" id="clan" data-dismiss="modal">ปิด</button>
 
 
-<?php
-$script = <<< JS
+    
+
+    <?php
+    $script = <<< JS
         
 //------------ บุ่มเพิ่ม --------------------
  var an = $an;
  document.getElementById("addt").disabled = false;    
  //document.getElementById("fooddetail01-cal").disabled = true; 
  $(document).ready(function() {
-    
+     
+        
         
    //-------- เช็คว่าวันนี้มีการสั่งอาหารแล้วหรือยัง -------------------     
    $.ajax({
@@ -493,8 +496,8 @@ $('#clan').click(function() {
 
    
 JS;
-$this->registerJs($script);
-?>
+    $this->registerJs($script);
+    ?>
 
 
 

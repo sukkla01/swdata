@@ -18,7 +18,7 @@ use yii\helpers\Html;
 $sql = "SELECT a.bedno,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
             CONCAT(s.age_y) AS tage,
             f.Congenital_disease as cd,CONCAT(f.bd,' ',f.cal,' ',n.name) AS nname,f.comment,
-            IF(l.dis = 'Y','จำหน่ายแล้ว','') AS tdis
+            IF(l.dis = 'Y','***จำหน่ายแล้ว',CONCAT(f.bd,' ',f.cal,' ',n.name)) AS tdis
             FROM ipt i
             LEFT JOIN patient p ON p.hn = i.hn
             LEFT JOIN iptadm a ON a.an = i.an
@@ -40,22 +40,28 @@ $time = time();
 $daten= Yii::$app->formatter->asDate($time, 'long');
 
 
- $tsql ="SELECT i.bedno
+ $tsql ="SELECT i.bedno,f.icode
             FROM food_detail_01 f
             LEFT JOIN iptadm i ON i.an= f.an
             LEFT JOIN ipt it ON it.an=f.an
             LEFT JOIN ward w ON w.ward = it.ward
-            WHERE f.fooddate = CURDATE() AND  w.spclty ='$ward' AND it.dchdate IS NULL ";
+            LEFT JOIN swdata.food_last l ON l.an = f.an
+            WHERE f.fooddate = CURDATE() AND  w.spclty ='$ward' AND it.dchdate IS NULL AND l.dis IS NULL ";
 $tdata = $connection->createCommand($tsql)
         ->queryAll(); 
 for ($ti = 0; $ti < sizeof($tdata); $ti++) {
     $bedno = $tdata[$ti]['bedno'];
+    $icode = $tdata[$ti]['icode'];
     $tbed = substr($bedno,0,1);
             
          if(($tbed=='s' or $tbed=='6' or $tbed=='t') and substr($bedno,0,2)<>'tr' and substr($bedno,0,2)<>'sw' ) {
              $excu = $excu+1;
          }else{
-             $normal = $normal+1; 
+             if($icode=='5000025' OR $icode=='5000026'){
+                 
+             }else{
+                $normal = $normal+1; 
+             }
          }
 }
 
@@ -96,13 +102,13 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
        
         ?>
         <tr> 
-            <td width="3%"  align="center" height="32"><?= $i + 1 ?></td> 
-            <td width="5%" align="center"><?=$bedno?></td> 
+            <td width="8%"  align="center" height="32"><?= $i + 1 ?></td> 
+            <td width="8%" align="center"><?=$bedno?></td> 
             <td width="25%" align="left">&nbsp; <?=$tname?></td> 
             <td width="8%" align="center"><?=$tage?></td> 
             <td width="10%" align="left"><?=$cd?></td> 
-            <td width="35%" align="left"><?=$nname?></td> 
-            <td width="22%" align="left"><?=$comment.' '.$tdis?></td> 
+            <td width="35%" align="left"><?=$tdis?></td> 
+            <td width="22%" align="left"><?=$comment?></td> 
         </tr> 
 
     <?php } ?>
