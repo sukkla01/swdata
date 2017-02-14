@@ -10,7 +10,7 @@ use kartik\mpdf\Pdf;
 /**
  * Default controller for the `food` module
  */
-class DefaultController extends Controller {
+class DefaultController extends \common\components\AppController  {
 
     /**
      * Renders the index view for the module
@@ -34,7 +34,7 @@ class DefaultController extends Controller {
 
     
     public function actionIndex() {
-
+        $this->permitRole([1, 3]);
         $connection = Yii::$app->db2;
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
@@ -184,7 +184,7 @@ class DefaultController extends Controller {
     }
 
     public function actionTest() {
-        //$id= $_GET['id'];
+        $this->permitRole([1, 3]);
         $model = new FoodDetail01();
         $an = '';
         $an = $_GET['an'];
@@ -220,7 +220,7 @@ class DefaultController extends Controller {
     }
 
     public function actionOrderold() {
-
+        $this->permitRole([1, 3]);
         $connection = Yii::$app->db;
         $ward = $_GET['ward'];
         $c_current = '';

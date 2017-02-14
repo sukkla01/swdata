@@ -8,11 +8,12 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\Pjax;
 use kartik\grid\GridView;
 use yii\helpers\Url;
-
+use lavrentiev\widgets\toastr\Notification;
 /* @var $this yii\web\View */
 /* @var $model app\models\FoodDetail01 */
 /* @var $form yii\widgets\ActiveForm */
 //$ward = '64';
+
 ?>
 <div class="row" >
     <div class="col-md-12">
@@ -82,7 +83,7 @@ use yii\helpers\Url;
                                 DatePicker::className(), [
                             'language' => 'th',
                             'inline' => FALSE,
-                            //'dateFormat' => 'yyyy-MM-dd',
+                            'dateFormat' => 'yyyy-MM-dd',
                             'options' => ['class' => 'form-control', 'value' => date('Y-m-d'),],
                             'clientOptions' => [
                                 //'value' => '2015-01-01',

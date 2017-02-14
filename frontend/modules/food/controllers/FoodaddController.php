@@ -59,6 +59,7 @@ class FoodaddController extends \common\components\AppController {
      * @return mixed
      */
     public function actionCreate() {
+
         $this->permitRole([1, 3]);
         $connection = Yii::$app->db2;
         $usern = Yii::$app->user->identity->username;
@@ -146,49 +147,72 @@ class FoodaddController extends \common\components\AppController {
             }
 
 
+
+
             //------------- begin notify --------------
-            $sql2 = " SELECT value FROM food_setting WHERE type='line_token' ";
-            $command = Yii::$app->db->createCommand($sql2);
-            $linetoken = $command->queryScalar();
+            //$tnow = (date('H') + 6) . '.' . date('m');
+            date_default_timezone_set('Asia/Bangkok');
+            $tnow = date('H.i') * 1;
+            $command1 = Yii::$app->db->createCommand("SELECT value FROM food_setting WHERE type ='s_time_line'");
+            $s_time = $command1->queryScalar();
+            $command2 = Yii::$app->db->createCommand("SELECT value FROM food_setting WHERE type ='e_time_line'");
+            $e_time = $command2->queryScalar();
+            $command3 = Yii::$app->db->createCommand("SELECT value FROM food_setting WHERE type ='line_noti'");
+            $line_noti = $command3->queryScalar();
+            $line_noti = $line_noti * 1;
 
-            $sql3 = " SELECT name FROM nutrition_items WHERE icode ='$icode_last' ";
-            $command = Yii::$app->db2->createCommand($sql3);
-            $nname = $command->queryScalar();
 
 
-            $sql4 = " SELECT COUNT(an) FROM food_detail_01 WHERE an='$an_l'";
-            $command = Yii::$app->db2->createCommand($sql4);
-            $newcase = $command->queryScalar();
+            if ($tnow > $s_time and $tnow < $e_time) {
+                //echo 'not';
+            } else {
+                if ($line_noti == 'Y') {
 
-            if($newcase==0) {
 
-                define('LINE_API', "https://notify-api.line.me/api/notify");
-                define('LINE_TOKEN', $linetoken);
-                $connection = Yii::$app->db2;
-                $getip = Yii::$app->getRequest()->getUserIP();
+                    $sql2 = " SELECT value FROM food_setting WHERE type='line_token' ";
+                    $command = Yii::$app->db->createCommand($sql2);
+                    $linetoken = $command->queryScalar();
 
-                function notify_message($message) {
+                    $sql3 = " SELECT name FROM nutrition_items WHERE icode ='$icode_last' ";
+                    $command = Yii::$app->db2->createCommand($sql3);
+                    $nname = $command->queryScalar();
 
-                    $queryData = array('message' => $message);
-                    $queryData = http_build_query($queryData, '', '&');
-                    $headerOptions = array(
-                        'http' => array(
-                            'method' => 'POST',
-                            'header' => "Content-Type: application/x-www-form-urlencoded\r\n"
-                            . "Authorization: Bearer " . LINE_TOKEN . "\r\n"
-                            . "Content-Length: " . strlen($queryData) . "\r\n",
-                            'content' => $queryData
-                        )
-                    );
-                    $context = stream_context_create($headerOptions);
-                    $result = file_get_contents(LINE_API, FALSE, $context);
-                    $res = json_decode($result);
-                    //return $res;
+
+                    $sql4 = " SELECT COUNT(an) FROM food_detail_01 WHERE an='$an_l'";
+                    $command = Yii::$app->db2->createCommand($sql4);
+                    $newcase = $command->queryScalar();
+
+                    if ($newcase == 0) {
+
+                        define('LINE_API', "https://notify-api.line.me/api/notify");
+                        define('LINE_TOKEN', $linetoken);
+                        $connection = Yii::$app->db2;
+                        $getip = Yii::$app->getRequest()->getUserIP();
+
+                        function notify_message($message) {
+
+                            $queryData = array('message' => $message);
+                            $queryData = http_build_query($queryData, '', '&');
+                            $headerOptions = array(
+                                'http' => array(
+                                    'method' => 'POST',
+                                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n"
+                                    . "Authorization: Bearer " . LINE_TOKEN . "\r\n"
+                                    . "Content-Length: " . strlen($queryData) . "\r\n",
+                                    'content' => $queryData
+                                )
+                            );
+                            $context = stream_context_create($headerOptions);
+                            $result = file_get_contents(LINE_API, FALSE, $context);
+                            $res = json_decode($result);
+                            //return $res;
+                        }
+
+                        $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bed . ' เพิ่มอาหารใหม่ ' . $nname . ' วันที่ ' . $fooddate_last . ' เวลา ' . $foodtime . ' โดย ' . $usern);
+                        //var_dump($res);
+                        //------------- end notify --------------
+                    }
                 }
-
-                $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bed . ' เพิ่มอาหารใหม่ ' . $nname . ' วันที่ ' . $fooddate_last . ' เวลา ' . $foodtime . ' โดย ' . $usern);
-                //var_dump($res);
-                //------------- end notify --------------
             }
         }
 
@@ -220,51 +244,46 @@ class FoodaddController extends \common\components\AppController {
      * @return mixed
      */
     public function actionBtnadd() {
-        $an=$_GET['an'];
-        $sql ="SELECT COUNT(an) AS tcount FROM food_detail_01 WHERE an='$an' AND  fooddate = CURDATE() ";
+        $an = $_GET['an'];
+        $sql = "SELECT COUNT(an) AS tcount FROM food_detail_01 WHERE an='$an' AND  fooddate = CURDATE() ";
         $command = Yii::$app->db2->createCommand($sql);
         $btncount = $command->queryScalar();
 
-        return $btncount ;
-        
+        return $btncount;
     }
+
     public function actionBtndis() {
-        $an=$_GET['an'];
+        $an = $_GET['an'];
         $connection = Yii::$app->db;
-        /*$sql ="SELECT dis FROM food_last WHERE an='$an'";
-        $command = Yii::$app->db->createCommand($sql);
-        $btndis= $command->queryScalar();*/
+        /* $sql ="SELECT dis FROM food_last WHERE an='$an'";
+          $command = Yii::$app->db->createCommand($sql);
+          $btndis= $command->queryScalar(); */
         $datals = $connection->createCommand("UPDATE food_last SET dis='Y' WHERE an='$an'")->execute();
 
-        return $datals ;
-        
+        return $datals;
     }
-    
-    public function actionBtndis2() {
-        $an=$_GET['an'];
-        $connection = Yii::$app->db;
-        $sql ="SELECT COUNT(an) FROM food_last WHERE an='$an' AND dis ='Y' ";
-        $command = Yii::$app->db->createCommand($sql);
-        $btndis= $command->queryScalar();
 
-        return $btndis ;
-        
-    }
-     public function actionBtndiscan() {
-        $an=$_GET['an'];
+    public function actionBtndis2() {
+        $an = $_GET['an'];
         $connection = Yii::$app->db;
-        /*$sql ="SELECT dis FROM food_last WHERE an='$an'";
+        $sql = "SELECT COUNT(an) FROM food_last WHERE an='$an' AND dis ='Y' ";
         $command = Yii::$app->db->createCommand($sql);
-        $btndis= $command->queryScalar();*/
+        $btndis = $command->queryScalar();
+
+        return $btndis;
+    }
+
+    public function actionBtndiscan() {
+        $an = $_GET['an'];
+        $connection = Yii::$app->db;
+        /* $sql ="SELECT dis FROM food_last WHERE an='$an'";
+          $command = Yii::$app->db->createCommand($sql);
+          $btndis= $command->queryScalar(); */
         $datals = $connection->createCommand("UPDATE food_last SET dis=NULL WHERE an='$an'")->execute();
 
-        return $datals ;
-        
+        return $datals;
     }
-    
-    
-    
-    
+
     public function actionUpdate() {
 
         $connection = Yii::$app->db2;
