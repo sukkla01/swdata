@@ -13,7 +13,9 @@ use lavrentiev\widgets\toastr\Notification;
 /* @var $model app\models\FoodDetail01 */
 /* @var $form yii\widgets\ActiveForm */
 //$ward = '64';
-
+date_default_timezone_set('Asia/Bangkok');
+$timet = date('H.i')*1;
+echo $timet;
 ?>
 <div class="row" >
     <div class="col-md-12">
