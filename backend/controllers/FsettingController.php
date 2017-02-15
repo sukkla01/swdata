@@ -16,6 +16,8 @@ class FsettingController extends \yii\web\Controller
         $noti = $_GET['noti'];
         $s_time = $_GET['s_time'];
         $e_time = $_GET['e_time'];
+        $s_time = str_replace(':', '.', $s_time);
+        $e_time = str_replace(':', '.', $e_time);
         
         $connection = Yii::$app->db;
         $dataltoken = $connection->createCommand("UPDATE food_setting SET value='$linetoken' WHERE type='line_token' ")->execute();
