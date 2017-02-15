@@ -108,6 +108,19 @@ use kartik\export\ExportMenu;
                             'attribute' => 'deptnamenew',
                             'label' => 'แผนก',
                         ],
+                        [
+                            'attribute' => 'deptnamenew',
+                            'label' => 'แผนก',
+                        ],
+                        [
+                            'attribute' => 'position',
+                            'label' => 'ตำแหน่ง',
+                        ]
+                        ,
+                        [
+                            'attribute' => 'Tlevel',
+                            'label' => 'ระดับ',
+                        ],
                         [  
                             'header' => 'สถานะการเข้าปฎิบัตงาน',
                             'attribute' => 'WrokTime',

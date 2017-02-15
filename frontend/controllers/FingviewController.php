@@ -69,10 +69,12 @@ class FingviewController extends  \common\components\AppController {
             }
         }
         $sql = "SELECT c.Badgenumber,
-                IF(u.username IS NULL,'',u.username) as username,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew,
+                IF(u.username IS NULL,'',u.username) as username,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew
+                ,m.position,m.ระดับ as Tlevel,
                 if (time(CHECKTIME) BETWEEN '04:00:00' and '08:30:00','ในเวลา','สาย') as WrokTime
                 from checkinout c
                 INNER JOIN USERINFO u on u.Badgenumber=c.Badgenumber
+                INNER JOIN memberall m on m.Badgenumber=c.Badgenumber
                 INNER JOIN dep d on d.DEPTID=u.DEFAULTDEPTID
                 where c.VERIFYCODE='0' 
                 and CHECKTIME BETWEEN concat('$date1',' 04:00:00') and  concat('$date2',' 13:30:00')
@@ -117,10 +119,12 @@ class FingviewController extends  \common\components\AppController {
         }
         $sql = "SELECT c.Badgenumber,
                 IF(u.username IS NULL,'',u.username) as username
-                ,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew,
+                ,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew
+                ,m.position,m.ระดับ as Tlevel,
                 if (time(CHECKTIME) BETWEEN '13:30:00' and '16:30:00','ในเวลา','สาย') as WrokTime
                 from checkinout c
                 INNER JOIN USERINFO u on u.Badgenumber=c.Badgenumber
+                INNER JOIN memberall m on m.Badgenumber=c.Badgenumber
                 INNER JOIN dep d on d.DEPTID=u.DEFAULTDEPTID
                 where c.VERIFYCODE='0' 
                 and CHECKTIME BETWEEN concat('$date1',' 13:30:00') and  concat('$date2',' 18:30:00')
@@ -162,10 +166,12 @@ class FingviewController extends  \common\components\AppController {
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        $sql = "SELECT c.Badgenumber,u.username,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew,
+        $sql = "SELECT c.Badgenumber,u.username,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew
+                ,m.position,m.ระดับ as Tlevel
                 if (time(CHECKTIME) NOT BETWEEN '00:30:01' and '01:30:00','ในเวลา','สาย') as WrokTime
                 from checkinout c
                 INNER JOIN USERINFO u on u.Badgenumber=c.Badgenumber
+                INNER JOIN memberall m on m.Badgenumber=c.Badgenumber                
                 INNER JOIN dep d on d.DEPTID=u.DEFAULTDEPTID
                 where c.VERIFYCODE='0' 
                 and CHECKTIME BETWEEN concat('$date1',' 23:00:00') and  concat('$date2',' 01:30:00')
