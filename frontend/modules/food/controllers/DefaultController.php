@@ -238,7 +238,7 @@ class DefaultController extends \common\components\AppController  {
         $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,f.fooddate_last as fooddate,f.foodtime,
                 i.regdate,i.regtime,f.icode,i.ward,
-                n.name  AS nname,
+                n.name  AS nname,f.dis,
                 IF(congenital_disease IS NULL,'',congenital_disease) AS congenital_disease,
 		IF(o.height IS NULL,'',o.height) AS height,
 		IF(o.bw IS NULL,'',o.bw) AS bw,
@@ -270,7 +270,7 @@ class DefaultController extends \common\components\AppController  {
 
 
         if ($c_current == date('Y-m-d')) {
-            return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'Y', 'dataProvider' => $dataProvider]);
+            return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'Y', 'dataProvider' => $dataProvider,'modal'=>0]);
         } else {
 
 
@@ -279,9 +279,9 @@ class DefaultController extends \common\components\AppController  {
                 $this->call("Jub_Order_food", $ward);
                 //sleep(10);
                 //echo $ward;
-                return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N', 'dataProvider' => $dataProvider]);
+                return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N', 'dataProvider' => $dataProvider,'modal'=>0]);
             } else {
-                return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'N', 'dataProvider' => $dataProvider]);
+                return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'N', 'dataProvider' => $dataProvider,'modal'=>0]);
             }
         }
     }
