@@ -166,8 +166,10 @@ class FingviewController extends  \common\components\AppController {
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        $sql = "SELECT c.Badgenumber,u.username,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew
-                ,m.position,m.ระดับ as Tlevel
+        $sql = "SELECT c.Badgenumber,
+                IF(u.username IS NULL,'',u.username) as username
+                ,u.name as Fullname,date(c.CHECKTIME) as Tdate,time(c.CHECKTIME) as TTime,d.depjob,d.deptnamenew
+                ,m.position,m.ระดับ as Tlevel,
                 if (time(CHECKTIME) NOT BETWEEN '00:30:01' and '01:30:00','ในเวลา','สาย') as WrokTime
                 from checkinout c
                 INNER JOIN USERINFO u on u.Badgenumber=c.Badgenumber
