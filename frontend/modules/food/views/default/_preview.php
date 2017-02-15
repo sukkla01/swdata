@@ -54,7 +54,7 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
     $icode = $tdata[$ti]['icode'];
     $tbed = substr($bedno,0,1);
             
-         if(($tbed=='s' or $tbed=='6' or $tbed=='t') and substr($bedno,0,2)<>'tr' and substr($bedno,0,2)<>'sw' ) {
+         if(($tbed=='s' or $tbed=='6' or $tbed=='t') and substr($bedno,0,2)<>'tr' and substr($bedno,0,2)<>'sw' and substr($bedno,0,2)<>'sm' ) {
              $excu = $excu+1;
          }else{
              if($icode=='5000025' OR $icode=='5000026'){
