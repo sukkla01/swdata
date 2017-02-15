@@ -434,6 +434,7 @@ $('#clan').click(function() {
             var comment = document.getElementById("fooddetail01-comment").value;
             var bd = document.getElementById("fooddetail01-bd").value;
             var cal = document.getElementById("fooddetail01-cal").value;
+            console.log(cd);
             
         
         

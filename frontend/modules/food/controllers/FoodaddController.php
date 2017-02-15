@@ -305,6 +305,7 @@ class FoodaddController extends \common\components\AppController {
         $comment = $_GET['comment'];
         $bd = $_GET['bd'];
         $cal = $_GET['cal'];
+        $Congenital_disease = str_replace(' ','+', $Congenital_disease);
 
 
 

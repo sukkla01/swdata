@@ -61,8 +61,12 @@ class SiteController extends \common\components\AppController
     public function actionIndex()
     {
         //$this->permitRole([1]);
+        
+        
         return $this->render('index');
     }
+  
+    
 
     /**
      * Login action.
