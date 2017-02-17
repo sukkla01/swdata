@@ -111,6 +111,10 @@ use kartik\export\ExportMenu;
                             'attribute' => 'pdx',
                             'label' => 'icd10',
                         ],
+                         [
+                            'attribute' => 'sname',
+                            'label' => 'แผนก',
+                        ],
                             [
                             'attribute' => 'iname',
                             'label' => 'รหัสโรค',
