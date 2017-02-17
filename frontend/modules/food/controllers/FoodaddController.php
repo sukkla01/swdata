@@ -349,7 +349,7 @@ class FoodaddController extends \common\components\AppController {
         define('LINE_TOKEN', $linetoken);
         $connection = Yii::$app->db2;
         $sqlm = "SELECT CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,n.name AS nname,f.logdate,logtime,i.bedno,
-			 w.name AS wname,f.loginname as staff
+			 w.name AS wname,f.loginname as staff,CONCAT(REPLACE(logdate,'-',''),REPLACE(logtime,':','.')) AS ttime
                         FROM food_log_01 f
                         LEFT JOIN nutrition_items n ON n.icode = f.icode
                         LEFT JOIN patient p ON p.hn = f.hn
@@ -357,7 +357,7 @@ class FoodaddController extends \common\components\AppController {
 			LEFT JOIN ipt t ON t.an=f.an
 			LEFT JOIN ward w ON w.ward = t.ward
                         WHERE f.an ='$an'  AND modifytype='edit'
-                        ORDER BY f.logdate,logtime DESC 
+                        ORDER BY ttime DESC 
                         LIMIT 1
  ";
         $datam = $connection->createCommand($sqlm)
