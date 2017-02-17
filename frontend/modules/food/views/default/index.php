@@ -181,21 +181,51 @@ if ($order_complete == 'Y') {
                     ],
                         [
                         'attribute' => 'regdate',
-                        'label' => 'วันที่ Admit'
+                        'label' => 'วันที่ Admit',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['dis'] == 'Y') {
+                                return "<font class='text-red'>" . $model['regdate'] . "</font>";
+                            } else {
+                                return "<font class='text-black'>" . $model['regdate'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
                     ],
                         [
                         'attribute' => 'regtime',
-                        'label' => 'เวลา Admit'
+                        'label' => 'เวลา Admit',
+                        'value' => function ($model, $key, $index, $widget) {
+                            $cdate = date('Y-m-d');
+                            if ($model['dis'] == 'Y') {
+                                return "<font class='text-red'>" . $model['regtime'] . "</font>";
+                            } else {
+                                return "<font class='text-black'>" . $model['regtime'] . "</font>";
+                            }
+                        },
+                        'filterType' => GridView::FILTER_COLOR,
+                        'hAlign' => 'middle',
+                        'format' => 'raw',
+                    //'width' => '150px',
+                    //'noWrap' => true
                     ],
                         [
                         'attribute' => 'nname',
                         'label' => 'รายการอาหาร',
                         'value' => function ($model, $key, $index, $widget) {
                             $cdate = date('Y-m-d');
-                            if ($model['fooddate'] == $cdate) {
-                                return "<font class='text-green'>" . $model['nname'] . "</font>";
-                            } else {
+                            if ($model['dis'] == 'Y') {
                                 return "<font class='text-red'>" . $model['nname'] . "</font>";
+                            } else {
+                                if ($model['fooddate'] == $cdate) {
+                                    return "<font class='text-green'>" . $model['nname'] . "</font>";
+                                } else {
+                                    return "<font class='text-red'>" . $model['nname'] . "</font>";
+                                }
                             }
                         },
                         'filterType' => GridView::FILTER_COLOR,
@@ -209,10 +239,14 @@ if ($order_complete == 'Y') {
                         'label' => 'วันที่สั่งอาหารล่าสุด',
                         'value' => function ($model, $key, $index, $widget) {
                             $cdate = date('Y-m-d');
-                            if ($model['fooddate'] == $cdate) {
-                                return "<font class='text-green'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
-                            } else {
+                            if ($model['dis'] == 'Y') {
                                 return "<font class='text-red'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
+                            } else {
+                                if ($model['fooddate'] == $cdate) {
+                                    return "<font class='text-green'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
+                                } else {
+                                    return "<font class='text-red'>" . $model['fooddate'] . ' ' . $model['foodtime'] . "</font>";
+                                }
                             }
                         },
                         'filterType' => GridView::FILTER_COLOR,
@@ -389,11 +423,11 @@ if ($order_complete == 'Y') {
 
 
 <?php
- if(isset($_GET['modal'])){
-     $modal = $_GET['modal'];
- }
+if (isset($_GET['modal'])) {
+    $modal = $_GET['modal'];
+}
 
-if($modal<>'1') {
+if ($modal <> '1') {
     $sql3 = " SELECT name FROM ward WHERE ward ='$ward' ";
     $command = Yii::$app->db2->createCommand($sql3);
     $wname = $command->queryScalar();

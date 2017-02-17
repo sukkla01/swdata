@@ -17,8 +17,9 @@ use yii\helpers\Html;
 
 $sql = "SELECT a.bedno,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
             CONCAT(s.age_y) AS tage,
-            f.Congenital_disease as cd,CONCAT(f.bd,' ',f.cal,' ',n.name) AS nname,f.comment,
-            IF(l.dis = 'Y','***จำหน่ายแล้ว',CONCAT(f.bd,' ',f.cal,' ',n.name)) AS tdis
+            f.Congenital_disease as cd,CONCAT(f.bd,' ',f.cal,' ',n.name) AS nname,
+            IF(l.dis = 'Y','***จำหน่ายแล้ว',CONCAT(f.bd,' ',f.cal,' ',n.name)) AS tdis,
+            IF(l.dis = 'Y','',f.comment) AS comment
             FROM ipt i
             LEFT JOIN patient p ON p.hn = i.hn
             LEFT JOIN iptadm a ON a.an = i.an

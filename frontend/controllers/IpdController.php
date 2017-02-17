@@ -365,6 +365,58 @@ class IpdController extends \common\components\AppController {
         ]);
         return $this->render('uc', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
+    
+    public function actionUc2() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT o.hn,o.vn,o.vstdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,SUM(sum_price)  AS tsum,SUM(sum_price)-700 AS kun,
+                SUM(IF(o.income IN('03','04','17'),sum_price,0)) AS tdrug,v.pdx,i.name AS iname,CONCAT(h.hosptype,h.name) AS thosp,
+		c.name as sname,(SUM(IF(o.income IN('03','04','17'),sum_price,0)))-700 AS kundrug
+                FROM  opitemrece o
+                LEFT JOIN pttype t ON t.pttype = o.pttype
+                LEFT JOIN patient p ON p.hn=o.hn
+                LEFT JOIN vn_stat v ON v.vn=o.vn
+                LEFT JOIN icd101 i ON i.code=v.pdx
+		LEFT JOIN hospcode h ON h.hospcode=v.hospmain
+		LEFT JOIN ovst s ON s.vn= o.vn
+		LEFT JOIN spclty c ON c.spclty = s.spclty
+                WHERE o.vstdate BETWEEN '$date1' AND '$date2'
+                      AND editmask ='UC นอกเขต'
+                      AND LENGTH(o.vn) =12
+                GROUP BY vn
+                HAVING tdrug>700 ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('uc2', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
 
     public function actionDrughome() {
         $this->permitRole([1, 3]);
