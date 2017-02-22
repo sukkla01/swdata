@@ -233,6 +233,50 @@ class ReportController extends \common\components\AppController {
         return $this->render('drugning', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
     
+    public function actionDrug4() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT IF(v.vn IS NULL,a.hn,v.hn) AS thn,
+		IF(v.vn IS NULL,'IPD','OPD') AS ttype,t1.*,t2.*,t3.*
+                FROM ( SELECT vn as vn1,rxdate as rxdate1 ,qty as qty1,sum_price as sumprice1 FROM opitemrece_summary WHERE rxdate BETWEEN '$date1' AND '$date2' AND icode = '1900174' ) AS t1
+                LEFT JOIN  (SELECT vn as vn2,rxdate,qty as qty2,IF(sum_price IS NULL,'1',sum_price) AS sumprice2 FROM opitemrece_summary WHERE rxdate BETWEEN '$date1' AND '$date2' AND icode = '1900228' ) AS t2 ON t2.vn2 = t1.vn1 AND t2.rxdate = t1.rxdate1
+                LEFT JOIN  (SELECT vn as vn3,rxdate,qty as qty3,IF(sum_price IS NULL,'1',sum_price) AS sumprice3 FROM opitemrece_summary WHERE rxdate BETWEEN '$date1' AND '$date2' AND icode = '1900242' ) AS t3 ON t3.vn3 = t1.vn1  AND t3.rxdate = t1.rxdate1
+                LEFT JOIN vn_stat v ON v.vn = t1.vn1
+                LEFT JOIN an_stat a ON a.an = t1.vn1
+                HAVING t2.vn2 IS NOT NULL OR t3.vn3 IS NOT NULL";
+                                        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 50
+            ],
+        ]);
+        return $this->render('drug4', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
+    }
+    
     
     public function actionDrugbrimo() {
         $this->permitRole([1, 3]);

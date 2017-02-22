@@ -105,7 +105,7 @@ if ($order_complete == 'Y') {
 
 
                 <div class="box-tools pull-right">
-
+                    &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-info"  href="<?= Url::to(['/food/default/pdftotal', 'ward' => $ward]) ?>" target="_blank"><h5><i class="fa fa-pinterest-p"></i>&nbsp;&nbsp;พิมพ์การเพิ่มอาหาร</h5></a>
                     &nbsp;&nbsp;<a style="font-weight: bold;" class="btn btn-danger"  href="<?= Url::to(['/food/default/orderold', 'ward' => $ward]) ?>"><h5><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;สั่งอาหารเดิม</h5></a>
                     <?php if ($tan <> '') { ?>
                         <a style="font-weight: bold;" class="btn btn-success" data-toggle="modal" data-target="#myModal" ><h5><i class="fa fa-print" ></i>&nbsp;&nbsp;พิมพ์</h5></a>
