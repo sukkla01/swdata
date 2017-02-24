@@ -4,6 +4,7 @@
 use yii\widgets\ActiveForm;
 use lavrentiev\widgets\toastr\Notification;
 use kartik\grid\GridView;
+use yii\bootstrap\Html;
 
 ?>
 
@@ -20,11 +21,19 @@ $s_time_line = str_replace('.', ':', $s_time_line);
 $e_time_line = str_replace('.', ':', $e_time_line);
 
 
-// ------------ food history -----------
+// ------------ food setting -----------
 
 $rawData = \Yii::$app->db->createCommand("SELECT * FROM nur_congenital_disease")->queryAll();
 $dataProvider = new \yii\data\ArrayDataProvider([
     'allModels' => $rawData,
+    'pagination' => [
+        'pageSize' => 50
+    ],
+        ]);
+
+$rawData1 = \Yii::$app->db->createCommand("SELECT * FROM nur_cal")->queryAll();
+$dataProvider1 = new \yii\data\ArrayDataProvider([
+    'allModels' => $rawData1,
     'pagination' => [
         'pageSize' => 50
     ],
@@ -94,6 +103,29 @@ $dataProvider = new \yii\data\ArrayDataProvider([
                 <div class="col-md-12">
                     <?php
                     $gridColumns = [
+                            [
+                            'attribute' => 'id',
+                            'label' => 'id',
+                        ],
+                            [
+                            'attribute' => 'name',
+                            'label' => 'โรคประจำตัว',
+                        ],
+                            [
+                            'attribute' => 'id',
+                            'label' => 'ลบ',
+                            'value' => function($model, $key) {
+                                $id = $model['id'];
+                                $name = $model['name'];
+                                return Html::a("<i class='glyphicon glyphicon-remove'></i>", ['/fsetting', 'id' => $id, 'tstatus' => 'd', 'alert' => 0], [
+                                            'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $name . ' นี้หรือไม่'),
+                                            'class' => 'delete'
+                                ]);
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'hAlign' => 'middle',
+                            'format' => 'raw',
+                        ],
                     ];
                     echo GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -129,6 +161,55 @@ $dataProvider = new \yii\data\ArrayDataProvider([
         <div class="panel panel-success">
             <div class="panel-heading"><i class="fa fa-search"></i>สูตร</div>
             <div class="panel-body">
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="addcal" >
+
+                </div>
+                <div class="col-md-2">
+                    <button type="button"  id="btaddcal" class="btn btn-danger"  >เพิ่ม</button> 
+                </div>
+                <div class="col-md-12">
+                    <?php
+                    $gridColumns = [
+                            [
+                            'attribute' => 'id',
+                            'label' => 'id',
+                        ],
+                            [
+                            'attribute' => 'name',
+                            'label' => 'สูตร',
+                        ],
+                            [
+                            'attribute' => 'id',
+                            'label' => 'ลบ',
+                            'value' => function($model, $key) {
+                                $id = $model['id'];
+                                $name = $model['name'];
+                                return Html::a("<i class='glyphicon glyphicon-remove'></i>", ['/fsetting', 'id' => $id, 'tstatus' => 'dcal', 'alert' => 0], [
+                                            'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $name . ' นี้หรือไม่'),
+                                            'class' => 'delete'
+                                ]);
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'hAlign' => 'middle',
+                            'format' => 'raw',
+                        ],
+                    ];
+                    echo GridView::widget([
+                        'dataProvider' => $dataProvider1,
+                        'autoXlFormat' => true,
+                        'export' => [
+                            'fontAwesome' => true,
+                            'showConfirmAlert' => false,
+                            'target' => GridView::TARGET_BLANK
+                        ],
+                        'columns' => $gridColumns,
+                        'responsive' => true,
+                        'hover' => true,
+                        'resizableColumns' => true,
+                    ]);
+                    ?>
+                </div>
 
             </div>
         </div>
@@ -199,6 +280,25 @@ $script = <<< JS
         
      $.ajax({
             type: 'POST', url: './index.php?r=fsetting/addcd&addcd='+addcd, dataType: 'json',
+              data: {
+                    
+                    
+                }, success: function(se) {
+                    if(se>0){
+                     window.location='./index.php?r=fsetting&alert=1';
+                }             
+              }
+        }); 
+     
+       
+   });
+        
+        
+    $('#btaddcal').click(function() {
+     var addcal = document.getElementById("addcal").value; 
+        
+     $.ajax({
+            type: 'POST', url: './index.php?r=fsetting/addcal&addcal='+addcal, dataType: 'json',
               data: {
                     
                     

@@ -1,24 +1,38 @@
 <?php
 
 namespace backend\controllers;
+
 use Yii;
 
-class FsettingController extends \yii\web\Controller
-{
-    public function actionIndex()
-    {
+class FsettingController extends \yii\web\Controller {
+
+    public function actionIndex() {
+
+        $connection = Yii::$app->db;
         
-        return $this->render('index');
+        if (isset($_GET['tstatus']) == 'd') {
+
+            $id = $_GET['id'];
+
+            $datale = $connection->createCommand("DELETE FROM nur_congenital_disease WHERE id = '$id' ")->execute();
+        }
+        if (isset($_GET['tstatus']) == 'dcal') {
+             $id = $_GET['id'];
+           
+            $datale = $connection->createCommand("DELETE FROM nur_cal WHERE id = '$id' ")->execute();
+        }
+
+        return $this->render('index', ['alert' => 0]);
     }
-    public function actionAddsetting()
-    {
+
+    public function actionAddsetting() {
         $linetoken = $_GET['linetoken'];
         $noti = $_GET['noti'];
         $s_time = $_GET['s_time'];
         $e_time = $_GET['e_time'];
         $s_time = str_replace(':', '.', $s_time);
         $e_time = str_replace(':', '.', $e_time);
-        
+
         $connection = Yii::$app->db;
         $dataltoken = $connection->createCommand("UPDATE food_setting SET value='$linetoken' WHERE type='line_token' ")->execute();
         $dataln = $connection->createCommand("UPDATE food_setting SET value='$noti' WHERE type='line_noti' ")->execute();
@@ -27,15 +41,21 @@ class FsettingController extends \yii\web\Controller
 
         return $dataln;
     }
-    public function actionAddcd()
-    {
+
+    public function actionAddcd() {
         $addcd = $_GET['addcd'];
         $connection = Yii::$app->db;
         $datalcd = $connection->createCommand("INSERT INTO nur_congenital_disease VALUES (NULL,'$addcd','') ")->execute();
-        
+
         return $datalcd;
-        
-        
+    }
+    
+     public function actionAddcal() {
+        $addcal = $_GET['addcal'];
+        $connection = Yii::$app->db;
+        $datalcd = $connection->createCommand("INSERT INTO nur_cal VALUES (NULL,'$addcal','') ")->execute();
+
+        return $datalcd;
     }
 
 }
