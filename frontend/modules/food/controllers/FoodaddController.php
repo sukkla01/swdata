@@ -255,11 +255,61 @@ class FoodaddController extends \common\components\AppController {
     public function actionBtndis() {
         $an = $_GET['an'];
         $connection = Yii::$app->db;
+        $usern = Yii::$app->user->identity->username;
         /* $sql ="SELECT dis FROM food_last WHERE an='$an'";
           $command = Yii::$app->db->createCommand($sql);
           $btndis= $command->queryScalar(); */
         $datals = $connection->createCommand("UPDATE food_last SET dis='Y' WHERE an='$an'")->execute();
 
+        //------------- begin notify --------------
+        $sql2 = " SELECT value FROM food_setting WHERE type='line_token' ";
+        $command = Yii::$app->db->createCommand($sql2);
+        $linetoken = $command->queryScalar();
+
+
+        define('LINE_API', "https://notify-api.line.me/api/notify");
+        define('LINE_TOKEN', $linetoken);
+        $connection = Yii::$app->db2;
+        $sqlm = "SELECT i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+			 w.name AS wname
+                    FROM ipt i
+                    LEFT JOIN iptadm a ON a.an = i.an
+                    LEFT JOIN patient p ON p.hn = i.hn
+                    LEFT JOIN ward w ON w.ward = i.ward
+                    WHERE i.an='$an'";
+        $datam = $connection->createCommand($sqlm)
+                ->queryAll();
+        for ($im = 0; $im < sizeof($datam); $im++) {
+            $tname = $datam[$im]['tname'];
+            $an = $datam[$im]['an'];
+            $bedno = $datam[$im]['bedno'];
+            $wname = $datam[$im]['wname'];
+        }
+        $getip = Yii::$app->getRequest()->getUserIP();
+
+        function notify_message2($message) {
+
+            $queryData = array('message' => $message);
+            $queryData = http_build_query($queryData, '', '&');
+            $headerOptions = array(
+                'http' => array(
+                    'method' => 'POST',
+                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n"
+                    . "Authorization: Bearer " . LINE_TOKEN . "\r\n"
+                    . "Content-Length: " . strlen($queryData) . "\r\n",
+                    'content' => $queryData
+                )
+            );
+            $context = stream_context_create($headerOptions);
+            $result = file_get_contents(LINE_API, FALSE, $context);
+            $res = json_decode($result);
+            //return $res;
+        }
+
+        $res = notify_message2($tname . ' ตึก ' . $wname . ' เตียง ' . $bedno . ' ถูกจำหน่าย ' . ' โดย ' . $usern);
+        //var_dump($res);
+        //------------- end notify --------------
+        
         return $datals;
     }
 
@@ -276,10 +326,60 @@ class FoodaddController extends \common\components\AppController {
     public function actionBtndiscan() {
         $an = $_GET['an'];
         $connection = Yii::$app->db;
+        $usern = Yii::$app->user->identity->username;
         /* $sql ="SELECT dis FROM food_last WHERE an='$an'";
           $command = Yii::$app->db->createCommand($sql);
           $btndis= $command->queryScalar(); */
         $datals = $connection->createCommand("UPDATE food_last SET dis=NULL WHERE an='$an'")->execute();
+        
+        //------------- begin notify --------------
+        $sql2 = " SELECT value FROM food_setting WHERE type='line_token' ";
+        $command = Yii::$app->db->createCommand($sql2);
+        $linetoken = $command->queryScalar();
+
+
+        define('LINE_API', "https://notify-api.line.me/api/notify");
+        define('LINE_TOKEN', $linetoken);
+        $connection = Yii::$app->db2;
+        $sqlm = "SELECT i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+			 w.name AS wname
+                    FROM ipt i
+                    LEFT JOIN iptadm a ON a.an = i.an
+                    LEFT JOIN patient p ON p.hn = i.hn
+                    LEFT JOIN ward w ON w.ward = i.ward
+                    WHERE i.an='$an'";
+        $datam = $connection->createCommand($sqlm)
+                ->queryAll();
+        for ($im = 0; $im < sizeof($datam); $im++) {
+            $tname = $datam[$im]['tname'];
+            $an = $datam[$im]['an'];
+            $bedno = $datam[$im]['bedno'];
+            $wname = $datam[$im]['wname'];
+        }
+        $getip = Yii::$app->getRequest()->getUserIP();
+
+        function notify_message3($message) {
+
+            $queryData = array('message' => $message);
+            $queryData = http_build_query($queryData, '', '&');
+            $headerOptions = array(
+                'http' => array(
+                    'method' => 'POST',
+                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n"
+                    . "Authorization: Bearer " . LINE_TOKEN . "\r\n"
+                    . "Content-Length: " . strlen($queryData) . "\r\n",
+                    'content' => $queryData
+                )
+            );
+            $context = stream_context_create($headerOptions);
+            $result = file_get_contents(LINE_API, FALSE, $context);
+            $res = json_decode($result);
+            //return $res;
+        }
+
+        $res = notify_message3($tname . ' ตึก ' . $wname . ' เตียง ' . $bedno . ' ถูกยกเลิกจำหน่าย ' . ' โดย ' . $usern);
+        //var_dump($res);
+        //------------- end notify --------------
 
         return $datals;
     }
