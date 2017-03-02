@@ -135,7 +135,7 @@ echo $timet;*/
                     <div class="col-lg-4">
                         <?=
                         $form->field($model, 'Congenital_disease')->widget(Select2::className(), ['data' =>
-                            ArrayHelper::map(app\models\NurCongenitalDisease::find()->all(), 'name', 'name'),
+                            ArrayHelper::map(app\models\NurCongenitalDisease::find()->all(), 'detail', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->'],
                             'value' => 'sssss',
@@ -149,7 +149,7 @@ echo $timet;*/
                     <div class="col-lg-4">
                         <?=
                         $form->field($model, 'bd')->widget(Select2::className(), ['data' =>
-                            ArrayHelper::map(app\models\NurBd::find()->all(), 'name', 'name'),
+                            ArrayHelper::map(app\models\NurBd::find()->all(), 'detail', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->'],
                             'pluginOptions' =>
@@ -162,7 +162,7 @@ echo $timet;*/
                     <div class="col-lg-4">
                         <?=
                         $form->field($model, 'cal')->widget(Select2::className(), ['data' =>
-                            ArrayHelper::map(app\models\NurCal::find()->all(), 'name', 'name'),
+                            ArrayHelper::map(app\models\NurCal::find()->all(), 'detail', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->'],
                             'pluginOptions' =>
