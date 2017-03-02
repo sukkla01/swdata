@@ -133,6 +133,9 @@ class FoodaddController extends \common\components\AppController {
             $fooddate_last = $r['fooddate'];
             $foodtime = $r['foodtime'];
             $cd = $r['Congenital_disease'];
+            $cal = $r['cal'];
+            $bd = $r['bd'];
+            $comment = $r['comment'];
 
             $sqllast = "SELECT * FROM swdata.food_last WHERE an ='$an'";
             $datalast = $connection->createCommand($sqllast)
@@ -182,6 +185,31 @@ class FoodaddController extends \common\components\AppController {
                     $command = Yii::$app->db2->createCommand($sql4);
                     $newcase = $command->queryScalar();
 
+                    if ($cd == '') {
+                        $tcd = '';
+                    } else {
+                        $tcd = ' โรคประจำตัว ' . $cd;
+                    }
+
+                    if ($cal == '') {
+                        $tcal = '';
+                    } else {
+                        $tcal = ' สูตร ' . $cal;
+                    }
+
+                    if ($bd == '') {
+                        $tbd = '';
+                    } else {
+                        $tbd = ' ความเข้มข้น ' . $bd;
+                    }
+
+
+                    if ($comment == '') {
+                        $tcomment = '';
+                    } else {
+                        $tcomment = ' หมายเหตุ ' . $comment;
+                    }
+
                     if ($newcase == 0) {
 
                         define('LINE_API', "https://notify-api.line.me/api/notify");
@@ -208,7 +236,7 @@ class FoodaddController extends \common\components\AppController {
                             //return $res;
                         }
 
-                        $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bed . ' เพิ่มอาหารใหม่ ' . $nname . ' วันที่ ' . $fooddate_last . ' เวลา ' . $foodtime . ' โดย ' . $usern);
+                        $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bed . ' เพิ่มอาหารใหม่ ' . $nname . ' วันที่ ' . $fooddate_last . ' เวลา ' . $foodtime . $tcd . $tcal . $tbd . $tcomment . ' โดย ' . $usern);
                         //var_dump($res);
                         //------------- end notify --------------
                     }
@@ -309,7 +337,7 @@ class FoodaddController extends \common\components\AppController {
         $res = notify_message2($tname . ' ตึก ' . $wname . ' เตียง ' . $bedno . ' ถูกจำหน่าย ' . ' โดย ' . $usern);
         //var_dump($res);
         //------------- end notify --------------
-        
+
         return $datals;
     }
 
@@ -331,7 +359,7 @@ class FoodaddController extends \common\components\AppController {
           $command = Yii::$app->db->createCommand($sql);
           $btndis= $command->queryScalar(); */
         $datals = $connection->createCommand("UPDATE food_last SET dis=NULL WHERE an='$an'")->execute();
-        
+
         //------------- begin notify --------------
         $sql2 = " SELECT value FROM food_setting WHERE type='line_token' ";
         $command = Yii::$app->db->createCommand($sql2);
@@ -405,7 +433,33 @@ class FoodaddController extends \common\components\AppController {
         $comment = $_GET['comment'];
         $bd = $_GET['bd'];
         $cal = $_GET['cal'];
-        $Congenital_disease = str_replace(' ','+', $Congenital_disease);
+        $Congenital_disease = str_replace(' ', '+', $Congenital_disease);
+
+        if ($Congenital_disease == '') {
+            $tcd = '';
+        } else {
+            $tcd = ' โรคประจำตัว ' . $Congenital_disease;
+        }
+
+        if ($cal == '') {
+            $tcal = '';
+        } else {
+            $tcal = ' สูตร ' . $cal;
+        }
+
+        if ($bd == '') {
+            $tbd = '';
+        } else {
+            $tbd = ' ความเข้มข้น ' . $bd;
+        }
+
+
+        if ($comment == '') {
+            $tcomment = '';
+        } else {
+            $tcomment = ' หมายเหตุ ' . $comment;
+        }
+
 
 
 
@@ -492,7 +546,7 @@ class FoodaddController extends \common\components\AppController {
             //return $res;
         }
 
-        $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bedno . ' เปลี่ยนอาหารเป็น ' . $nname . ' วันที่ ' . $logdate . ' เวลา ' . $logtime . ' โดย ' . $staff);
+        $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bedno . ' เปลี่ยนอาหารเป็น ' . $nname . ' วันที่ ' . $logdate . ' เวลา ' . $logtime . $tcd . $tcal . $tbd . $tcomment . ' โดย ' . $staff);
         //var_dump($res);
         //------------- end notify --------------
 
