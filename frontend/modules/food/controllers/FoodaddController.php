@@ -283,11 +283,14 @@ class FoodaddController extends \common\components\AppController {
     public function actionBtndis() {
         $an = $_GET['an'];
         $connection = Yii::$app->db;
+        $connection2 = Yii::$app->db2;
         $usern = Yii::$app->user->identity->username;
         /* $sql ="SELECT dis FROM food_last WHERE an='$an'";
           $command = Yii::$app->db->createCommand($sql);
           $btndis= $command->queryScalar(); */
         $datals = $connection->createCommand("UPDATE food_last SET dis='Y' WHERE an='$an'")->execute();
+        
+        $datadis = $connection2->createCommand("INSERT INTO food_log_01 VALUES (NULL,CURDATE(),CURTIME(),'discharge','','$an','','','$usern')")->execute();
 
         //------------- begin notify --------------
         $sql2 = " SELECT value FROM food_setting WHERE type='line_token' ";

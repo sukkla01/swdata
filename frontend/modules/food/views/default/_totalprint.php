@@ -14,7 +14,7 @@ $sql = "SELECT t1.logdate,t1.logtime,t1.icode,n.name AS nname,t1.modifytype,t1.a
                         ON t2.an = t1.an  AND t2.ttime = t1.logtime 
             LEFT JOIN nutrition_items n ON n.icode = t1.icode
             LEFT JOIN ipt i ON i.an = t1.an
-            LEFT JOIN patient p ON p.hn =t1.hn
+            LEFT JOIN patient p ON p.hn =i.hn
             LEFT JOIN iptadm a ON a.an = t1.an
             LEFT JOIN ward w ON w.ward = i.ward
             ORDER BY i.ward,a.bedno ";
@@ -64,7 +64,7 @@ $daten = Yii::$app->formatter->asDate($time, 'long');
             <td width="8%"  align="center" height="32"><?= $i + 1 ?></td> 
             <td width="8%" align="center"><?= $bedno ?></td> 
             <td width="25%" align="left">&nbsp; <?= $tname ?></td> 
-            <td width="8%" align="center"><?= $modifytype ?></td> 
+            <td width="10%" align="center"><?= $modifytype ?></td> 
             <td width="35%" align="left"><?= $nname ?></td> 
             <td width="20%" align="left"><?= $logdate.' '.$logtime ?></td> 
             <td width="22%" align="left"><?= $wname ?></td> 

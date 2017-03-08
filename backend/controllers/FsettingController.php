@@ -45,7 +45,7 @@ class FsettingController extends \yii\web\Controller {
     public function actionAddcd() {
         $addcd = $_GET['addcd'];
         $connection = Yii::$app->db;
-        $datalcd = $connection->createCommand("INSERT INTO nur_congenital_disease VALUES (NULL,'$addcd','') ")->execute();
+        $datalcd = $connection->createCommand("INSERT INTO nur_congenital_disease VALUES (NULL,'$addcd','$addcd') ")->execute();
 
         return $datalcd;
     }
@@ -53,7 +53,7 @@ class FsettingController extends \yii\web\Controller {
      public function actionAddcal() {
         $addcal = $_GET['addcal'];
         $connection = Yii::$app->db;
-        $datalcd = $connection->createCommand("INSERT INTO nur_cal VALUES (NULL,'$addcal','') ")->execute();
+        $datalcd = $connection->createCommand("INSERT INTO nur_cal VALUES (NULL,'$addcal','$addcal') ")->execute();
 
         return $datalcd;
     }

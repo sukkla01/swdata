@@ -325,8 +325,8 @@ class DefaultController extends \common\components\AppController  {
 
 
             if ($running == 'false') {
-
-                $this->call("Jub_Order_food", $ward);
+                $staff = Yii::$app->user->identity->username;
+                $this->call("Jub_Order_food", "$ward");
                 //sleep(10);
                 //echo $ward;
                 return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N', 'dataProvider' => $dataProvider,'modal'=>0]);
