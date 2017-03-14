@@ -12,12 +12,12 @@
 <div class="panel panel-danger">
     <div class="panel-heading">
         <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool"  id="taf" data-dismiss="modal"><i class="fa fa-times"></i></button>
-    </div>
+            <button type="button" class="btn btn-box-tool"  id="taf" data-dismiss="modal"><i class="fa fa-times"></i></button>
+        </div>
         <h3 class="panel-title"><i class="fa fa-ban" ></i>&nbsp;&nbsp;การวินิจฉัยโรคทั้งหมดของ AN : <?= $an ?></h3>
-        
+
     </div>
-    
+
     <div class="panel-body">
         <div class="modal-body">
             <?php
