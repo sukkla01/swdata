@@ -6,7 +6,6 @@ use kartik\widgets\DatePicker;
 //use kartik\grid\GridView;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
-
 ?>
 
 <div class="body-content">
@@ -16,46 +15,45 @@ use kartik\export\ExportMenu;
             <div class="box box-info">
                 <div class="box-body">
 
- 
-                            
-                  <?= Html::beginForm(); ?>
-                        
-                       ประมวลข้อมูลระหว่าง :
-                            <?php
-                            echo yii\jui\DatePicker::widget([
-            'name' => 'date1',
-            'value' => $date1,
-            'language' => 'th',
-            //'dateFormat' => 'yyyy-MM-dd',
-            'clientOptions' => [
-                'changeMonth' => true,
-                'changeYear' => true,
-                'dateFormat' => 'yy-mm-dd'
-            ],
-            
-        ]);
-                            ?>
-                    
-                        ถึง
-                       
-                            
-                            <?php
-                             echo yii\jui\DatePicker::widget([
-            'name' => 'date2',
-            'value' => $date2,
-            'language' => 'th',
-            //'dateFormat' => 'yyyy-MM-dd',
-            'clientOptions' => [
-                'changeMonth' => true,
-                'changeYear' => true,
-                'dateFormat' => 'yy-mm-dd'
-            ]
-        ]);
-                            ?>
-                        
-                        <button class='btn btn-danger'>ประมวลผล</button>
 
-           <?= Html::endForm(); ?>
+
+                    <?= Html::beginForm(); ?>
+
+                    ประมวลข้อมูลระหว่าง :
+                    <?php
+                    echo yii\jui\DatePicker::widget([
+                        'name' => 'date1',
+                        'value' => $date1,
+                        'language' => 'th',
+                        //'dateFormat' => 'yyyy-MM-dd',
+                        'clientOptions' => [
+                            'changeMonth' => true,
+                            'changeYear' => true,
+                            'dateFormat' => 'yy-mm-dd'
+                        ],
+                    ]);
+                    ?>
+
+                    ถึง
+
+
+                    <?php
+                    echo yii\jui\DatePicker::widget([
+                        'name' => 'date2',
+                        'value' => $date2,
+                        'language' => 'th',
+                        //'dateFormat' => 'yyyy-MM-dd',
+                        'clientOptions' => [
+                            'changeMonth' => true,
+                            'changeYear' => true,
+                            'dateFormat' => 'yy-mm-dd'
+                        ]
+                    ]);
+                    ?>
+
+                    <button class='btn btn-danger'>ประมวลผล</button>
+
+                    <?= Html::endForm(); ?>
 
 
 
@@ -85,7 +83,7 @@ use kartik\export\ExportMenu;
 
                     <?php
                     $gridColumns = [
-                        [
+                            [
                             'attribute' => 'an',
                             'label' => 'AN'
                         ],
@@ -112,6 +110,31 @@ use kartik\export\ExportMenu;
                             [
                             'attribute' => 'datemodify',
                             'label' => 'datemodify'
+                        ],
+                            [
+                            'attribute' => 'tcount',
+                            'label' => '#',
+                            'value' => function($model, $key) {
+                                $tcount = $model['tcount'];
+                                $an = $model['an'];
+                                $date1 = $model['date1'];
+                                $date2 = $model['date2'];
+                                if ($model['tcount'] > 6) {
+                                    return Html::a("<span class='badge' style='background-color: #0099ff' >$tcount</span>", ['/report/mrs1detail', 'an' => $an,'date1'=>$date1,'date2'=>$date2], [
+                                                'class' => 'activity-add-link',
+                                                'title' => 'ดู diag ทั้งหมด',
+                                                'data-toggle' => 'modal',
+                                                'data-target' => '#modalvote',
+                                                    //'data-whatever'=>$model['an'],
+                                                    //'data-id' => $model['an'],
+                                    ]);
+                                } else {
+                                    return  $model['tcount'];
+                                }
+                            },
+                            'filterType' => GridView::FILTER_COLOR,
+                            'hAlign' => 'middle',
+                            'format' => 'raw',
                         ],
                             [
                             'attribute' => 'pdx',
@@ -215,5 +238,11 @@ use kartik\export\ExportMenu;
 
         </div>
 
+    </div>
+</div>
+
+<div class="modal remote fade " id="modalvote">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content  "></div>
     </div>
 </div>

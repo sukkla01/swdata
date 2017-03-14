@@ -221,7 +221,7 @@ class DefaultController extends \common\components\AppController  {
             // any css to be embedded if required 
             'cssInline' => '.bd{border:1.5px solid; text-align: center;} .ar{text-align:right} .imgbd{border:1px solid}',
             // set mPDF properties on the fly 
-            'options' => ['title' => 'ใบสั่งอาหาร รพ.ศรีสังวรสุโขทัย '],
+            'options' => ['title' => 'ใบสรุปการเพิ่มอาหารหรือการเปลี่ยนอาหารรายวัน รพ.ศรีสังวรสุโขทัย '],
             // call mPDF methods on the fly 
             'methods' => [
             //'SetHeader'=>[''], 
