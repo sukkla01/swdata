@@ -10,14 +10,13 @@ use kartik\mpdf\Pdf;
 /**
  * Default controller for the `food` module
  */
-class DefaultController extends \common\components\AppController  {
+class DefaultController extends \common\components\AppController {
 
     /**
      * Renders the index view for the module
      * @return string
      */
-    
-     protected function call($store_name, $arg = NULL) {
+    protected function call($store_name, $arg = NULL) {
         $sql = "";
         if ($arg != NULL) {
             $sql = "call " . $store_name . "(" . $arg . ");";
@@ -26,13 +25,12 @@ class DefaultController extends \common\components\AppController  {
         }
         $this->exec_sql($sql);
     }
-    
-     protected function exec_sql($sql) {
+
+    protected function exec_sql($sql) {
         $affect_row = \Yii::$app->db2->createCommand($sql)->execute();
         return $affect_row;
     }
 
-    
     public function actionIndex() {
         $this->permitRole([1, 3]);
         $connection = Yii::$app->db2;
@@ -81,12 +79,11 @@ class DefaultController extends \common\components\AppController  {
                 $foodtime = $datad[$i1]['foodtime'];
                 $Congenital_disease = $datad[$i1]['Congenital_disease'];
             }
-            if($fooddate==''){
-              $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode=null,fooddate_last=null,foodtime=null,Congenital_disease=null  WHERE an ='$anl' ")->execute();  
-            }else {
-              $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode='$icode',fooddate_last='$fooddate',foodtime='$foodtime',Congenital_disease='$Congenital_disease'  WHERE an ='$anl' ")->execute();  
+            if ($fooddate == '') {
+                $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode=null,fooddate_last=null,foodtime=null,Congenital_disease=null  WHERE an ='$anl' ")->execute();
+            } else {
+                $data3 = $connection->createCommand("UPDATE swdata.food_last SET  icode='$icode',fooddate_last='$fooddate',foodtime='$foodtime',Congenital_disease='$Congenital_disease'  WHERE an ='$anl' ")->execute();
             }
-            
         }
 
 
@@ -129,7 +126,7 @@ class DefaultController extends \common\components\AppController  {
         if (\Yii::$app->getRequest()->isAjax) {
             return $this->renderAjax('test', ['model' => $model,]);
         } else {
-            return $this->render('index', ['dataProvider' => $dataProvider, 'ward' => $ward, 'process' => 'N', 'order_complete' => 'N','modal'=>0]);
+            return $this->render('index', ['dataProvider' => $dataProvider, 'ward' => $ward, 'process' => 'N', 'order_complete' => 'N', 'modal' => 0]);
         }
     }
 
@@ -182,7 +179,7 @@ class DefaultController extends \common\components\AppController  {
 
         return $pdf->render();
     }
-    
+
     public function actionPdftotal() {
         //$//this->permitRole([1, 3]);
         //$case_molecular = MolecularTest::findOne(['id_case' => $id_case]);
@@ -231,6 +228,44 @@ class DefaultController extends \common\components\AppController  {
 
 
         return $pdf->render();
+    }
+
+    public function actionWardapi() {
+
+        header('Access-Control-Allow-Origin: *');
+
+        $sql = "SELECT w.ward,name,COUNT(w.ward) AS tcount
+                FROM ward w
+                LEFT JOIN (SELECT * FROM ipt WHERE dchdate IS NULL  ) t1 ON t1.ward = w.ward
+                GROUP BY w.ward ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+
+        return json_encode($rawData);
+    }
+    
+    public function actionDetailapi() {
+
+        header('Access-Control-Allow-Origin: *');
+
+        $sql = "SELECT i.hn,i.an,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
+			 a.bedno,f.icode,n.name AS nname
+                FROM ipt i
+                LEFT JOIN patient p ON p.hn = i.hn
+                LEFT JOIN iptadm a ON a.an = i.an
+                LEFT JOIN swdata.food_last f ON f.an = i.an
+                LEFT JOIN nutrition_items n ON n.icode = f.icode
+                WHERE i.ward='09' AND  i.dchdate IS NULL ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+
+        return json_encode($rawData);
     }
 
     public function actionTest() {
@@ -320,7 +355,7 @@ class DefaultController extends \common\components\AppController  {
 
 
         if ($c_current == date('Y-m-d')) {
-            return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'Y', 'dataProvider' => $dataProvider,'modal'=>0]);
+            return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'Y', 'dataProvider' => $dataProvider, 'modal' => 0]);
         } else {
 
 
@@ -329,9 +364,9 @@ class DefaultController extends \common\components\AppController  {
                 $this->call("Jub_Order_food", "$ward");
                 //sleep(10);
                 //echo $ward;
-                return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N', 'dataProvider' => $dataProvider,'modal'=>0]);
+                return $this->render('index', ['ward' => $ward, 'process' => 'Y', 'order_complete' => 'N', 'dataProvider' => $dataProvider, 'modal' => 0]);
             } else {
-                return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'N', 'dataProvider' => $dataProvider,'modal'=>0]);
+                return $this->render('index', ['ward' => $ward, 'process' => 'N', 'order_complete' => 'N', 'dataProvider' => $dataProvider, 'modal' => 0]);
             }
         }
     }
