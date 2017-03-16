@@ -250,7 +250,7 @@ class DefaultController extends \common\components\AppController {
     public function actionDetailapi() {
 
         header('Access-Control-Allow-Origin: *');
-
+        $ward = $_GET['ward'];
         $sql = "SELECT i.hn,i.an,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
 			 a.bedno,f.icode,n.name AS nname
                 FROM ipt i
@@ -258,7 +258,7 @@ class DefaultController extends \common\components\AppController {
                 LEFT JOIN iptadm a ON a.an = i.an
                 LEFT JOIN swdata.food_last f ON f.an = i.an
                 LEFT JOIN nutrition_items n ON n.icode = f.icode
-                WHERE i.ward='09' AND  i.dchdate IS NULL ";
+                WHERE i.ward='$ward' AND  i.dchdate IS NULL ";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
