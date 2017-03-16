@@ -252,7 +252,7 @@ class DefaultController extends \common\components\AppController {
         header('Access-Control-Allow-Origin: *');
         $ward = $_GET['ward'];
         $sql = "SELECT i.hn,i.an,CONCAT(p.pname,p.fname,' ',p.lname)  AS tname,
-			 a.bedno,f.icode,n.name AS nname
+			 a.bedno,f.icode,n.name AS nname,,CONCAT(f.fooddate_last,' ',foodtime) AS tdt
                 FROM ipt i
                 LEFT JOIN patient p ON p.hn = i.hn
                 LEFT JOIN iptadm a ON a.an = i.an
