@@ -258,7 +258,34 @@ class DefaultController extends \common\components\AppController {
                 LEFT JOIN iptadm a ON a.an = i.an
                 LEFT JOIN swdata.food_last f ON f.an = i.an
                 LEFT JOIN nutrition_items n ON n.icode = f.icode
-                WHERE i.ward='$ward' AND  i.dchdate IS NULL ";
+                WHERE i.ward='$ward' AND  i.dchdate IS NULL
+                ORDER BY a.bedno  ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+
+        return json_encode($rawData);
+    }
+    
+    public function actionLogapi() {
+
+        header('Access-Control-Allow-Origin: *');
+        //$ward = $_GET['ward'];
+        $sql = "SELECT IF(modifytype='edit','แก้ไขอาหาร',IF(modifytype='delete','ลบอาหาร',IF(modifytype='Add','เพิ่มอาหาร',
+                IF(modifytype='discharge','จำหน่ายแล้ว',modifytype)))) AS tcheck,
+		CONCAT(f.logdate,' ',f.logtime) AS tdt,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,f.hn,f.an,
+		f.icode,n.name AS nname,w.name AS wname,a.bedno,
+		CONCAT('http://122.154.235.70/img/',modifytype,'.png') AS timg
+                FROM food_log_01 f
+                LEFT JOIN ipt i ON i.an =f.an
+                LEFT JOIN iptadm a ON a.an = f.an
+                LEFT JOIN ward w ON w.ward = i.ward
+                LEFT JOIN nutrition_items n ON n.icode = f.icode
+                LEFT JOIN patient p ON p.hn = i.hn
+                WHERE logdate = CURDATE()
+                ORDER BY tdt DESC ";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
