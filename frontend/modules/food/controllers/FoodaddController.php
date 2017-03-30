@@ -210,7 +210,7 @@ class FoodaddController extends \common\components\AppController {
                         $tcomment = ' หมายเหตุ ' . $comment;
                     }
 
-                    if ($newcase == 0) {
+                    //if ($newcase == 0) {
 
                         define('LINE_API', "https://notify-api.line.me/api/notify");
                         define('LINE_TOKEN', $linetoken);
@@ -239,7 +239,7 @@ class FoodaddController extends \common\components\AppController {
                         $res = notify_message($tname . ' ตึก ' . $wname . ' เตียง ' . $bed . ' เพิ่มอาหารใหม่ ' . $nname . ' วันที่ ' . $fooddate_last . ' เวลา ' . $foodtime . $tcd . $tcal . $tbd . $tcomment . ' โดย ' . $usern);
                         //var_dump($res);
                         //------------- end notify --------------
-                    }
+                   // }
                 }
             }
         }
