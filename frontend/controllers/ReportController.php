@@ -438,6 +438,69 @@ class ReportController extends \common\components\AppController {
         return $this->render('n18', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
     
+    public function actionN181() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+        $sql = "SELECT * 
+                FROM (
+                SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                                                SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
+                                                SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
+                                                'OPD' AS type,vstdate
+                FROM ovstdiag o
+                LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='029')  c1 ON c1.hn = o.hn
+                LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='013')  c2 ON c2.hn = o.hn
+                LEFT JOIN patient p ON p.hn = o.hn
+                WHERE o.vstdate BETWEEN '$date1' AND '$date2'
+                                        AND icd10 IN('n183','184','185')
+                GROUP BY o.hn
+                UNION ALL
+                SELECT i.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                                                SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
+                                                SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
+                                                'IPD' AS type,
+                                                dchdate as vstdate
+                FROM ipt i
+                LEFT JOIN iptdiag d ON d.an =i.an
+                LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='029')  c1 ON c1.hn = i.hn
+                LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='013')  c2 ON c2.hn = i.hn
+                LEFT JOIN patient p ON p.hn = i.hn
+                WHERE i.dchdate BETWEEN '$date1' AND '$date2'
+                                        AND icd10 IN('n183','184','185')
+                GROUP BY i.hn ) AS t1
+                ORDER BY hn  ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('n181', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
+    }
+    
     public function actionDrug3() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
