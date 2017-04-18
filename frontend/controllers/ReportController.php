@@ -463,11 +463,13 @@ class ReportController extends \common\components\AppController {
                 SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                                                 SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
                                                 SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
-                                                'OPD' AS type,vstdate
+                                                'OPD' AS type,o.vstdate,s.name as sname
                 FROM ovstdiag o
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='029')  c1 ON c1.hn = o.hn
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='013')  c2 ON c2.hn = o.hn
                 LEFT JOIN patient p ON p.hn = o.hn
+                LEFT JOIN  ovst v on v.vn=o.vn
+                LEFT JOIN  spclty s on s.spclty = v.spclty
                 WHERE o.vstdate BETWEEN '$date1' AND '$date2'
                                         AND icd10 IN('n183','184','185')
                 GROUP BY o.hn
@@ -476,12 +478,13 @@ class ReportController extends \common\components\AppController {
                                                 SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
                                                 SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
                                                 'IPD' AS type,
-                                                dchdate as vstdate
+                                                dchdate as vstdate,s.name as sname
                 FROM ipt i
                 LEFT JOIN iptdiag d ON d.an =i.an
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='029')  c1 ON c1.hn = i.hn
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='013')  c2 ON c2.hn = i.hn
                 LEFT JOIN patient p ON p.hn = i.hn
+                LEFT JOIN  spclty s on s.spclty = i.spclty
                 WHERE i.dchdate BETWEEN '$date1' AND '$date2'
                                         AND icd10 IN('n183','184','185')
                 GROUP BY i.hn ) AS t1

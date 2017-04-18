@@ -132,6 +132,10 @@ use kartik\export\ExportMenu;
                             'attribute' => 'type',
                             'header' => 'ประเภท'
                         ],
+                                     [
+                            'attribute' => 'sname',
+                            'header' => 'แผนก'
+                        ],
                     ];
 
                     echo '<div class="col-md-12" align="right" >';
