@@ -117,7 +117,7 @@ use kartik\export\ExportMenu;
                             //'options' => [ 'style' => 1==1 ? 'background-color:#FF0000':'background-color:#0000FF'],
                             'value' => function ($model, $key, $index, $widget) {
                                 if ($model['dm'] > 0) {
-                                   return "<span class='badge' style='background-color: #EC407A' >Y </span>";
+                                    return "<span class='badge' style='background-color: #EC407A' >Y </span>";
                                 } else {
                                     return "<span class='badge' style='background-color: #4CAF50' >N </span>";
                                 }
@@ -132,9 +132,13 @@ use kartik\export\ExportMenu;
                             'attribute' => 'type',
                             'header' => 'ประเภท'
                         ],
-                                     [
+                            [
                             'attribute' => 'sname',
                             'header' => 'แผนก'
+                        ],
+                            [
+                            'attribute' => 'icd10',
+                            'header' => 'icd10'
                         ],
                     ];
 

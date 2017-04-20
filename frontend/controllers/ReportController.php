@@ -463,7 +463,7 @@ class ReportController extends \common\components\AppController {
                 SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                                                 SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
                                                 SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
-                                                'OPD' AS type,o.vstdate,s.name as sname
+                                                'OPD' AS type,o.vstdate,s.name as sname,icd10
                 FROM ovstdiag o
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='029')  c1 ON c1.hn = o.hn
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='013')  c2 ON c2.hn = o.hn
@@ -478,7 +478,7 @@ class ReportController extends \common\components\AppController {
                                                 SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
                                                 SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
                                                 'IPD' AS type,
-                                                dchdate as vstdate,s.name as sname
+                                                dchdate as vstdate,s.name as sname,icd10
                 FROM ipt i
                 LEFT JOIN iptdiag d ON d.an =i.an
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='029')  c1 ON c1.hn = i.hn
