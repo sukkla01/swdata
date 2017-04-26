@@ -37,7 +37,7 @@ class ReportController extends \common\components\AppController {
             }
         }
         if (isset($_GET['date1'])) {
-             $date1 = Yii::$app->session['date1'];
+            $date1 = Yii::$app->session['date1'];
             $date2 = Yii::$app->session['date2'];
         }
 
@@ -90,12 +90,13 @@ class ReportController extends \common\components\AppController {
     }
 
     public function actionMrs1detail() {
-        
+
         $an = $_GET['an'];
         $date1 = $_GET['date1'];
         $date2 = $_GET['date2'];
-         return $this->renderAjax('mrs1detail', ['an'=>$an,'date1'=>$date1,'date2'=>$date2]);
+        return $this->renderAjax('mrs1detail', ['an' => $an, 'date1' => $date1, 'date2' => $date2]);
     }
+
     public function actionMrs002() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -146,7 +147,7 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('mrs002', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
-    
+
     public function actionMrs003() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -199,8 +200,7 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('mrs003', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
-    
-    
+
     public function actionDrugning() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -234,7 +234,7 @@ class ReportController extends \common\components\AppController {
                              OR o.icode IN('1900673','1900747','1900685','1900683') )
                 GROUP BY o.icode
                 ORDER BY tqty DESC";
-                        try {
+        try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
             throw new \yii\web\ConflictHttpException('sql error');
@@ -248,7 +248,7 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('drugning', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
-    
+
     public function actionDrug4() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -278,7 +278,7 @@ class ReportController extends \common\components\AppController {
                 LEFT JOIN vn_stat v ON v.vn = t1.vn1
                 LEFT JOIN an_stat a ON a.an = t1.vn1
                 HAVING t2.vn2 IS NOT NULL OR t3.vn3 IS NOT NULL";
-                                        try {
+        try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
             throw new \yii\web\ConflictHttpException('sql error');
@@ -292,8 +292,7 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('drug4', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
-    
-    
+
     public function actionDrugbrimo() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -330,7 +329,7 @@ class ReportController extends \common\components\AppController {
                 WHERE rxdate BETWEEN '$date1' and '$date2'
                                         AND o.icode = '1510007' ) AS tt
                 GROUP BY pttype";
-                        try {
+        try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
             throw new \yii\web\ConflictHttpException('sql error');
@@ -344,7 +343,7 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('drugbrimo', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
-    
+
     public function actionAntibac() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -375,7 +374,7 @@ class ReportController extends \common\components\AppController {
 			AND drugcategory = 'ANTIBACTERIALS'
                 GROUP BY o.icode
                 ORDER BY tqty DESC";
-                        try {
+        try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
             throw new \yii\web\ConflictHttpException('sql error');
@@ -389,8 +388,7 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('antibac', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2, 'sql', $sql]);
     }
-    
-    
+
     public function actionN18() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -437,7 +435,7 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('n18', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
-    
+
     public function actionN181() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -486,7 +484,7 @@ class ReportController extends \common\components\AppController {
                 LEFT JOIN patient p ON p.hn = i.hn
                 LEFT JOIN  spclty s on s.spclty = i.spclty
                 WHERE i.dchdate BETWEEN '$date1' AND '$date2'
-                                        AND icd10 IN('n183','184','185')
+                                        AND icd10 IN('n181','n182',n183','184','185','n189')
                 GROUP BY i.hn ) AS t1
                 ORDER BY hn  ";
         try {
@@ -503,7 +501,7 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('n181', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
-    
+
     public function actionDrug3() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
@@ -552,6 +550,92 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('drug3', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
-     
+
+    public function actionDmin() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        $tyear = date('Y');
+        $type='';
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+      
+        
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['type']) == '') {
+                $type = Yii::$app->session['type'];
+            } else {
+
+                $type = $_POST['type'];
+                Yii::$app->session['type'] = $type;
+            }
+        }
+
+        if ($type == '0') {
+            $tyear =date('Y')-3;
+        }else if($type == '1'){
+             $tyear =date('Y')-2;
+        }else if($type == '2'){
+             $tyear =date('Y')-1;
+        }else if($type == '3'){
+             $tyear =date('Y');
+        }
+
+
+
+        $sql = "SELECT t1.*,l10.lab_order_result AS l10,l11.lab_order_result AS l11,l12.lab_order_result AS l12
+				,l01.lab_order_result AS l01,l02.lab_order_result AS l02,l03.lab_order_result AS l03
+				,l04.lab_order_result AS l04,l05.lab_order_result AS l05,l06.lab_order_result AS l06
+				,l07.lab_order_result AS l07,l08.lab_order_result AS l08,l09.lab_order_result AS l09,
+                                moopart
+FROM (
+SELECT vstdate,o.hn,icd10,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,p.moopart
+FROM ovstdiag o
+LEFT JOIN patient p ON p.hn = o.hn
+WHERE o.vstdate BETWEEN CONCAT('$tyear'-1,'-10-','01') AND  CONCAT('$tyear','-09-','30')
+			AND icd10 BETWEEN 'e10' AND 'e149'
+			AND p.chwpart='64' AND p.amppart='06' AND p.tmbpart ='01' AND p.moopart IN('3','4','6','8')
+GROUP BY o.hn ) AS t1
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear'-1,'-10-','01') AND  CONCAT('$tyear'-1,'-10-','31') ) l10 ON  l10.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear'-1,'-11-','01') AND  CONCAT('$tyear'-1,'-11-','30') ) l11 ON  l11.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear'-1,'-12-','01') AND  CONCAT('$tyear'-1,'-12-','31') ) l12 ON  l12.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-01-','01') AND  CONCAT('$tyear','-01-','31') ) l01 ON  l01.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-02-','01') AND  CONCAT('$tyear','-02-','29') ) l02 ON  l02.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-03-','01') AND  CONCAT('$tyear','-03-','31') ) l03 ON  l03.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-04-','01') AND  CONCAT('$tyear','-04-','31') ) l04 ON  l04.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-05-','01') AND  CONCAT('$tyear','-05-','30') ) l05 ON  l05.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-06-','01') AND  CONCAT('$tyear','-06-','31') ) l06 ON  l06.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-07-','01') AND  CONCAT('$tyear','-07-','31') ) l07 ON  l07.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-08-','01') AND  CONCAT('$tyear','-08-','31') ) l08 ON  l08.hn = t1.hn
+LEFT JOIN  (SELECT hn,lab_order_result FROM lab_head l LEFT JOIN lab_order d ON d.lab_order_number = l.lab_order_number 
+						WHERE lab_items_code='76' AND  order_date BETWEEN CONCAT('$tyear','-09-','01') AND  CONCAT('$tyear','-09-','31') ) l09 ON  l09.hn = t1.hn
+GROUP BY t1.hn ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('dmin', ['dataProvider' => $dataProvider, 'tyear' => $tyear,'type'=>$type]);
+    }
 
 }
