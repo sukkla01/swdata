@@ -96,6 +96,26 @@ use kartik\export\ExportMenu;
                             'attribute' => 'tname',
                             'header' => 'ชื่อ-สกุล'
                         ],
+                        [
+                            'attribute' => 'taddr',
+                            'header' => 'ที่อยู่'
+                        ],
+                            [
+                            'attribute' => 'moopart',
+                            'header' => 'หมู่'
+                        ],
+                            [
+                            'attribute' => 'tmbpart',
+                            'label' => 'ตำบล'
+                        ],
+                            [
+                            'attribute' => 'amppart',
+                            'label' => 'อำเภอ'
+                        ],
+                            [
+                            'attribute' => 'chwpart',
+                            'header' => 'จังหวัด'
+                        ],
                          [
                             'attribute' => 'cid',
                             'header' => 'cid'

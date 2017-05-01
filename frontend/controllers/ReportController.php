@@ -458,7 +458,8 @@ class ReportController extends \common\components\AppController {
         }
         $sql = "SELECT * 
                 FROM (
-                SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,p.cid,
+                SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
+                p.moopart,p.tmbpart,p.amppart,p.chwpart,cid,
                                                 SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
                                                 SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
                                                 'OPD' AS type,o.vstdate,s.name as sname,icd10
@@ -466,13 +467,15 @@ class ReportController extends \common\components\AppController {
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='029')  c1 ON c1.hn = o.hn
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='013')  c2 ON c2.hn = o.hn
                 LEFT JOIN patient p ON p.hn = o.hn
+								LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
                 LEFT JOIN  ovst v on v.vn=o.vn
                 LEFT JOIN  spclty s on s.spclty = v.spclty
                 WHERE o.vstdate BETWEEN '$date1' AND '$date2'
-                                        AND icd10 IN('n183','184','185')
+                                        AND icd10 IN('n181','n182','n183','184','185','n189')
                 GROUP BY o.hn
                 UNION ALL
-                SELECT i.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,p.cid,
+                SELECT i.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
+                p.moopart,p.tmbpart,p.amppart,p.chwpart,cid,
                                                 SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
                                                 SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
                                                 'IPD' AS type,
@@ -482,6 +485,7 @@ class ReportController extends \common\components\AppController {
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='029')  c1 ON c1.hn = i.hn
                 LEFT JOIN (SELECT hn FROM clinicmember WHERE clinic ='013')  c2 ON c2.hn = i.hn
                 LEFT JOIN patient p ON p.hn = i.hn
+								LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
                 LEFT JOIN  spclty s on s.spclty = i.spclty
                 WHERE i.dchdate BETWEEN '$date1' AND '$date2'
                                         AND icd10 IN('n181','n182','n183','184','185','n189')
