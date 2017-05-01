@@ -69,7 +69,7 @@ use kartik\export\ExportMenu;
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title"> <i class='glyphicon glyphicon-search'></i> รายงานผู้ป่วย ckd (N183 N184 N185)</h3>
+                    <h3 class="box-title"> <i class='glyphicon glyphicon-search'></i> รายงานผู้ป่วย ckd (n181,n182,n183,184,185,n189)</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
