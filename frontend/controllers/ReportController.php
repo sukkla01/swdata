@@ -458,7 +458,7 @@ class ReportController extends \common\components\AppController {
         }
         $sql = "SELECT * 
                 FROM (
-                SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,p.cid,
                                                 SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
                                                 SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
                                                 'OPD' AS type,o.vstdate,s.name as sname,icd10
@@ -472,7 +472,7 @@ class ReportController extends \common\components\AppController {
                                         AND icd10 IN('n183','184','185')
                 GROUP BY o.hn
                 UNION ALL
-                SELECT i.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+                SELECT i.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,p.cid,
                                                 SUM(IF(c1.hn IS NOT null,1,0)) AS  ht,
                                                 SUM(IF(c2.hn IS NOT null,1,0)) AS  dm,
                                                 'IPD' AS type,
@@ -484,7 +484,7 @@ class ReportController extends \common\components\AppController {
                 LEFT JOIN patient p ON p.hn = i.hn
                 LEFT JOIN  spclty s on s.spclty = i.spclty
                 WHERE i.dchdate BETWEEN '$date1' AND '$date2'
-                                        AND icd10 IN('n181','n182',n183','184','185','n189')
+                                        AND icd10 IN('n181','n182','n183','184','185','n189')
                 GROUP BY i.hn ) AS t1
                 ORDER BY hn  ";
         try {

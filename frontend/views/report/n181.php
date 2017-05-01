@@ -96,6 +96,10 @@ use kartik\export\ExportMenu;
                             'attribute' => 'tname',
                             'header' => 'ชื่อ-สกุล'
                         ],
+                         [
+                            'attribute' => 'cid',
+                            'header' => 'cid'
+                        ],
                             ['attribute' => 'ht',
                             'label' => 'HT',
                             //'options' => [ 'style' => 1==1 ? 'background-color:#FF0000':'background-color:#0000FF'],
