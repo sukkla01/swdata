@@ -472,7 +472,7 @@ class ReportController extends \common\components\AppController {
                 LEFT JOIN  spclty s on s.spclty = v.spclty
                 WHERE o.vstdate BETWEEN '$date1' AND '$date2'
                                         AND icd10 IN('n181','n182','n183','184','185','n189')
-                GROUP BY o.hn
+                
                 UNION ALL
                 SELECT i.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
                 p.moopart,p.tmbpart,p.amppart,p.chwpart,cid,
@@ -488,8 +488,7 @@ class ReportController extends \common\components\AppController {
 								LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
                 LEFT JOIN  spclty s on s.spclty = i.spclty
                 WHERE i.dchdate BETWEEN '$date1' AND '$date2'
-                                        AND icd10 IN('n181','n182','n183','184','185','n189')
-                GROUP BY i.hn ) AS t1
+                                        AND icd10 IN('n181','n182','n183','184','185','n189') ) AS t1
                 ORDER BY hn  ";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
