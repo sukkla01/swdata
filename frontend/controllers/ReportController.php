@@ -456,7 +456,7 @@ class ReportController extends \common\components\AppController {
                 Yii::$app->session['date2'] = $date2;
             }
         }
-        $sql = "SELECT * 
+        $sql = "SELECT t1.* ,YEAR(CURDATE()) - YEAR(birthday) as tage
                 FROM (
                 SELECT o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr,
                 p.moopart,p.tmbpart,p.amppart,p.chwpart,cid,
@@ -490,6 +490,7 @@ class ReportController extends \common\components\AppController {
                 WHERE i.dchdate BETWEEN '$date1' AND '$date2'
                                         AND icd10 IN('n181','n182','n183','n184','n185','n189') 
                 GROUP BY i.hn,i.dchdate,icd10  ) AS t1
+                LEFT JOIN  patient p on p.hn = t1.hn
                 ORDER BY hn  ";
         try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();

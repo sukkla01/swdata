@@ -97,6 +97,10 @@ use kartik\export\ExportMenu;
                             'header' => 'ชื่อ-สกุล'
                         ],
                         [
+                            'attribute' => 'tage',
+                            'header' => 'อายุ'
+                        ],
+                        [
                             'attribute' => 'taddr',
                             'header' => 'ที่อยู่'
                         ],
