@@ -16,5 +16,8 @@ return [
     'food' => [
         'class' => 'frontend\modules\food\Food',
     ],
+    'oapp' => [
+        'class' => 'app\modules\oapp\Module',
+    ],
 ];
 
