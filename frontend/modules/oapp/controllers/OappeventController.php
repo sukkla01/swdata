@@ -82,6 +82,15 @@ class OappeventController extends Controller {
             ]);
         }
     }
+    
+    public function actionLimit() {
+      $tdate = $_GET['tdate'];
+        $sql = "SELECT COUNT(hn) tcount FROM oapp_event  WHERE created_date ='$tdate' ";
+        $command = Yii::$app->db5->createCommand($sql);
+        $btncount = $command->queryScalar();
+
+        return $btncount;
+    }
 
     /**
      * Updates an existing OappEvent model.

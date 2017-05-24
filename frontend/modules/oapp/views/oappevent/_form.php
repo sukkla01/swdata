@@ -6,7 +6,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\oapp\models\OappEvent */
 /* @var $form yii\widgets\ActiveForm */
-$cdate = date('Y-m-d H:m:s');
+$tdate = $model->created_date;
+echo $tdate;
 ?>
 
 <div class="row" >
@@ -52,7 +53,7 @@ $cdate = date('Y-m-d H:m:s');
                 <?= $form->field($model, 'spclty')->hiddenInput(['maxlength' => true, 'value' => '07'])->label(FALSE); ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton($model->isNewRecord ? 'บันทึก' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                    <?= Html::submitButton($model->isNewRecord ? 'บันทึก' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','name'=>'btnadd']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>
@@ -63,3 +64,30 @@ $cdate = date('Y-m-d H:m:s');
         </div>
     </div>
 </div>
+
+
+                
+ <?php
+$script = <<< JS
+        
+        var tdate ='$tdate';
+    $('#oappevent-hn').change(function() {
+        $.ajax({
+                   type: 'POST', url: './index.php?r=oapp/oappevent/limit&tdate='+tdate, dataType: 'json',
+                       data: {
+
+
+                       }, success: function(se) {
+                           if(se>2){
+                              alert('วันนี้นัดคนไข้เต็มแล้ว');
+                        }             
+                      }
+               }); 
+    });
+                
+
+   
+JS;
+$this->registerJs($script);
+?>
+                

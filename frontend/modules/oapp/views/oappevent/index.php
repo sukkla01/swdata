@@ -31,8 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
             <div class="box-body">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
+                <!--<div class="col-md-1"></div> -->
+                <div class="col-md-12">
                     <?php
                     echo \yii2fullcalendar\yii2fullcalendar::widget(array(
                         'events' => $events,
