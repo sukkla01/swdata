@@ -113,7 +113,7 @@ class OappeventController extends Controller {
                 $datals = $connection->createCommand("UPDATE oapp_show SET tcount =$tcount+1,color=if($tcount<4,'#00cc99','#e60073') WHERE   vstdate='$date'")->execute();
             }
 
-            return $this->redirect(['index']);
+            return $this->redirect(['view','id' => $model->id]);
         } else {
             return $this->renderAjax('create', [
                         'model' => $model, 'tlimit' => $tlimit, 'type' => $type,

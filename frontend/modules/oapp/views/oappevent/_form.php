@@ -59,7 +59,7 @@ $tdate = $model->created_date;
                         'language' => 'th',
                         'inline' => FALSE,
                         //'dateFormat' => 'yyyy-MM-dd',
-                        'options' => ['class' => 'form-control', 'value' => date('Y-m-d'),],
+                        'options' => ['class' => 'form-control'],
                         'clientOptions' => [
                             //'value' => '2015-01-01',
                             'todayHighlight' => true,
