@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
         Modal::begin([
-            //'header' => '<h4>บันทึกข้อมูลการนัด</h4>',
+            'header' => '<h4>บันทึกข้อมูลการนัด</h4>',
             'id' => 'modal',
             'size' => 'modal-lg'
         ]);
@@ -28,7 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box box-info">
             <div class="box-header with-border">
                 <div class="pull-left"><span style="font-weight: bold;" class="btn btn-primary btn-flat"><h5><i class="fa fa-bookmark-o"></i>&nbsp;&nbsp;ระบบนัดออนไลน์</h5></span></div>
-
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn bg-olive margin" id="btnadd"><i class="fa fa-plus-square">&nbsp;&nbsp; ลงนัด</i></button>
+                    
+                </div>
             </div>
             <div class="box-body">
                 <!--<div class="col-md-1"></div> -->
@@ -56,7 +59,18 @@ $script = <<< JS
         
 $(document).on('click','.fc-day',function(){
         var date = $(this).attr('data-date');
-        $.get('index.php?r=oapp/oappevent/create',{'date':date},function(data){
+        $.get('index.php?r=oapp/oappevent/create',{'date':date,'type':0},function(data){
+            $('#modal').modal('show')
+            .find('#modalContent')
+            .html(data);
+        
+         });
+        
+   });
+        
+ $('#btnadd').click(function() {
+        var date = '';
+        $.get('index.php?r=oapp/oappevent/create',{'date':date,'type':1},function(data){
             $('#modal').modal('show')
             .find('#modalContent')
             .html(data);

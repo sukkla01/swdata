@@ -8,6 +8,7 @@ use app\modules\oapp\models\EventSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\oapp\models\OappShow;
 
 /**
  * EventController implements the CRUD actions for Event model.
@@ -35,15 +36,15 @@ class EventController extends Controller {
     public function actionIndex() {
         /* $searchModel = new EventSearch();
           $dataProvider = $searchModel->search(Yii::$app->request->queryParams); */
-        $events = Event::find()->all();
+        $events = OappShow::find()->all();
         
         $masker=[];
         foreach ($events as $eve) {
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $eve->id;
-            $event->title = $eve->title;
-            $event->start = $eve->created_date;
-            $event->end = $eve->created_date;
+            $event->title = 'จำนวนทั้งหมด '.$eve->tcount. ' คน';
+            $event->start = $eve->vstdate;
+            $event->end = $eve->vstdate;
             $masker[] = $event;
         }
 

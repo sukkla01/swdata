@@ -8,6 +8,7 @@ use app\modules\oapp\models\OappEventSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\oapp\models\OappShow;
 
 /**
  * OappeventController implements the CRUD actions for OappEvent model.
@@ -34,24 +35,24 @@ class OappeventController extends Controller {
      */
     public function actionIndex() {
 
-        $events = OappEvent::find()->all();
-        
-        
-        
+        $events = OappShow::find()->all();
+
+
+
         $masker = [];
         foreach ($events as $eve) {
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $eve->id;
-            $event->title = $eve->hn;
-            $event->backgroundColor = '#00cc99';
-            $event->start = $eve->created_date;
-            $event->end = $eve->created_date;
+            $event->title = 'จำนวนทั้งหมด ' . $eve->tcount . ' คน';
+            $event->start = $eve->vstdate;
+            $event->end = $eve->vstdate;
+            $event->backgroundColor = $eve->color;
             $masker[] = $event;
         }
 
 
         return $this->render('index', [
-                     'events' => $masker,
+                    'events' => $masker,
         ]);
     }
 
@@ -74,17 +75,45 @@ class OappeventController extends Controller {
     public function actionCreate($date) {
         $model = new OappEvent();
         $model->created_date = $date;
+        $connection = Yii::$app->db5;
+        if (isset($_GET['type'])){
+           $type=$_GET['type']; 
+        }
+        
+        $sqlalert = "SELECT tcount FROM oapp_show WHERE vstdate='$date'";
+        $command = Yii::$app->db5->createCommand($sqlalert);
+        $tlimit = $command->queryScalar();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $sql = "SELECT COUNT(vstdate) AS tcount FROM oapp_show WHERE vstdate='$date'";
+            $command = Yii::$app->db5->createCommand($sql);
+            $datecount = $command->queryScalar();
+
+            $sqlt = "SELECT tcount FROM oapp_show WHERE vstdate='$date'";
+            $command = Yii::$app->db5->createCommand($sqlt);
+            $tcount = $command->queryScalar();
+
+            if ($datecount == 0) {
+                $datals = $connection->createCommand("INSERT INTO  oapp_show (vstdate,tcount,color) VALUES ('$date',1,'#00cc99')")->execute();
+            } else {
+                $datals = $connection->createCommand("UPDATE oapp_show SET tcount =$tcount+1,color=if($tcount<4,'#00cc99','#e60073') WHERE   vstdate='$date'")->execute();
+            }
+
+
+
+
+
             return $this->redirect(['index']);
         } else {
             return $this->renderAjax('create', [
-                        'model' => $model,
+                        'model' => $model, 'tlimit' => $tlimit,'type'=>$type,
             ]);
         }
     }
-    
+
     public function actionLimit() {
-      $tdate = $_GET['tdate'];
+        $tdate = $_GET['tdate'];
         $sql = "SELECT COUNT(hn) tcount FROM oapp_event  WHERE created_date ='$tdate' ";
         $command = Yii::$app->db5->createCommand($sql);
         $btncount = $command->queryScalar();

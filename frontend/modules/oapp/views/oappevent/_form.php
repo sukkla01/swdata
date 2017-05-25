@@ -2,13 +2,22 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\oapp\models\OappEvent */
 /* @var $form yii\widgets\ActiveForm */
 $tdate = $model->created_date;
-echo $tdate;
 ?>
+<?php if ($tlimit > 4) { ?>
+
+
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4><i class="icon  fa fa-ban"></i> Alert!</h4>
+        มีการนัดจำนวนเต็มแล้ว
+    </div>
+<?php } ?>
 
 <div class="row" >
     <div class="col-md-12">
@@ -26,18 +35,18 @@ echo $tdate;
 
 
 
-                <?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(); ?>
                 <div class="row">
                     <div class="col-md-3">
-                       <?= $form->field($model, 'hn')->textInput(['maxlength' => true]) ?> 
+<?= $form->field($model, 'hn')->textInput(['maxlength' => true]) ?> 
                     </div>
                     <div class="col-md-4">
-                       <?= $form->field($model, 'cid')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'cid')->textInput(['maxlength' => true]) ?>
                     </div>
                 </div>
-                
 
-                
+
+
 
                 <?= $form->field($model, 'tname')->textInput() ?>
 
@@ -45,7 +54,25 @@ echo $tdate;
 
                 <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'created_date')->textInput() ?>
+                <?php
+                if ($type == 0) {
+                    echo $form->field($model, 'created_date')->textInput();
+                } else {
+                    echo $form->field($model, 'created_date')->widget(
+                            DatePicker::className(), [
+                        'language' => 'th',
+                        'inline' => FALSE,
+                        //'dateFormat' => 'yyyy-MM-dd',
+                        'options' => ['class' => 'form-control', 'value' => date('Y-m-d'),],
+                        'clientOptions' => [
+                            //'value' => '2015-01-01',
+                            'todayHighlight' => true,
+                            'autoclose' => true,
+                            'dateFormat' => 'yyyy-mm-dd'
+                        ],
+                    ]);
+                }
+                ?>
 
                 <?= $form->field($model, 'note1')->hiddenInput(['maxlength' => true, 'value' => NULL])->label(FALSE); ?>
                 <?= $form->field($model, 'note2')->hiddenInput(['maxlength' => true, 'value' => NULL])->label(FALSE); ?>
@@ -53,7 +80,7 @@ echo $tdate;
                 <?= $form->field($model, 'spclty')->hiddenInput(['maxlength' => true, 'value' => '07'])->label(FALSE); ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton($model->isNewRecord ? 'บันทึก' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','name'=>'btnadd']) ?>
+                    <?= Html::submitButton($model->isNewRecord ? 'บันทึก' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name' => 'btnadd']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>
@@ -66,8 +93,8 @@ echo $tdate;
 </div>
 
 
-                
- <?php
+
+<?php
 $script = <<< JS
         
         var tdate ='$tdate';
@@ -78,8 +105,9 @@ $script = <<< JS
 
 
                        }, success: function(se) {
-                           if(se>2){
+                           if(se>4){
                               alert('วันนี้นัดคนไข้เต็มแล้ว');
+                              $("#oappevent-hn").val('');
                         }             
                       }
                }); 
