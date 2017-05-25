@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-12">
         <div class="box box-info">
             <div class="box-header with-border">
-                <div class="pull-left"><span style="font-weight: bold;" class="btn btn-github btn-flat"><h4><i class="fa fa-bookmark-o"></i>&nbsp;&nbsp;ระบบนัดการตรวจ หูคอจมูก ออนไลน์</h4></span></div>
+                <div class="pull-left"><span style="font-weight: bold;" class="btn btn-github btn-flat"><h5><i class="fa fa-bookmark-o"></i>&nbsp;&nbsp;ระบบนัดการตรวจ หูคอจมูก ออนไลน์</h5></span></div>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn bg-olive margin" id="btnadd"><i class="fa fa-plus-square">&nbsp;&nbsp; ลงนัด</i></button>
                     
@@ -67,6 +67,17 @@ $(document).on('click','.fc-day',function(){
          });
         
    });
+        
+$(document).on('click','.fc-day-top',function(){
+        var date = $(this).attr('data-date');
+        $.get('index.php?r=oapp/oappevent/create',{'date':date,'type':0},function(data){
+            $('#modal').modal('show')
+            .find('#modalContent')
+            .html(data);
+        
+         });
+        
+   });        
         
  $('#btnadd').click(function() {
         var date = '';

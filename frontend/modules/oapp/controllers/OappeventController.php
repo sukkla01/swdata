@@ -41,12 +41,18 @@ class OappeventController extends Controller {
 
         $masker = [];
         foreach ($events as $eve) {
+            if ($eve->tcount > 4) {
+                $text = "เต็ม";
+            } else {
+                $text = "";
+            }
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $eve->id;
-            $event->title = 'จำนวนทั้งหมด ' . $eve->tcount . ' คน';
+            $event->title = $text . ' ' . $eve->tcount . ' คน';
             $event->start = $eve->vstdate;
             $event->end = $eve->vstdate;
             $event->backgroundColor = $eve->color;
+            $event->durationEditable=TRUE;
             $masker[] = $event;
         }
 
@@ -76,17 +82,17 @@ class OappeventController extends Controller {
         $model = new OappEvent();
         $model->created_date = $date;
         $connection = Yii::$app->db5;
-        if (isset($_GET['type'])){
-           $type=$_GET['type']; 
+        if (isset($_GET['type'])) {
+            $type = $_GET['type'];
         }
-        
-        
+
+
         if (Yii::$app->request->isPost) {
             $r = $_POST['OappEvent'];
             $date = $r['created_date'];
         }
-        
-        
+
+
         $sqlalert = "SELECT tcount FROM oapp_show WHERE vstdate='$date'";
         $command = Yii::$app->db5->createCommand($sqlalert);
         $tlimit = $command->queryScalar();
@@ -110,7 +116,7 @@ class OappeventController extends Controller {
             return $this->redirect(['index']);
         } else {
             return $this->renderAjax('create', [
-                        'model' => $model, 'tlimit' => $tlimit,'type'=>$type,
+                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type,
             ]);
         }
     }

@@ -58,13 +58,13 @@ $tdate = $model->created_date;
                             DatePicker::className(), [
                         'language' => 'th',
                         'inline' => FALSE,
-                        'dateFormat' => 'yyyy-MM-dd',
+                        //'dateFormat' => 'yyyy-MM-dd',
                         'options' => ['class' => 'form-control', 'value' => date('Y-m-d'),],
                         'clientOptions' => [
                             //'value' => '2015-01-01',
                             'todayHighlight' => true,
                             'autoclose' => true,
-                            'dateFormat' => 'yyyy-mm-dd'
+                            'dateFormat' => 'yy-mm-dd'
                         ],
                     ]);
               
