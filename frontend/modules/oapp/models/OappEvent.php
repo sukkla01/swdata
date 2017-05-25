@@ -42,7 +42,7 @@ class OappEvent extends \yii\db\ActiveRecord {
         return [
                 [['cid', 'hn', 'tname'], 'required'],
                 [['cid'], 'integer'],
-                [['created_date'], 'safe'],
+                [['created_date'], 'string','max' => 50],
                 [['hn', 'spclty'], 'string', 'max' => 10],
                 [['tname', 'pttype', 'note1', 'note2', 'note3'], 'string', 'max' => 255],
                 [['tel'], 'string', 'max' => 50],

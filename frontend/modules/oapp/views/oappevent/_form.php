@@ -54,15 +54,11 @@ $tdate = $model->created_date;
 
                 <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
 
-                <?php
-                if ($type == 0) {
-                    echo $form->field($model, 'created_date')->textInput();
-                } else {
-                    echo $form->field($model, 'created_date')->widget(
+                <?= $form->field($model, 'created_date')->widget(
                             DatePicker::className(), [
                         'language' => 'th',
                         'inline' => FALSE,
-                        //'dateFormat' => 'yyyy-MM-dd',
+                        'dateFormat' => 'yyyy-MM-dd',
                         'options' => ['class' => 'form-control', 'value' => date('Y-m-d'),],
                         'clientOptions' => [
                             //'value' => '2015-01-01',
@@ -71,7 +67,7 @@ $tdate = $model->created_date;
                             'dateFormat' => 'yyyy-mm-dd'
                         ],
                     ]);
-                }
+              
                 ?>
 
                 <?= $form->field($model, 'note1')->hiddenInput(['maxlength' => true, 'value' => NULL])->label(FALSE); ?>
@@ -105,7 +101,7 @@ $script = <<< JS
 
 
                        }, success: function(se) {
-                           if(se>4){
+                           if(se>5){
                               alert('วันนี้นัดคนไข้เต็มแล้ว');
                               $("#oappevent-hn").val('');
                         }             

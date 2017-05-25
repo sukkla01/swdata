@@ -80,6 +80,13 @@ class OappeventController extends Controller {
            $type=$_GET['type']; 
         }
         
+        
+        if (Yii::$app->request->isPost) {
+            $r = $_POST['OappEvent'];
+            $date = $r['created_date'];
+        }
+        
+        
         $sqlalert = "SELECT tcount FROM oapp_show WHERE vstdate='$date'";
         $command = Yii::$app->db5->createCommand($sqlalert);
         $tlimit = $command->queryScalar();
@@ -99,10 +106,6 @@ class OappeventController extends Controller {
             } else {
                 $datals = $connection->createCommand("UPDATE oapp_show SET tcount =$tcount+1,color=if($tcount<4,'#00cc99','#e60073') WHERE   vstdate='$date'")->execute();
             }
-
-
-
-
 
             return $this->redirect(['index']);
         } else {
