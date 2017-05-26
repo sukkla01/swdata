@@ -8,6 +8,9 @@ use yii\jui\DatePicker;
 /* @var $model app\modules\oapp\models\OappEvent */
 /* @var $form yii\widgets\ActiveForm */
 $tdate = $model->created_date;
+$cdate = date('Y-m-d');
+$holidays = $holiday;
+
 ?>
 <?php if ($tlimit > 4) { ?>
 
@@ -18,6 +21,9 @@ $tdate = $model->created_date;
         มีการนัดจำนวนเต็มแล้ว
     </div>
 <?php } ?>
+
+
+
 
 <div class="row" >
     <div class="col-md-12">
@@ -94,6 +100,8 @@ $tdate = $model->created_date;
 $script = <<< JS
         
         var tdate ='$tdate';
+        var cdate ='$cdate';
+        var holiday = '$holidays';
     $('#oappevent-hn').change(function() {
         $.ajax({
                    type: 'POST', url: './index.php?r=oapp/oappevent/limit&tdate='+tdate, dataType: 'json',
@@ -108,6 +116,29 @@ $script = <<< JS
                       }
                }); 
     });
+        
+        
+   $('#oappevent-hn').change(function() {
+        if(tdate<=cdate){
+            $("#oappevent-hn").val('');
+            alert('นัดย้อนหลังไม่ได้');
+        }
+        if (holiday=='sat'){
+            $("#oappevent-hn").val('');
+            alert('นัดวันหยุด เสาร์-อาทิตย์ ไม่ได้');
+        }
+        if (holiday=='sun'){
+            $("#oappevent-hn").val('');
+            alert('นัดวันหยุด เสาร์-อาทิตย์ ไม่ได้');
+        }
+    });  
+        
+    /*$('#oappevent-cid').change(function() {
+        var cid = document.getElementById("oappevent-cid").value;
+        if(cid>=0 ){
+            alert('5555');
+        }
+    });*/
                 
 
    

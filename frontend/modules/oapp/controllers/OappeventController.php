@@ -52,7 +52,6 @@ class OappeventController extends Controller {
             $event->start = $eve->vstdate;
             $event->end = $eve->vstdate;
             $event->backgroundColor = $eve->color;
-            $event->durationEditable=TRUE;
             $masker[] = $event;
         }
 
@@ -82,8 +81,15 @@ class OappeventController extends Controller {
         $model = new OappEvent();
         $model->created_date = $date;
         $connection = Yii::$app->db5;
+        $holiday='';
+        
+        
         if (isset($_GET['type'])) {
             $type = $_GET['type'];
+        }
+        
+        if (isset($_GET['holiday'])) {
+            $holiday = $_GET['holiday'];
         }
 
 
@@ -116,7 +122,7 @@ class OappeventController extends Controller {
             return $this->redirect(['view','id' => $model->id]);
         } else {
             return $this->renderAjax('create', [
-                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type,
+                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type,'holiday'=>$holiday,
             ]);
         }
     }
