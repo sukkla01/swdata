@@ -13,41 +13,36 @@ $tdate = $model->created_date;
 $cdate = date('Y-m-d');
 $holidays = $holiday;
 $hols = $hol;
+$text1="";
+$text2="";
+$text3="";
 
 $sql = "SELECT  DATEDIFF('$tdate',curdate()) ";
         $command = Yii::$app->db5->createCommand($sql);
         $datediff = $command->queryScalar();
         
-
-
+if($tlimit > 4){
+    $text1="!!มีการนัดจำนวนเต็มแล้ว";
+}
+if($hol <>''){
+    $text2=" !!เป็นวันหยุด ".$hol;
+}
+if($datediff < 2){
+    $text3=" !!ควรนัดก่อน 2 วัน";
+}
+        
+    $text_total = $text1.$text2.$text3;
 ?>
-<?php if ($tlimit > 4) { ?>
+<?php if ($tlimit > 4 OR $hol <>'' OR $datediff < 2) { ?>
 
 
     <div class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h4><i class="icon  fa fa-ban"></i> Alert!</h4>
-        มีการนัดจำนวนเต็มแล้ว
+        <?=$text_total?>
     </div>
 <?php } ?>
-<?php if ($hol <>'') { ?>
 
-
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <h4><i class="icon  fa fa-ban"></i> Alert!</h4>
-        เป็นวันหยุด <?=$hol ?>
-    </div>
-<?php } ?>
-<?php if ($datediff < 2) { ?>
-
-
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <h4><i class="icon  fa fa-ban"></i> Alert!</h4>
-        ควรนัดก่อน 2 วัน
-    </div>
-<?php } ?>
 
 
 <div class="row" >

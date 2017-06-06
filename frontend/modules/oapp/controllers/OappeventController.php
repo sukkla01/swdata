@@ -44,11 +44,11 @@ class OappeventController extends Controller {
             if ($eve->tcount > 4) {
                 $text = "เต็ม";
             } else {
-                $text = "";
+                $text = $eve->tcount . ' คนที่นัดแล้ว';
             }
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $eve->id;
-            $event->title = $text . ' ' . $eve->tcount . ' คน';
+            $event->title = $text ;
             $event->start = $eve->vstdate;
             $event->end = $eve->vstdate;
             $event->backgroundColor = $eve->color;
