@@ -17,7 +17,7 @@ class OappeventController extends Controller {
 
     /**
      * @inheritdoc
-     *
+     */
     public function behaviors() {
         return [
             'verbs' => [
@@ -102,10 +102,6 @@ class OappeventController extends Controller {
         $sqlalert = "SELECT tcount FROM oapp_show WHERE vstdate='$date'";
         $command = Yii::$app->db5->createCommand($sqlalert);
         $tlimit = $command->queryScalar();
-        
-        $sqlhol = "SELECT day_name FROM holiday  WHERE  holiday_date='$date'";
-        $command = Yii::$app->db5->createCommand($sqlhol);
-        $hol = $command->queryScalar();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
@@ -126,7 +122,7 @@ class OappeventController extends Controller {
             return $this->redirect(['view','id' => $model->id]);
         } else {
             return $this->renderAjax('create', [
-                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type,'holiday'=>$holiday,'date'=>$date,'hol'=>$hol,
+                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type,'holiday'=>$holiday,
             ]);
         }
     }
@@ -138,15 +134,6 @@ class OappeventController extends Controller {
         $btncount = $command->queryScalar();
 
         return $btncount;
-    }
-    
-     public function actionHoliday() {
-        $tdate = $_GET['tdate'];
-        $sql = "SELECT  COUNT(holiday_date) tcount FROM holiday WHERE holiday_date = '$tdate' ";
-        $command = Yii::$app->db5->createCommand($sql);
-        $holi = $command->queryScalar();
-
-        return $holi;
     }
     
     public function actionAutohos() {

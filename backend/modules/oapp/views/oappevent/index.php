@@ -8,8 +8,7 @@ use yii\bootstrap\Modal;
 /* @var $searchModel app\modules\oapp\models\OappEventSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Oapp Events';
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 
@@ -22,19 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
         echo "<div id='modalContent'></div>";
         Modal::end();
 ?>
+
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <div class="pull-left"><span style="font-weight: bold;" class="btn btn-github btn-flat"><h5><i class="fa fa-bookmark-o"></i>&nbsp;&nbsp;ระบบนัดการตรวจ หูคอจมูก ออนไลน์</h5></span></div>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn bg-olive margin" id="btnadd"><i class="fa fa-plus-square">&nbsp;&nbsp;ลงนัด</i></button>
-                    
-                </div>
-            </div>
-            <div class="box-body">
-                <!--<div class="col-md-1"></div> -->
-                <div class="col-md-12">
+        
                     <?php
                     echo \yii2fullcalendar\yii2fullcalendar::widget(array(
                         'events' => $events,
@@ -44,9 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ));
                     ?> 
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

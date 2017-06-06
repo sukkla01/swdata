@@ -68,11 +68,6 @@ for ($i = 0; $i < sizeof($data); $i++) {
     </tr>
 </table>
 <table style="width:100%">
-     <tr>
-        <td width="20%" ></td>
-        <td width="100%"  align="left" height="40"><h3>- ควรมาพบแพทย์ช่วงเวลา 8.30 - 11.00</h3> </td>
-
-    </tr>
     <tr>
         <td width="20%" ></td>
         <td width="100%"  align="left" height="40"><h3>- กรุณาจับบัตรคิวหน้าห้องตรวจหู คอ จมูก</h3> </td>

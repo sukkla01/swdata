@@ -3,23 +3,13 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
-use kartik\widgets\Select2;
-use app\modules\oapp\models\OappPttype;
-use yii\helpers\ArrayHelper;
+
 /* @var $this yii\web\View */
 /* @var $model app\modules\oapp\models\OappEvent */
 /* @var $form yii\widgets\ActiveForm */
 $tdate = $model->created_date;
 $cdate = date('Y-m-d');
 $holidays = $holiday;
-$hols = $hol;
-
-$sql = "SELECT  DATEDIFF('$tdate',curdate()) ";
-        $command = Yii::$app->db5->createCommand($sql);
-        $datediff = $command->queryScalar();
-        
-
-
 ?>
 <?php if ($tlimit > 4) { ?>
 
@@ -30,24 +20,8 @@ $sql = "SELECT  DATEDIFF('$tdate',curdate()) ";
         มีการนัดจำนวนเต็มแล้ว
     </div>
 <?php } ?>
-<?php if ($hol <>'') { ?>
 
 
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <h4><i class="icon  fa fa-ban"></i> Alert!</h4>
-        เป็นวันหยุด <?=$hol ?>
-    </div>
-<?php } ?>
-<?php if ($datediff < 2) { ?>
-
-
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <h4><i class="icon  fa fa-ban"></i> Alert!</h4>
-        ควรนัดก่อน 2 วัน
-    </div>
-<?php } ?>
 
 
 <div class="row" >
@@ -57,8 +31,7 @@ $sql = "SELECT  DATEDIFF('$tdate',curdate()) ";
                 <h3 class="box-title"></h3>
 
                 <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
             <div class="box-body">
@@ -77,44 +50,13 @@ $sql = "SELECT  DATEDIFF('$tdate',curdate()) ";
                 </div>
 
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <?= $form->field($model, 'tname')->textInput() ?>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <?=
-                        $form->field($model, 'pttype')->widget(Select2::className(), [
-                            'data' =>
-                            ArrayHelper::map(OappPttype::find()->all(), 'id', 'name'),
-                            'options' => [
-                                'placeholder' => '<--คลิก/พิมพ์เลือก-->',
-                            //'value' => '5000025',
-                            //'onchange' => 'alert (this.value)',
-                            ],
-                            'pluginOptions' =>
-                                [
-                                'allowClear' => true
-                            ],
-                        ]);
-                        ?>
-                        
-                        
-                        <?= $form->field($model, 'pttype')->textInput(['maxlength' => true]) ?>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-3">
-                        <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
-                    </div>
-                    <div class="col-md-9">
-                        <br>
-                        <br><code>* ติดต่องาน หู คอ จมูก ได้ที่เบอร์โทร  055-682030-142 </code>
-                    </div>
-                </div>
 
+                <?= $form->field($model, 'tname')->textInput() ?>
+
+                <?= $form->field($model, 'pttype')->textInput(['maxlength' => true]) ?>
+
+                <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
 
                 <?=
                 $form->field($model, 'created_date')->widget(
@@ -158,16 +100,6 @@ $script = <<< JS
         var tdate ='$tdate';
         var cdate ='$cdate';
         var holiday = '$holidays';
-        var dayname = '$hols';
-        var tt = '$tdate';
-        var datediff ='$datediff';
-        
-        
-        
-        
-    
-       
-        
     $('#oappevent-hn').change(function() {
         $.ajax({
                    type: 'POST', url: './index.php?r=oapp/oappevent/limit&tdate='+tdate, dataType: 'json',
@@ -177,18 +109,6 @@ $script = <<< JS
                        }, success: function(se) {
                            if(se>5){
                               alert('วันนี้นัดคนไข้เต็มแล้ว');
-                              $("#oappevent-hn").val('');
-                        }             
-                      }
-               }); 
-        $.ajax({
-                   type: 'POST', url: './index.php?r=oapp/oappevent/holiday&tdate='+tdate, dataType: 'json',
-                       data: {
-
-
-                       }, success: function(se) {
-                           if(se>0){
-                              alert('$hol');
                               $("#oappevent-hn").val('');
                         }             
                       }
@@ -209,15 +129,6 @@ $script = <<< JS
             $("#oappevent-hn").val('');
             alert('นัดวันหยุด เสาร์-อาทิตย์ ไม่ได้');
         }
-        if(datediff < 2 ){
-            alert('ควรนัดก่อน 2 วัน');
-            $("#oappevent-hn").val('');
-           
-        }
-        
-        
-        
-        
     });  
         
     /*$('#oappevent-cid').change(function() {

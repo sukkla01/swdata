@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $content string */
 ?>
 
-<header class="main-header">
+<header class="main-header sidebar-mini sidebar-collapse">
 
 <?= Html::a('<span class="logo-mini">SW</span><span class="logo-lg">' . 'รพ.ศรีสังวรสุโขทัย' . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
 

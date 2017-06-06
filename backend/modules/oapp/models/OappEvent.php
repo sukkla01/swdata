@@ -40,7 +40,7 @@ class OappEvent extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-                [['cid', 'hn', 'tname','tel'], 'required'],
+                [['cid', 'hn', 'tname'], 'required'],
                 [['cid'], 'integer'],
                 [['created_date'], 'string','max' => 50],
                 [['hn', 'spclty'], 'string', 'max' => 10],
