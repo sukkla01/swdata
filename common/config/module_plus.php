@@ -19,5 +19,8 @@ return [
     'oapp' => [
         'class' => 'app\modules\oapp\Module',
     ],
+    'quest' => [
+        'class' => 'frontend\modules\quest\Quest',
+    ],
 ];
 
