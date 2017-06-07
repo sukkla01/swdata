@@ -114,7 +114,7 @@ if($datediff < 2){
                         DatePicker::className(), [
                     'language' => 'th',
                     'inline' => FALSE,
-                    //'dateFormat' => 'yyyy-MM-dd',
+                    'dateFormat' => 'yyyy-MM-dd',
                     'options' => ['class' => 'form-control'],
                     'clientOptions' => [
                         //'value' => '2015-01-01',
@@ -157,7 +157,15 @@ $script = <<< JS
         
         var type = '$type';
         
- 
+    $('#oappevent-created_date').change(function() {  
+        var createdate = document.getElementById("oappevent-created_date").value;
+         if(createdate<=cdate){
+            $("#oappevent-created_date").val('');
+            alert('นัดย้อนหลังไม่ได้');
+        }
+         
+       
+     });
         
     $('#oappevent-hn').change(function() {
         $.ajax({
