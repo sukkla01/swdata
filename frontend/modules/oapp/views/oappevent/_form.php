@@ -95,8 +95,6 @@ if($datediff < 2){
                         ]);
                         ?>
                         
-                        
-                        <?= $form->field($model, 'pttype')->textInput(['maxlength' => true]) ?>
                     </div>
                 </div>
 
