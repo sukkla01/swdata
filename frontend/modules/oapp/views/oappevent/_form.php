@@ -155,11 +155,9 @@ $script = <<< JS
         var tt = '$tdate';
         var datediff ='$datediff';
         
+        var type = '$type';
         
-        
-        
-    
-       
+ 
         
     $('#oappevent-hn').change(function() {
         $.ajax({
@@ -188,7 +186,7 @@ $script = <<< JS
                }); 
     });
         
-        
+   if(type=='0'){     
    $('#oappevent-hn').change(function() {
         if(tdate<=cdate){
             $("#oappevent-hn").val('');
@@ -212,6 +210,7 @@ $script = <<< JS
         
         
     });  
+        }
         
     /*$('#oappevent-cid').change(function() {
         var cid = document.getElementById("oappevent-cid").value;
