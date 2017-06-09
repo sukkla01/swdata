@@ -16,6 +16,7 @@ use Yii;
  * @property string $inject_time
  * @property string $mm
  * @property string $pb
+ * @property string $kh
  * @property string $ns
  * @property string $pk
  * @property string $pl
@@ -24,6 +25,7 @@ use Yii;
  * @property string $ps
  * @property string $pi
  * @property string $ot
+ * @property string $ot_detail
  * @property string $s_mm
  * @property string $s_pb
  * @property string $s_kh
@@ -63,8 +65,9 @@ class Quest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['tname', 'dept', 'inject_date'], 'required'],
             [['inject_date', 'inject_time', 's_mm', 's_pb', 's_kh', 's_ns', 's_pk', 's_pl', 's_nt', 's_td', 's_ps', 's_pi', 's_ot', 'e_mm', 'e_pb', 'e_kh', 'e_ns', 'e_pk', 'e_pl', 'e_nt', 'e_td', 'e_ps', 'e_pi', 'e_ot'], 'safe'],
-            [['tname', 'position', 'mm', 'pb', 'ns', 'pk', 'pl', 'nt', 'td', 'ps', 'pi', 'ot'], 'string', 'max' => 255],
+            [['tname', 'position', 'mm', 'pb', 'ns', 'pk', 'pl', 'nt', 'td', 'ps', 'pi', 'ot','ot_detail'], 'string', 'max' => 255],
             [['dept'], 'string', 'max' => 10],
             [['age'], 'integer', 'max' => 120],
         ];
@@ -77,15 +80,16 @@ class Quest extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'tname' => 'ชื่อ-สกุล',
+            'tname' => 'ชื่อ-สกุล *',
             'age' => 'อายุ',
             'position' => 'ตำแหน่ง',
-            'dept' => 'แผนก',
-            'inject_date' => 'วันที่ฉีด',
+            'dept' => 'แผนก *',
+            'inject_date' => 'วันที่ฉีด *',
             'inject_time' => 'เวลาฉีด',
             'mm' => 'ไม่มีอาการข้างเคียง',
             'pb' => 'ปวด บวมแดง บริเวณที่ฉีด',
-            'ns' => 'ไข้',
+            'kh' => 'ไข้',
+            'ns' => 'หนาวสั่น',
             'pk' => 'หนาวสั่น',
             'pl' => 'Pl',
             'nt' => 'Nt',
@@ -93,6 +97,7 @@ class Quest extends \yii\db\ActiveRecord
             'ps' => 'Ps',
             'pi' => 'Pi',
             'ot' => 'Ot',
+            'ot_detail' => 'รายละเอียด',
             's_mm' => 'เริ่มวันที่',
             's_pb' => 'เริ่มวันที่',
             's_kh' => 'เริ่มวันที่',

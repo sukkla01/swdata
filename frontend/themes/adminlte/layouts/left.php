@@ -84,7 +84,20 @@ use yii\helpers\Url;
                     <li><a href="<?= Url::to('index.php?r=oapp/detailoapp') ?>"><i class="fa fa-circle-o text-aqua"></i>รายงานการนัด</a></li>
                 </ul>
             </li>
-            <li clas
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-file-text-o"></i> <span>แบบสอบถาม</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="<?= Url::to('index.php?r=quest/quest/create') ?>"><i class="fa fa-circle-o text-default"></i>แบบสอบถามอาการข้างเคียง</a></li>
+                    <li><a href="<?= Url::to('index.php?r=oapp/detailoapp') ?>"><i class="fa fa-circle-o text-aqua"></i>รายงานการนัด</a></li>
+                </ul>
+            </li>
+           
 
             <li class="treeview">
                 <a href="#">

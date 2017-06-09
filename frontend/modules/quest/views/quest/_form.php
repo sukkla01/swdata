@@ -4,6 +4,10 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\checkbox\CheckboxX;
 use yii\jui\DatePicker;
+use kartik\time\TimePicker;
+use app\modules\quest\models\Dep;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\quest\models\Quest */
@@ -34,14 +38,29 @@ use yii\jui\DatePicker;
                         <div class="col-md-4">
                             <?= $form->field($model, 'position')->textInput(['maxlength' => true]) ?>
                         </div>
-                        <div class="col-md-2">
-                            <?= $form->field($model, 'age')->textInput(['maxlength' => true]) ?>
+                        <div class="col-md-1">
+                            <?= $form->field($model, 'age')->textInput(['maxlength' => true]) ?> 
                         </div>
+                        
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?= $form->field($model, 'dept')->textInput(['maxlength' => true]) ?>
+                             <?=
+                        $form->field($model, 'dept')->widget(Select2::className(), [
+                            'data' =>
+                            ArrayHelper::map(Dep::find()->all(), 'DEPTID', 'DEPTNAME'),
+                            'options' => [
+                                'placeholder' => '<--คลิก/พิมพ์เลือก-->',
+                            //'value' => '5000025',
+                            //'onchange' => 'alert (this.value)',
+                            ],
+                            'pluginOptions' =>
+                                [
+                                'allowClear' => true
+                            ],
+                        ]);
+                        ?>
                         </div>
                         <div class="col-md-3">
                             <?=
@@ -62,7 +81,22 @@ use yii\jui\DatePicker;
 
                         </div>
                         <div class="col-md-3">
-                            <?= $form->field($model, 'inject_time')->textInput() ?>
+                            <?php
+                               echo  $form->field($model, 'inject_time')->widget(
+                                    TimePicker::className(), [
+                                'language' => 'th',
+                                //'inline' => FALSE,
+                                //'dateFormat' => 'yyyy-MM-dd',
+                                'options' => ['class' => 'form-control'],
+                               /* 'clientOptions' => [
+                                    //'value' => '2015-01-01',
+                                    'todayHighlight' => true,
+                                    'autoclose' => true,
+                                    'dateFormat' => 'yy-mm-dd'
+                                ],*/
+                            ]);
+                            
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -134,6 +168,49 @@ use yii\jui\DatePicker;
 
                         </div>
                     </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <br> 
+                            <?php echo $form->field($model, 'kh')->checkBox(['label' => '  ไข้', 'uncheck' => null, 'checked' => 'checked']); ?>
+                        </div>
+                        <div class="col-md-3">
+                            <?=
+                            $form->field($model, 's_kh')->widget(
+                                    DatePicker::className(), [
+                                'language' => 'th',
+                                'inline' => FALSE,
+                                //'dateFormat' => 'yyyy-MM-dd',
+                                'options' => ['class' => 'form-control'],
+                                'clientOptions' => [
+                                    //'value' => '2015-01-01',
+                                    'todayHighlight' => true,
+                                    'autoclose' => true,
+                                    'dateFormat' => 'yy-mm-dd'
+                                ],
+                            ]);
+                            ?>
+                        </div>
+                        <div class="col-md-3">
+                            <?=
+                            $form->field($model, 'e_kh')->widget(
+                                    DatePicker::className(), [
+                                'language' => 'th',
+                                'inline' => FALSE,
+                                //'dateFormat' => 'yyyy-MM-dd',
+                                'options' => ['class' => 'form-control'],
+                                'clientOptions' => [
+                                    //'value' => '2015-01-01',
+                                    'todayHighlight' => true,
+                                    'autoclose' => true,
+                                    'dateFormat' => 'yy-mm-dd'
+                                ],
+                            ]);
+                            ?>
+
+                        </div>
+                    </div>
+                    
 
                     <div class="row">
                         <div class="col-md-2">
@@ -431,6 +508,9 @@ use yii\jui\DatePicker;
                         <div class="col-md-2">
                             <br> 
                             <?php echo $form->field($model, 'ot')->checkBox(['label' => '  อื่นๆ / ระบุ', 'uncheck' => null, 'checked' => 'checked']); ?>
+                        </div>
+                          <div class="col-md-3">
+                            <?= $form->field($model, 'ot_detail')->textInput(['maxlength' => true]) ?> 
                         </div>
                         <div class="col-md-3">
                             <?=
