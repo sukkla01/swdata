@@ -12,13 +12,12 @@ use yii\filters\VerbFilter;
 /**
  * QuestController implements the CRUD actions for Quest model.
  */
-class QuestController extends Controller
-{
+class QuestController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -33,14 +32,13 @@ class QuestController extends Controller
      * Lists all Quest models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new QuestSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -49,10 +47,26 @@ class QuestController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
+        $connection = Yii::$app->db;
+        $sql = "SELECT tname,position,d.DEPTNAME,age
+                FROM quest q
+                LEFT JOIN dep d ON DEPTID = q.dept
+                WHERE id = '$id' ";
+
+        $data = $connection->createCommand($sql)
+                ->queryAll();
+        for ($i = 0; $i < sizeof($data); $i++) {
+            $tname = $data[$i]['tname'];
+            $position = $data[$i]['position'];
+            $deptname = $data[$i]['DEPTNAME'];
+            $age = $data[$i]['age'];
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
+                    'tname'=>$tname,'position'=>$position,'dept'=>$deptname,
+                    'age'=>$age
         ]);
     }
 
@@ -61,15 +75,14 @@ class QuestController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Quest();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -80,15 +93,14 @@ class QuestController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -99,8 +111,7 @@ class QuestController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -113,12 +124,12 @@ class QuestController extends Controller
      * @return Quest the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Quest::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

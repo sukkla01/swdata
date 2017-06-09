@@ -9,64 +9,21 @@ use yii\widgets\DetailView;
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Quests', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
 ?>
-<div class="quest-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'tname',
-            'position',
-            'dept',
-            'inject_date',
-            'inject_time',
-            'mm',
-            'pb',
-            'ns',
-            'pk',
-            'pl',
-            'nt',
-            'td',
-            'ps',
-            'pi',
-            'ot',
-            's_mm',
-            's_pb',
-            's_kh',
-            's_ns',
-            's_pk',
-            's_pl',
-            's_nt',
-            's_td',
-            's_ps',
-            's_pi',
-            's_ot',
-            'e_mm',
-            'e_pb',
-            'e_kh',
-            'e_ns',
-            'e_pk',
-            'e_pl',
-            'e_nt',
-            'e_td',
-            'e_ps',
-            'e_pi',
-            'e_ot',
-        ],
-    ]) ?>
-
+<div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4><i class="icon  fa fa-check"></i> กรอกแบบสอบถามเรียบร้อยแล้ว!</h4>
+        <p>ชื่อ-สกุล : <?=$tname?> อายุ : <?=$age?> ปี</p>
+        <p>หน่วยงาน : <?=$dept?></p>
+        <p>ตำแหน่ง : <?=$position ?></p>
 </div>
+
+<p align="center"><img src="../web/images/thank_you.png"/></p>
+
+
+
+
