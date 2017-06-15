@@ -70,7 +70,7 @@ for ($i = 0; $i < sizeof($data); $i++) {
 <table style="width:100%">
      <tr>
         <td width="20%" ></td>
-        <td width="100%"  align="left" height="40"><h3>- ควรมาพบแพทย์ช่วงเวลา 8.30 - 11.00</h3> </td>
+        <td width="100%"  align="left" height="40"><h3>- ติดต่อแผนกหู คอ จมูก ช่วงเวลา 9.00 - 11.00 น.</h3> </td>
 
     </tr>
     <tr>
@@ -80,7 +80,7 @@ for ($i = 0; $i < sizeof($data); $i++) {
     </tr>
     <tr>
         <td width="20%" ></td>
-        <td width="100%"  align="left" height="40"><h3>- ให้นำบัตรประจำตัวประชาชนมาด้วย</h3> </td>
+        <td width="100%"  align="left" height="40"><h3>- นำบัตรประจำตัวประชาชนมาด้วย</h3> </td>
 
     </tr>
     <tr>

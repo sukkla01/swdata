@@ -14,14 +14,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <?php
-        Modal::begin([
-            'header' => '<h4>บันทึกข้อมูลการนัด</h4>',
-            'id' => 'modal',
-            'size' => 'modal-lg'
-        ]);
-        echo "<div id='modalContent'></div>";
-        Modal::end();
+Modal::begin([
+    'header' => '<h4>บันทึกข้อมูลการนัด</h4>',
+    'id' => 'modal',
+    'size' => 'modal-lg'
+]);
+echo "<div id='modalContent'></div>";
+Modal::end();
 ?>
+<div class="bg-teal disabled color-palette">
+    
+</div>
+
+<div class="alert alert-info alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><p align="center">* กรุณานัดล่วงหน้าก่อน 2 วัน</p></h4>
+    <h5><p align="center">* วันอังคาร,วันฟฤหัสบดี --> หมอณัฐพล</p></h5>
+    <h5><p align="center">* วันพุธ,วันศุกร์ --> หมอหทัยรัตน์</p></h5>
+    
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
@@ -29,8 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="pull-left"><span style="font-weight: bold;" class="btn btn-github btn-flat"><h5><i class="fa fa-bookmark-o"></i>&nbsp;&nbsp;ระบบนัดการตรวจ หูคอจมูก ออนไลน์</h5></span></div>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn bg-olive margin" id="btnadd"><i class="fa fa-plus-square">&nbsp;&nbsp;ลงนัด</i></button>
-                    
+
                 </div>
+
             </div>
             <div class="box-body">
                 <!--<div class="col-md-1"></div> -->
@@ -40,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'events' => $events,
                         'options' => [
                             'lang' => 'th',
+                           
                         //... more options to be defined here!
                         ],
                     ));

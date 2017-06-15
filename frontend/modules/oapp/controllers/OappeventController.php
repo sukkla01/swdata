@@ -44,7 +44,8 @@ class OappeventController extends Controller {
             if ($eve->tcount > 4) {
                 $text = "เต็ม";
             } else {
-                $text = $eve->tcount . ' คนที่นัดแล้ว';
+                //$text = $eve->tcount . ' คนที่นัดแล้ว';
+                $text = '';
             }
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $eve->id;
@@ -122,7 +123,12 @@ class OappeventController extends Controller {
             } else {
                 $datals = $connection->createCommand("UPDATE oapp_show SET tcount =$tcount+1,color=if($tcount<4,'#00cc99','#e60073') WHERE   vstdate='$date'")->execute();
             }
-
+            
+             $datalu = $connection->createCommand("UPDATE oapp_event e
+                        LEFT JOIN oapp_pttype p ON p.id = e.pttype
+                        SET e.pttype_name = SUBSTR(p.name,3,LENGTH(p.name)-2)
+                        WHERE e.id ='$model->id'")->execute();
+            
             return $this->redirect(['view','id' => $model->id]);
         } else {
             return $this->renderAjax('create', [

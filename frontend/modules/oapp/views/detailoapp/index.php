@@ -91,13 +91,17 @@ use kartik\grid\GridView;
                         'label' => 'CID'
                     ],
                         [
-                        'attribute' => 'pttype',
+                        'attribute' => 'pttype_name',
                         'label' => 'สิทธืการรักษา'
                     ],
                        
                      [
                         'attribute' => 'tel',
                         'label' => 'เบอร์โทร'
+                    ],
+                    [
+                        'attribute' => 'd_update',
+                        'label' => 'วันที่คีย์นัด'
                     ],
                 ];
                 echo GridView::widget([

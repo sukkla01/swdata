@@ -18,6 +18,7 @@ use Yii;
  * @property string $note2
  * @property string $note3
  * @property string $spclty
+ * @property string $pttype_name
  */
 class OappEvent extends \yii\db\ActiveRecord {
 
@@ -44,7 +45,7 @@ class OappEvent extends \yii\db\ActiveRecord {
                 [['cid'], 'integer'],
                 [['created_date'], 'string','max' => 50],
                 [['hn', 'spclty'], 'string', 'max' => 10],
-                [['tname', 'pttype', 'note1', 'note2', 'note3'], 'string', 'max' => 255],
+                [['tname', 'pttype', 'note1', 'note2', 'note3','pttype_name'], 'string', 'max' => 255],
                 [['tel'], 'string', 'max' => 50],
         ];
     }
@@ -65,6 +66,7 @@ class OappEvent extends \yii\db\ActiveRecord {
             'note2' => 'Note2',
             'note3' => 'Note3',
             'spclty' => 'Spclty',
+            'pttype_name' => 'สิทธิ',
         ];
     }
 

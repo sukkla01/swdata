@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'hn',
                             'tname',
                             'cid',
-                            'pttype',
+                            'pttype_name',
                             'tel',
                             'created_date',
                         ],

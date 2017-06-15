@@ -25,7 +25,10 @@ class DetailoappController extends \common\components\AppController
             $date1 = Yii::$app->session['date1'];
         }
         
-        $sql="SELECT * FROM oapp_event  where created_date ='$date1' order by id desc";
+        $sql="SELECT * 
+                FROM oapp_event  e 
+                LEFT JOIN oapp_pttype p ON p.id = e.pttype
+                where created_date ='$date1' order by e.id desc";
         try {
             $rawData = \Yii::$app->db5->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
