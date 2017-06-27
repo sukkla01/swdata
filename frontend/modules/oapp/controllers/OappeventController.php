@@ -46,11 +46,11 @@ class OappeventController extends Controller {
             if ($eve->tcount > 4) {
                 $text = "เต็ม";
             } else if ($eve->tcount == 'sat') {
-                $text = 'ไม่ตรวจวันเสาร์';
+                $text = 'ไม่มีตรวจ';
             } else if ($eve->tcount == 'sun') {
-                $text = 'ไม่ตรวจวันอาทิตย์';
+                $text = 'ไม่มีตรวจ';
             } else if ($eve->tcount == 'mon') {
-                $text = 'ไม่ตรวจวันจันทร์';
+                $text = 'ไม่มีตรวจ';
             } else {
                 $text = '';
             }
