@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\oapp\models\OappShow;
 
+Yii::$app->formatter->locale = 'th_TH';
+
 /**
  * OappeventController implements the CRUD actions for OappEvent model.
  */
@@ -18,18 +20,18 @@ class OappeventController extends Controller {
     /**
      * @inheritdoc
      *
-    public function behaviors() {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+      public function behaviors() {
+      return [
+      'verbs' => [
+      'class' => VerbFilter::className(),
+      'actions' => [
+      'delete' => ['POST'],
+      ],
+      ],
+      ];
+      }
 
-    /**
+      /**
      * Lists all OappEvent models.
      * @return mixed
      */
@@ -43,18 +45,18 @@ class OappeventController extends Controller {
         foreach ($events as $eve) {
             if ($eve->tcount > 4) {
                 $text = "เต็ม";
-            } else if($eve->tcount=='sat') {
-                $text ='ไม่ตรวจวันเสาร์';
-            } else if($eve->tcount=='sun') {
-                $text ='ไม่ตรวจวันอาทิตย์';
-            } else if($eve->tcount=='mon') {
-                $text ='ไม่ตรวจวันจันทร์';
-            }else{
+            } else if ($eve->tcount == 'sat') {
+                $text = 'ไม่ตรวจวันเสาร์';
+            } else if ($eve->tcount == 'sun') {
+                $text = 'ไม่ตรวจวันอาทิตย์';
+            } else if ($eve->tcount == 'mon') {
+                $text = 'ไม่ตรวจวันจันทร์';
+            } else {
                 $text = '';
             }
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $eve->id;
-            $event->title = $text ;
+            $event->title = $text;
             $event->start = $eve->vstdate;
             $event->end = $eve->vstdate;
             $event->backgroundColor = $eve->color;
@@ -87,13 +89,13 @@ class OappeventController extends Controller {
         $model = new OappEvent();
         $model->created_date = $date;
         $connection = Yii::$app->db5;
-        $holiday='';
-        
-        
+        $holiday = '';
+
+
         if (isset($_GET['type'])) {
             $type = $_GET['type'];
         }
-        
+
         if (isset($_GET['holiday'])) {
             $holiday = $_GET['holiday'];
         }
@@ -102,13 +104,16 @@ class OappeventController extends Controller {
         if (Yii::$app->request->isPost) {
             $r = $_POST['OappEvent'];
             $date = $r['created_date'];
+            $hn = $r['hn'];
+            $tname = $r['tname'];
+            $tdate = Yii::$app->formatter->asDate($date, 'medium');
         }
 
 
         $sqlalert = "SELECT tcount FROM oapp_show WHERE vstdate='$date'";
         $command = Yii::$app->db5->createCommand($sqlalert);
         $tlimit = $command->queryScalar();
-        
+
         $sqlhol = "SELECT day_name FROM holiday  WHERE  holiday_date='$date'";
         $command = Yii::$app->db5->createCommand($sqlhol);
         $hol = $command->queryScalar();
@@ -128,16 +133,47 @@ class OappeventController extends Controller {
             } else {
                 $datals = $connection->createCommand("UPDATE oapp_show SET tcount =$tcount+1,color=if($tcount<4,'#00cc99','#e60073') WHERE   vstdate='$date'")->execute();
             }
-            
-             $datalu = $connection->createCommand("UPDATE oapp_event e
+
+            $datalu = $connection->createCommand("UPDATE oapp_event e
                         LEFT JOIN oapp_pttype p ON p.id = e.pttype
                         SET e.pttype_name = SUBSTR(p.name,3,LENGTH(p.name)-2)
                         WHERE e.id ='$model->id'")->execute();
-            
-            return $this->redirect(['view','id' => $model->id]);
+
+
+            //------------- begin notify --------------
+            $linetoken="zCh3BOVSNl1bhzmgaCv2mAHZoNP6D2A3PF2gbrXThAm";
+            define('LINE_API', "https://notify-api.line.me/api/notify");
+            define('LINE_TOKEN', $linetoken);
+            $connection = Yii::$app->db2;
+            $getip = Yii::$app->getRequest()->getUserIP();
+
+            function notify_message($message) {
+
+                $queryData = array('message' => $message);
+                $queryData = http_build_query($queryData, '', '&');
+                $headerOptions = array(
+                    'http' => array(
+                        'method' => 'POST',
+                        'header' => "Content-Type: application/x-www-form-urlencoded\r\n"
+                        . "Authorization: Bearer " . LINE_TOKEN . "\r\n"
+                        . "Content-Length: " . strlen($queryData) . "\r\n",
+                        'content' => $queryData
+                    )
+                );
+                $context = stream_context_create($headerOptions);
+                $result = file_get_contents(LINE_API, FALSE, $context);
+                $res = json_decode($result);
+                //return $res;
+            }
+
+            $res = notify_message('HN : '.$hn.' ชื่อ-สกุล : '.$tname.' วันที่นัด : '.$tdate);
+            //var_dump($res);
+            //------------- end notify --------------
+
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->renderAjax('create', [
-                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type,'holiday'=>$holiday,'date'=>$date,'hol'=>$hol,
+                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type, 'holiday' => $holiday, 'date' => $date, 'hol' => $hol,
             ]);
         }
     }
@@ -150,8 +186,8 @@ class OappeventController extends Controller {
 
         return $btncount;
     }
-    
-     public function actionHoliday() {
+
+    public function actionHoliday() {
         $tdate = $_GET['tdate'];
         $sql = "SELECT  COUNT(holiday_date) tcount FROM holiday WHERE holiday_date = '$tdate' ";
         $command = Yii::$app->db5->createCommand($sql);
@@ -159,14 +195,14 @@ class OappeventController extends Controller {
 
         return $holi;
     }
-    
+
     public function actionAutohos() {
         $connection = Yii::$app->db2;
         $sql = "SELECT hn,cid,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,pt.name AS pname 
                 FROM  patient p 
                 LEFT JOIN pttype pt ON pt.pttype = p.pttype
                 WHERE cid ='1640700015461' ";
-       try {
+        try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
         } catch (\yii\db\Exception $e) {
             throw new \yii\web\ConflictHttpException('sql error');
