@@ -43,8 +43,13 @@ class OappeventController extends Controller {
         foreach ($events as $eve) {
             if ($eve->tcount > 4) {
                 $text = "เต็ม";
-            } else {
-                //$text = $eve->tcount . ' คนที่นัดแล้ว';
+            } else if($eve->tcount=='sat') {
+                $text ='ไม่ตรวจวันเสาร์';
+            } else if($eve->tcount=='sun') {
+                $text ='ไม่ตรวจวันอาทิตย์';
+            } else if($eve->tcount=='mon') {
+                $text ='ไม่ตรวจวันจันทร์';
+            }else{
                 $text = '';
             }
             $event = new \yii2fullcalendar\models\Event();
