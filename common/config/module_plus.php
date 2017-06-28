@@ -22,5 +22,8 @@ return [
     'quest' => [
         'class' => 'frontend\modules\quest\Quest',
     ],
+    'bmd' => [
+        'class' => 'frontend\modules\bmd\Bmd',
+    ],
 ];
 
