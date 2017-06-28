@@ -86,7 +86,7 @@ use yii\helpers\Url;
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-file-text-o"></i> <span>แบบสอบถาม</span>
+                    <i class="fa fa-file-text-o"></i> <span>ระบบอื่นๆ</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -94,7 +94,7 @@ use yii\helpers\Url;
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="<?= Url::to('index.php?r=quest/quest/create') ?>"><i class="fa fa-circle-o text-default"></i>แบบสอบถามอาการข้างเคียง</a></li>
-                    <li><a href="<?= Url::to('index.php?r=oapp/detailoapp') ?>"><i class="fa fa-circle-o text-aqua"></i>รายงานการนัด</a></li>
+                    <li><a href="<?= Url::to('index.php?r=bmd') ?>"><i class="fa fa-circle-o text-aqua"></i>การตรวจมวลกระดูก</a></li>
                 </ul>
             </li>
            
