@@ -119,7 +119,7 @@ $text_total = $text1 . $text2 . $text3;
                     'language' => 'th',
                     'inline' => FALSE,
                     'dateFormat' => 'yyyy-MM-dd',
-                    'options' => ['class' => 'form-control', 'value' => '2015-01-01'],
+                    'options' => ['class' => 'form-control', 'value' => $create_date],
                     'clientOptions' => [
                         //'value' => '2015-01-01',
                         'todayHighlight' => true,
@@ -192,14 +192,13 @@ $script = <<< JS
            
         
             $.ajax({
-                   type: 'POST', url: './index.php?r=oapp/oappevent/updateoapp&id='+id+'&hn='+hn+'&cid='+cid+'&tname='+tname+'&pttype='+pttype+'&tel='+tel+'&cdate='+cdate, dataType: 'json',
+                   type: 'GET', url: './index.php?r=oapp/oappevent/updateoapp&id='+id+'&hn='+hn+'&cid='+cid+'&tname='+tname+'&pttype='+pttype+'&tel='+tel+'&cdate='+cdate, dataType: 'json',
                        data: {
 
 
                        }, success: function(se) {
-                           if(se>5){
-                              alert('วันนี้นัดคนไข้เต็มแล้ว');
-                              $("#oappevent-hn").val('');
+                           if(se>0){
+                              alert('แก้ไขเรียบร้อยแล้ว');
                         }             
                       }
                }); 

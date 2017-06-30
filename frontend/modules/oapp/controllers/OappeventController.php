@@ -272,7 +272,18 @@ class OappeventController extends Controller {
     
      public function actionUpdateoapp() {
          $connection = Yii::$app->db5;
-         // $datals = $connection->createCommand("UPDATE oapp_show SET tcount =$tcount+1,color=if($tcount<4,'#00cc99','#e60073') WHERE   vstdate='$date'")->execute();
+         $id=$_GET['id'];
+         $hn=$_GET['hn'];
+         $cid=$_GET['cid'];
+         $tname=$_GET['tname'];
+         $tel=$_GET['tel'];
+         $pttype=$_GET['pttype'];
+         $cdate=$_GET['cdate'];
+         
+         
+         $datals = $connection->createCommand("UPDATE oapp_event SET hn='$hn',tname='$tname',cid='$cid',pttype='$pttype',tel='$tel',created_date='$cdate'  WHERE id='$id'")->execute();
+         
+         return $datals;
           
      }
 
