@@ -51,7 +51,7 @@ $ptname1='';
 </div>
 
 
-<?php if (Yii::$app->request->isPost) { ?>
+<?php if ($pg==1) { ?>
     <?php
     $connection = Yii::$app->db5;
     $sqlm = "SELECT * FROM oapp_event WHERE md5(cid)='$cid' AND id='$id'";
@@ -95,6 +95,7 @@ $ptname1='';
                 </div>
 
                 <button type="button" class="btn bg-purple margin" id="btnedit"><i class="fa fa-edit">&nbsp;&nbsp;แก้ไข</i></button>
+                <button type="button" class="btn bg-green margin" id="print"><i class="fa fa-print">&nbsp;&nbsp;พิมพ์</i></button>
             </div>
         </div>
     </div>
@@ -130,6 +131,11 @@ $script = <<< JS
          });
         
    });   
+        
+   $('#print').click(function() {
+        window.location='./index.php?r=/oapp/pdfoapp&id='+id;
+        
+   }); 
         
 JS;
 $this->registerJs($script);

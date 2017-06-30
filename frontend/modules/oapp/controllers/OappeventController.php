@@ -84,13 +84,21 @@ class OappeventController extends Controller {
         $dataProvider = '';
         $cid = '';
         $id = '';
+        $pg=0;
         if (Yii::$app->request->isPost) {
 
             $cid = md5($_POST['cid']);
             $id = $_POST['id'];
+            $pg=1;
         }
+        if (isset($_GET['cid'])) {
+            $cid = md5($_GET['cid']);
+            $id=$_GET['id'];
+            $pg=1;
+        }
+        
 
-        return $this->render('oedit', ['cid' => $cid, 'id' => $id]);
+        return $this->render('oedit', ['cid' => $cid, 'id' => $id,'pg'=>$pg]);
     }
 
     /**
@@ -282,6 +290,13 @@ class OappeventController extends Controller {
          
          
          $datals = $connection->createCommand("UPDATE oapp_event SET hn='$hn',tname='$tname',cid='$cid',pttype='$pttype',tel='$tel',created_date='$cdate'  WHERE id='$id'")->execute();
+         
+         $datal2 = $connection->createCommand("UPDATE oapp_event o
+                                            LEFT JOIN oapp_pttype p ON p.id =o.pttype
+                                            SET o.pttype_name=p.name
+                                            WHERE o.id='$id' ")->execute();
+
+         
          
          return $datals;
           

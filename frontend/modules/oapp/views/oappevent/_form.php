@@ -199,6 +199,7 @@ $script = <<< JS
                        }, success: function(se) {
                            if(se>0){
                               alert('แก้ไขเรียบร้อยแล้ว');
+                              window.location='./index.php?r=oapp/oappevent/oedit&cid=' + cid +'&id='+id;
                         }             
                       }
                }); 

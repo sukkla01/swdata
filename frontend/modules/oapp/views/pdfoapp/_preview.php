@@ -13,11 +13,13 @@ $sql = "SELECT * FROM oapp_event WHERE id ='$id' ";
 $data = $connection->createCommand($sql)
         ->queryAll();
 for ($i = 0; $i < sizeof($data); $i++) {
+    $id = $data[$i]['id'];
     $tname = $data[$i]['tname'];
     $hn = $data[$i]['hn'];
     $cid = $data[$i]['cid'];
     $pttype = $data[$i]['pttype'];
     $odate = $data[$i]['created_date'];
+    $pttype_name = $data[$i]['pttype_name'];
 }
 ?>
 <table style="margin: 0px auto;"> 
@@ -33,6 +35,10 @@ for ($i = 0; $i < sizeof($data); $i++) {
 
 <table style="width:100%">
     <tr>
+        <td width="20%"  align="right" height="60"><h2>เลขที่ :</h2> </td>
+        <td><h3><?= $id ?></h3></td>
+    </tr>
+    <tr>
         <td width="20%"  align="right" height="60"><h2>ชื่อ - สกุล :</h2> </td>
         <td><h3><?= $tname ?></h3></td>
     </tr>
@@ -47,6 +53,10 @@ for ($i = 0; $i < sizeof($data); $i++) {
     <tr>
         <td width="50%"  align="right" height="60"><h2>วันที่นัด  : </h2> </td>
         <td><h3> <?= $odate ?></h3></td>
+    </tr>
+    <tr>
+        <td width="50%"  align="right" height="60"><h2>สิทธิ  : </h2> </td>
+        <td><h3> <?= $pttype_name ?></h3></td>
     </tr>
 
 
