@@ -184,12 +184,15 @@ $script = <<< JS
             var pttype = document.getElementById("oappevent-pttype").value;
             var tel = document.getElementById("oappevent-tel").value;
             var cdate = document.getElementById("oappevent-created_date").value;
-            alert(cdate);
+            
+            if(cdate==''){
+                cdate ='2017-01-01';
+            }
         
            
         
             $.ajax({
-                   type: 'POST', url: './index.php?r=oapp/oappevent/updateoapp&id='+id+'&hn='+hn+'&cid='+cid+'&tname='+tname+'&pttype='+pttype+'&tel='+tel&cdate='+cdate, dataType: 'json',
+                   type: 'POST', url: './index.php?r=oapp/oappevent/updateoapp&id='+id+'&hn='+hn+'&cid='+cid+'&tname='+tname+'&pttype='+pttype+'&tel='+tel+'&cdate='+cdate, dataType: 'json',
                        data: {
 
 
