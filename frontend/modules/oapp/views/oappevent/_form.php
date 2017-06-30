@@ -6,6 +6,7 @@ use yii\jui\DatePicker;
 use kartik\widgets\Select2;
 use app\modules\oapp\models\OappPttype;
 use yii\helpers\ArrayHelper;
+
 /* @var $this yii\web\View */
 /* @var $model app\modules\oapp\models\OappEvent */
 /* @var $form yii\widgets\ActiveForm */
@@ -13,34 +14,36 @@ $tdate = $model->created_date;
 $cdate = date('Y-m-d');
 $holidays = $holiday;
 $hols = $hol;
-$text1="";
-$text2="";
-$text3="";
+$text1 = "";
+$text2 = "";
+$text3 = "";
+
+//$pttype=$pttype-1;
 
 
 $sql = "SELECT  DATEDIFF('$tdate',curdate()) ";
-        $command = Yii::$app->db5->createCommand($sql);
-        $datediff = $command->queryScalar();
-        
-if($tlimit > 4){
-    $text1="!!มีการนัดจำนวนเต็มแล้ว";
+$command = Yii::$app->db5->createCommand($sql);
+$datediff = $command->queryScalar();
+
+if ($tlimit > 4) {
+    $text1 = "!!มีการนัดจำนวนเต็มแล้ว";
 }
-if($hol <>''){
-    $text2=" !!เป็นวันหยุด ".$hol;
+if ($hol <> '') {
+    $text2 = " !!เป็นวันหยุด " . $hol;
 }
-if($datediff < 2){
-    $text3=" !!ควรนัดก่อน 2 วัน";
+if ($datediff < 2) {
+    $text3 = " !!ควรนัดก่อน 2 วัน";
 }
-        
-    $text_total = $text1.$text2.$text3;
+
+$text_total = $text1 . $text2 . $text3;
 ?>
-<?php if ($tlimit > 4 OR $hol <>'' OR $datediff < 2) { ?>
+<?php if ($tlimit > 4 OR $hol <> '' OR $datediff < 2) { ?>
 
 
     <div class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h4><i class="icon  fa fa-ban"></i> Alert!</h4>
-        <?=$text_total?>
+    <?= $text_total ?>
     </div>
 <?php } ?>
 
@@ -62,20 +65,20 @@ if($datediff < 2){
 
 
 
-                <?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(); ?>
                 <div class="row">
                     <div class="col-md-3">
-                        <?= $form->field($model, 'hn')->textInput(['maxlength' => true,'value' => $hn]) ?> 
+<?= $form->field($model, 'hn')->textInput(['maxlength' => true, 'value' => $hn]) ?> 
                     </div>
                     <div class="col-md-4">
-                        <?= $form->field($model, 'cid')->textInput(['maxlength' => true,'value' => $cid]) ?>
+<?= $form->field($model, 'cid')->textInput(['maxlength' => true, 'value' => $cid]) ?>
                     </div>
                 </div>
 
 
                 <div class="row">
                     <div class="col-md-12">
-                        <?= $form->field($model, 'tname')->textInput(['value' => $tname]) ?>
+<?= $form->field($model, 'tname')->textInput(['value' => $tname]) ?>
                     </div>
                 </div>
                 <div class="row">
@@ -86,7 +89,7 @@ if($datediff < 2){
                             ArrayHelper::map(OappPttype::find()->all(), 'id', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->',
-                                    'value' => 2,
+                                'value' => $pttype,
                             //'onchange' => 'alert (this.value)',
                             ],
                             'pluginOptions' =>
@@ -95,13 +98,13 @@ if($datediff < 2){
                             ],
                         ]);
                         ?>
-                        
+
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-3">
-                        <?= $form->field($model, 'tel')->textInput(['maxlength' => true,'value' => $tel]) ?>
+<?= $form->field($model, 'tel')->textInput(['maxlength' => true, 'value' => $tel]) ?>
                     </div>
                     <div class="col-md-9">
                         <br>
@@ -116,7 +119,7 @@ if($datediff < 2){
                     'language' => 'th',
                     'inline' => FALSE,
                     'dateFormat' => 'yyyy-MM-dd',
-                    'options' => ['class' => 'form-control','value' => '2015-01-01'],
+                    'options' => ['class' => 'form-control', 'value' => '2015-01-01'],
                     'clientOptions' => [
                         //'value' => '2015-01-01',
                         'todayHighlight' => true,
@@ -130,14 +133,15 @@ if($datediff < 2){
                 <?= $form->field($model, 'note2')->hiddenInput(['maxlength' => true, 'value' => NULL])->label(FALSE); ?>
                 <?= $form->field($model, 'note3')->hiddenInput(['maxlength' => true, 'value' => NULL])->label(FALSE); ?>
                 <?= $form->field($model, 'spclty')->hiddenInput(['maxlength' => true, 'value' => '07'])->label(FALSE); ?>
-                <?= $form->field($model, 'pttype_name')->hiddenInput(['maxlength' => true, 'value' => NULL])->label(FALSE); ?>
-                
+<?= $form->field($model, 'pttype_name')->hiddenInput(['maxlength' => true, 'value' => NULL])->label(FALSE); ?>
+
 
                 <div class="form-group">
-                    <?= Html::submitButton($model->isNewRecord ? 'บันทึก' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name' => 'btnadd']) ?>
+<?= Html::submitButton($model->isNewRecord ? 'บันทึก' : 'แก้ไข', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'addt', 'name' => 'btnadd']) ?>
+                    <button type="button"  id="ett" class="btn bg-purple margin"  ><i class="fa fa-edit">&nbsp;แก้ไข</i></button> 
                 </div>
 
-                <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 
 
@@ -159,12 +163,45 @@ $script = <<< JS
         var datediff ='$datediff';
         
         var type = '$type';
+        var id=$id;
         
      $(document).ready(function() {
-         
+        
+         if($update1==1){
+            //alert($update1);
+            document.getElementById("ett").disabled = false;
+            document.getElementById("addt").disabled = true;
+        }else{
+             document.getElementById("ett").disabled = true;
+            document.getElementById("addt").disabled = false;
+        }
       });   
         
+    $('#ett').click(function() {
+            var hn = document.getElementById("oappevent-hn").value;
+            var cid = document.getElementById("oappevent-cid").value ;
+            var tname = document.getElementById("oappevent-tname").value ;
+            var pttype = document.getElementById("oappevent-pttype").value;
+            var tel = document.getElementById("oappevent-tel").value;
+            var cdate = document.getElementById("oappevent-created_date").value;
+            alert(cdate);
         
+           
+        
+            $.ajax({
+                   type: 'POST', url: './index.php?r=oapp/oappevent/updateoapp&id='+id+'&hn='+hn+'&cid='+cid+'&tname='+tname+'&pttype='+pttype+'&tel='+tel&cdate='+cdate, dataType: 'json',
+                       data: {
+
+
+                       }, success: function(se) {
+                           if(se>5){
+                              alert('วันนี้นัดคนไข้เต็มแล้ว');
+                              $("#oappevent-hn").val('');
+                        }             
+                      }
+               }); 
+
+    });   
         
     $('#oappevent-created_date').change(function() {  
         var createdate = document.getElementById("oappevent-created_date").value;

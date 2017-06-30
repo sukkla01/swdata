@@ -8,13 +8,13 @@ use kartik\grid\GridView;
 use yii\widgets\DetailView;
 use yii\bootstrap\Modal;
 
-$create_date = '';
+
 $hn = '';
 $tname = '';
 $tel = '';
-$ptname1 = '';
 $pttype = '';
 $create_date = '';
+$ptname1='';
 ?>
 
 

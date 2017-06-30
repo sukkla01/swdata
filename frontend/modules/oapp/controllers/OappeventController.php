@@ -269,6 +269,12 @@ class OappeventController extends Controller {
             ]);
         }
     }
+    
+     public function actionUpdateoapp() {
+         $connection = Yii::$app->db5;
+         // $datals = $connection->createCommand("UPDATE oapp_show SET tcount =$tcount+1,color=if($tcount<4,'#00cc99','#e60073') WHERE   vstdate='$date'")->execute();
+          
+     }
 
     /**
      * Deletes an existing OappEvent model.
