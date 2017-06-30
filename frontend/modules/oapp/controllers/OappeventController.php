@@ -295,9 +295,8 @@ class OappeventController extends Controller {
                                             LEFT JOIN oapp_pttype p ON p.id =o.pttype
                                             SET o.pttype_name=p.name
                                             WHERE o.id='$id' ")->execute();
-
          
-         
+        
          return $datals;
           
      }
@@ -308,8 +307,21 @@ class OappeventController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete($id,$vstdate) {
         $this->findModel($id)->delete();
+        $connection = Yii::$app->db5;
+        
+        $command = Yii::$app->db5->createCommand("SELECT tcount FROM oapp_show WHERE vstdate='$vstdate' ");
+        $tcount = $command->queryScalar();
+        
+        
+        if($tcount<2){
+           $datal3 = $connection->createCommand("DELETE FROM oapp_show  WHERE vstdate ='$vstdate' ")->execute();  
+        }else{
+          $datal3 = $connection->createCommand("UPDATE oapp_show SET tcount=tcount-1  WHERE vstdate ='$vstdate' ")->execute();  
+        }
+        
+        
 
         return $this->redirect(['index']);
     }

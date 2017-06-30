@@ -8,13 +8,12 @@ use kartik\grid\GridView;
 use yii\widgets\DetailView;
 use yii\bootstrap\Modal;
 
-
 $hn = '';
 $tname = '';
 $tel = '';
 $pttype = '';
 $create_date = '';
-$ptname1='';
+$ptname1 = '';
 ?>
 
 
@@ -51,7 +50,7 @@ $ptname1='';
 </div>
 
 
-<?php if ($pg==1) { ?>
+<?php if ($pg == 1) { ?>
     <?php
     $connection = Yii::$app->db5;
     $sqlm = "SELECT * FROM oapp_event WHERE md5(cid)='$cid' AND id='$id'";
@@ -73,6 +72,9 @@ $ptname1='';
                 <h3 class="panel-title"> <i class='glyphicon glyphicon-edit'></i> รายการ</h3>
             </div>
             <div class="panel-body">
+                <?php if($hn=='') { ?>
+                <h2>ไม่พบข้อมูล</h2>
+                <?php }else{ ?>
                 <div style="width:100%; margin:0 auto;">
                     <div class="col-md-12">
                         <h4>วันที่นัด : <?= $create_date ?> </h4>
@@ -93,9 +95,19 @@ $ptname1='';
                         <h4>สิทธิ : <?= $ptname1 ?> </h4>
                     </div>
                 </div>
-
+                
                 <button type="button" class="btn bg-purple margin" id="btnedit"><i class="fa fa-edit">&nbsp;&nbsp;แก้ไข</i></button>
                 <button type="button" class="btn bg-green margin" id="print"><i class="fa fa-print">&nbsp;&nbsp;พิมพ์</i></button>
+                <?=
+                Html::a('ลบ', ['delete', 'id' => $id,'vstdate'=>$create_date], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'คุณต้องการลบหรือไม่',
+                        'method' => 'post',
+                    ],
+                ])
+                ?>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -133,7 +145,8 @@ $script = <<< JS
    });   
         
    $('#print').click(function() {
-        window.location='./index.php?r=/oapp/pdfoapp&id='+id;
+        //window.location='./index.php?r=/oapp/pdfoapp&id='+id;
+         window.open('./index.php?r=/oapp/pdfoapp&id='+id, '_blank');
         
    }); 
         
