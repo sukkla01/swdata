@@ -17,6 +17,7 @@ $text1="";
 $text2="";
 $text3="";
 
+
 $sql = "SELECT  DATEDIFF('$tdate',curdate()) ";
         $command = Yii::$app->db5->createCommand($sql);
         $datediff = $command->queryScalar();
@@ -64,17 +65,17 @@ if($datediff < 2){
                 <?php $form = ActiveForm::begin(); ?>
                 <div class="row">
                     <div class="col-md-3">
-                        <?= $form->field($model, 'hn')->textInput(['maxlength' => true]) ?> 
+                        <?= $form->field($model, 'hn')->textInput(['maxlength' => true,'value' => $hn]) ?> 
                     </div>
                     <div class="col-md-4">
-                        <?= $form->field($model, 'cid')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'cid')->textInput(['maxlength' => true,'value' => $cid]) ?>
                     </div>
                 </div>
 
 
                 <div class="row">
                     <div class="col-md-12">
-                        <?= $form->field($model, 'tname')->textInput() ?>
+                        <?= $form->field($model, 'tname')->textInput(['value' => $tname]) ?>
                     </div>
                 </div>
                 <div class="row">
@@ -85,7 +86,7 @@ if($datediff < 2){
                             ArrayHelper::map(OappPttype::find()->all(), 'id', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->',
-                            //'value' => '5000025',
+                                    'value' => 2,
                             //'onchange' => 'alert (this.value)',
                             ],
                             'pluginOptions' =>
@@ -100,7 +101,7 @@ if($datediff < 2){
 
                 <div class="row">
                     <div class="col-md-3">
-                        <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'tel')->textInput(['maxlength' => true,'value' => $tel]) ?>
                     </div>
                     <div class="col-md-9">
                         <br>
@@ -115,7 +116,7 @@ if($datediff < 2){
                     'language' => 'th',
                     'inline' => FALSE,
                     'dateFormat' => 'yyyy-MM-dd',
-                    'options' => ['class' => 'form-control'],
+                    'options' => ['class' => 'form-control','value' => '2015-01-01'],
                     'clientOptions' => [
                         //'value' => '2015-01-01',
                         'todayHighlight' => true,
@@ -158,6 +159,12 @@ $script = <<< JS
         var datediff ='$datediff';
         
         var type = '$type';
+        
+     $(document).ready(function() {
+         
+      });   
+        
+        
         
     $('#oappevent-created_date').change(function() {  
         var createdate = document.getElementById("oappevent-created_date").value;

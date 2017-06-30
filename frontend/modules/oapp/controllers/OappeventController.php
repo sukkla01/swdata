@@ -80,6 +80,21 @@ class OappeventController extends Controller {
         ]);
     }
 
+    public function actionOedit() {
+            $dataProvider='';
+            $cid='';
+            $id='';
+        if (Yii::$app->request->isPost) {
+
+            $cid = md5($_POST['cid']);
+            $id = $_POST['id'];
+
+           
+        }
+
+        return $this->render('oedit',['cid'=>$cid,'id'=>$id]);
+    }
+
     /**
      * Creates a new OappEvent model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -108,6 +123,27 @@ class OappeventController extends Controller {
             $tname = $r['tname'];
             $tdate = Yii::$app->formatter->asDate($date, 'medium');
         }
+        
+        
+        //---------------- update ----------------------
+            $update1=0;
+            $id=0;
+            if (isset($_GET['update'])) {
+                $update1=$_GET['update'];
+                $hn=$_GET['hn'];
+                $cid=$_GET['cid'];
+                $tname=$_GET['tname'];
+                $tel=$_GET['tel'];
+                $pttype=$_GET['pttype'];
+                $create_date=$_GET['create_date'];
+            }
+            
+            if (isset($_GET['id'])) {
+                $id=$_GET['id'];
+            }
+        
+        
+        
 
 
         $sqlalert = "SELECT tcount FROM oapp_show WHERE vstdate='$date'";
@@ -141,7 +177,7 @@ class OappeventController extends Controller {
 
 
             //------------- begin notify --------------
-            $linetoken="zCh3BOVSNl1bhzmgaCv2mAHZoNP6D2A3PF2gbrXThAm";
+            $linetoken = "zCh3BOVSNl1bhzmgaCv2mAHZoNP6D2A3PF2gbrXThAm";
             define('LINE_API', "https://notify-api.line.me/api/notify");
             define('LINE_TOKEN', $linetoken);
             $connection = Yii::$app->db2;
@@ -166,14 +202,15 @@ class OappeventController extends Controller {
                 //return $res;
             }
 
-            $res = notify_message('HN : '.$hn.' ชื่อ-สกุล : '.$tname.' วันที่นัด : '.$tdate);
+            $res = notify_message('HN : ' . $hn . ' ชื่อ-สกุล : ' . $tname . ' วันที่นัด : ' . $tdate);
             //var_dump($res);
             //------------- end notify --------------
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->renderAjax('create', [
-                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type, 'holiday' => $holiday, 'date' => $date, 'hol' => $hol,
+                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type, 'holiday' => $holiday, 'date' => $date, 'hol' => $hol,'update1'=>$update1,'id'=>$id,
+                        'hn'=>$hn,'tname'=>$tname,'cid'=>$cid,'tel'=>$tel,'pttype'=>$pttype,'create_date'=>$create_date
             ]);
         }
     }

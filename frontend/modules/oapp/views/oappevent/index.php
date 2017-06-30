@@ -39,8 +39,8 @@ Modal::end();
             <div class="box-header with-border">
                 <div class="pull-left"><span style="font-weight: bold;" class="btn btn-github btn-flat"><h5><i class="fa fa-bookmark-o"></i>&nbsp;&nbsp;ระบบนัดการตรวจ หูคอจมูก ออนไลน์</h5></span></div>
                 <div class="box-tools pull-right">
+                    <button type="button" class="btn bg-purple margin" id="btnedit"><i class="fa fa-plus-square">&nbsp;&nbsp;แก้ไขนัด</i></button>
                     <button type="button" class="btn bg-olive margin" id="btnadd"><i class="fa fa-plus-square">&nbsp;&nbsp;ลงนัด</i></button>
-
                 </div>
 
             </div>
@@ -129,6 +129,10 @@ $(document).on('click','.fc-day-top',function(){
         
          });
         
+   });
+        
+   $('#btnedit').click(function() {
+       window.location='./index.php?r=oapp/oappevent/oedit';
    });
         
 

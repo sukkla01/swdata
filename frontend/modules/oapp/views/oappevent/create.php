@@ -13,7 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="oapp-event-create">
 
     <?= $this->render('_form', [
-        'model' => $model,'tlimit'=>$tlimit,'type'=>$type,'holiday'=>$holiday,'date'=>$date,'hol'=>$hol,
+        'model' => $model,'tlimit'=>$tlimit,'type'=>$type,'holiday'=>$holiday,'date'=>$date,'hol'=>$hol,'update1'=>$update1,'id'=>$id,
+        'hn'=>$hn,'tname'=>$tname,'cid'=>$cid,'tel'=>$tel,'pttype'=>$pttype,'create_date'=>$create_date
     ]) ?>
 
 </div>
