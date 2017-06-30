@@ -81,18 +81,16 @@ class OappeventController extends Controller {
     }
 
     public function actionOedit() {
-            $dataProvider='';
-            $cid='';
-            $id='';
+        $dataProvider = '';
+        $cid = '';
+        $id = '';
         if (Yii::$app->request->isPost) {
 
             $cid = md5($_POST['cid']);
             $id = $_POST['id'];
-
-           
         }
 
-        return $this->render('oedit',['cid'=>$cid,'id'=>$id]);
+        return $this->render('oedit', ['cid' => $cid, 'id' => $id]);
     }
 
     /**
@@ -105,6 +103,12 @@ class OappeventController extends Controller {
         $model->created_date = $date;
         $connection = Yii::$app->db5;
         $holiday = '';
+        $hn = '';
+        $cid = '';
+        $tname = '';
+        $tel = '';
+        $pttype = '';
+        $create_date = '';
 
 
         if (isset($_GET['type'])) {
@@ -123,27 +127,27 @@ class OappeventController extends Controller {
             $tname = $r['tname'];
             $tdate = Yii::$app->formatter->asDate($date, 'medium');
         }
-        
-        
+
+
         //---------------- update ----------------------
-            $update1=0;
-            $id=0;
-            if (isset($_GET['update'])) {
-                $update1=$_GET['update'];
-                $hn=$_GET['hn'];
-                $cid=$_GET['cid'];
-                $tname=$_GET['tname'];
-                $tel=$_GET['tel'];
-                $pttype=$_GET['pttype'];
-                $create_date=$_GET['create_date'];
-            }
-            
-            if (isset($_GET['id'])) {
-                $id=$_GET['id'];
-            }
-        
-        
-        
+        $update1 = 0;
+        $id = 0;
+        if (isset($_GET['update'])) {
+            $update1 = $_GET['update'];
+            $hn = $_GET['hn'];
+            $cid = $_GET['cid'];
+            $tname = $_GET['tname'];
+            $tel = $_GET['tel'];
+            $pttype = $_GET['pttype'];
+            $create_date = $_GET['create_date'];
+        }
+
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+        }
+
+
+
 
 
         $sqlalert = "SELECT tcount FROM oapp_show WHERE vstdate='$date'";
@@ -209,8 +213,8 @@ class OappeventController extends Controller {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->renderAjax('create', [
-                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type, 'holiday' => $holiday, 'date' => $date, 'hol' => $hol,'update1'=>$update1,'id'=>$id,
-                        'hn'=>$hn,'tname'=>$tname,'cid'=>$cid,'tel'=>$tel,'pttype'=>$pttype,'create_date'=>$create_date
+                        'model' => $model, 'tlimit' => $tlimit, 'type' => $type, 'holiday' => $holiday, 'date' => $date, 'hol' => $hol, 'update1' => $update1, 'id' => $id,
+                        'hn' => $hn, 'tname' => $tname, 'cid' => $cid, 'tel' => $tel, 'pttype' => $pttype, 'create_date' => $create_date
             ]);
         }
     }
