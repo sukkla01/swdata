@@ -14,10 +14,10 @@ class ThaicvController extends \yii\web\Controller
     {
         $sql="INSERT IGNORE INTO swdata.tmb_thaicvrisk_ngob
 
-                SELECT c.hn,o.vn,o2.vstdate,bps,tc,waist,height,smoking_type_id,NULL,NULL,'2559'
+                SELECT c.hn,o.vn,o2.vstdate,bps,tc,waist,height,smoking_type_id,NULL,NULL,'2559',null
                 FROM clinicmember  c
-                LEFT JOIN (SELECT MAX(vn) AS vn,hn FROM opdscreen WHERE vstdate BETWEEN '2015-10-01' AND '2016-09-30' AND bps>0 AND (waist >0 or tc >0) GROUP BY hn ) o ON o.hn=c.hn
-                LEFT JOIN (SELECT vstdate,vn,bps,tc,waist,height,smoking_type_id FROM opdscreen WHERE vstdate BETWEEN  '2015-10-01' AND '2016-09-30' ) o2 ON o2.vn=o.vn
+                LEFT JOIN (SELECT MAX(vn) AS vn,hn FROM opdscreen WHERE vstdate BETWEEN '2016-10-01' AND '2017-09-30' AND bps>0 AND (waist >0 or tc >0) GROUP BY hn ) o ON o.hn=c.hn
+                LEFT JOIN (SELECT vstdate,vn,bps,tc,waist,height,smoking_type_id FROM opdscreen WHERE vstdate BETWEEN  '2016-10-01' AND '2017-09-30' ) o2 ON o2.vn=o.vn
                 WHERE clinic IN('013','029')
                 GROUP BY c.hn";
         
