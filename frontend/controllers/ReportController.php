@@ -147,6 +147,52 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('mrs002', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
+    
+    public function actionPsy001() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+        $sql = "SELECT o.hn,o.vstdate,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,i.code,i.name AS iname,
+                CONCAT(p.addrpart,' หมู่ ',p.moopart,' ',t.full_name) taddr
+                FROM opitemrece o
+                LEFT JOIN patient p ON p.hn=o.hn
+                LEFT JOIN ovstdiag d ON d.vn = o.vn
+                LEFT JOIN thaiaddress t ON t.chwpart=p.chwpart AND t.amppart=p.amppart AND t.tmbpart=p.tmbpart
+                LEFT JOIN icd101 i ON i.code = d.icd10
+                WHERE o.vstdate BETWEEN '$date1' AND '$date2'
+                      AND d.diagtype='1'
+                      AND icode IN('1520014','1520015')
+               ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        return $this->render('psy001', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
+    }
 
     public function actionMrs003() {
         $this->permitRole([1, 3]);
