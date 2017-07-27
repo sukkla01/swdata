@@ -88,6 +88,66 @@ class ReportController extends \common\components\AppController {
         ]);
         return $this->render('mrs001', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
+    
+    
+    public function actionDrug1() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        $icode='';
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+                $icode=Yii::$app->session['icode'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                $icode = $_POST['icode'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+                Yii::$app->session['icode'] = $icode;
+            }
+        }
+        if (isset($_GET['date1'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+
+        $sql = " SELECT o.rxdate,o.hn,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
+				t.name AS ptname,o.qty,d.name AS dname,
+				IF(v.vn IS NULL,a.pdx,v.pdx) AS tdiag,
+				IF(v.vn IS NULL,'IPD','OPD') AS tcheck,
+				IF(o.drugusage IS NULL,concat(s.name1,s.name2,s.name3),concat(u.name1,u.name2,u.name3)) AS tuse
+                    FROM opitemrece o
+                    LEFT JOIN patient p ON p.hn=o.hn
+                    LEFT JOIN pttype t ON t.pttype = o.pttype
+                    LEFT JOIN doctor d ON d.code = o.doctor
+                    LEFT JOIN vn_stat v ON v.vn=o.vn
+                    LEFT JOIN an_stat a ON a.an =o.an
+                    LEFT JOIN sp_use s ON s.sp_use=o.sp_use
+                    LEFT JOIN drugusage u  ON  u.drugusage=o.drugusage
+                    WHERE  rxdate BETWEEN '$date1' and '$date2'
+                                             AND icode ='$icode' ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 100
+            ],
+        ]);
+        return $this->render('drug1', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2,'icode'=>$icode]);
+    }
 
     public function actionMrs1detail() {
 

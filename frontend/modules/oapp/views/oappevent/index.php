@@ -28,7 +28,7 @@ Modal::end();
 
 <div class="alert alert-info alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h4><p align="center">* กรุณานัดล่วงหน้าก่อน 2 วัน</p></h4>
+    <h4><p align="center">* กรุณานัดล่วงหน้าอย่างน้อย 2 วัน</p></h4>
     <h5><p align="center">* วันอังคาร,วันพฤหัสบดี --> หมอณัฐพล เวลา 9.00-12.00 น.</p></h5>
     <h5><p align="center">* วันพุธ,วันศุกร์ --> หมอหทัยรัตน์ เวลา 9.00-12.00 น.</p></h5>
     
