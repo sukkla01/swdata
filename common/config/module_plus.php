@@ -25,5 +25,8 @@ return [
     'bmd' => [
         'class' => 'frontend\modules\bmd\Bmd',
     ],
+    'rreport' => [
+        'class' => 'frontend\modules\rreport\Rreport',
+    ],
 ];
 

@@ -6,6 +6,8 @@ use kartik\widgets\DatePicker;
 //use kartik\grid\GridView;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
+use kartik\widgets\Select2;
+use yii\helpers\ArrayHelper;
 ?>
 
 <div class="body-content">
@@ -16,8 +18,22 @@ use kartik\export\ExportMenu;
                 <div class="box-body">
 
 
-                    
+
                     <?= Html::beginForm(); ?>
+                    <div class="col-md-3">
+                        <?php
+                        echo Select2::widget([
+                            'name' => 'ward',
+                            'value' => $ward,
+                            'data' => ArrayHelper::map(app\models\Ward::find()->all(), 'ward', 'name'),
+                            'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
+                            'options' => ['placeholder' => ' กรุณาเลือกหอผู้ป่วย...'],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                        ]); // Classic Theme
+                        ?>
+                    </div>
 
                     ประมวลข้อมูลระหว่าง :
                     <?php
@@ -50,13 +66,6 @@ use kartik\export\ExportMenu;
                         ]
                     ]);
                     ?>
-                 
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>ใส่รหัสยา : </label>
-                            <input type="text" name="icode" value="<?=$icode?>">
-                        </div>
-                    </div>
 
                     <button class='btn btn-danger'>ประมวลผล</button>
 
@@ -76,7 +85,7 @@ use kartik\export\ExportMenu;
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title"> <i class='glyphicon glyphicon-search'></i> รายงานการสั่งจ่ายยา</h3>
+                    <h3 class="box-title"> <i class='glyphicon glyphicon-search'></i> 20 อันดับโรคเสียชีวิตผู้ป่วยใน</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -92,37 +101,18 @@ use kartik\export\ExportMenu;
                     $gridColumns = [
                         ['class' => 'kartik\grid\SerialColumn'],
                             [
-                            'attribute' => 'hn',
-                            'label' => 'HN'
+                            'attribute' => 'death_diag_1',
+                            'label' => 'รหัส ICD10'
                         ],
                             [
-                            'attribute' => 'tname',
-                            'header' => 'ชื่อ-สกุล'
+                            'attribute' => 'iname',
+                            'header' => 'ชื่อโรค'
                         ],
                             [
-                            'attribute' => 'ptname',
-                            'header' => 'สิทธิ์'
+                            'attribute' => 'tcount',
+                            'header' => 'จำนวน/คน'
                         ],
-                            [
-                            'attribute' => 'tuse',
-                            'header' => 'วิธีการใช้'
-                        ],
-                            [
-                            'attribute' => 'qty',
-                            'header' => 'จำนวน'
-                        ],
-                            [
-                            'attribute' => 'dname',
-                            'label' => 'แพทย์'
-                        ],
-                            [
-                            'attribute' => 'tdiag',
-                            'label' => 'pdx'
-                        ],
-                            [
-                            'attribute' => 'tcheck',
-                            'header' => 'ประเภท'
-                        ],
+                           
                     ];
 
                     echo '<div class="col-md-12" align="right" >';

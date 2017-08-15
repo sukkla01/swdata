@@ -20,6 +20,7 @@ class ReportController extends \common\components\AppController {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
         $date2 = date('Y-m-d');
+        
         if (isset($_GET['page'])) {
             $date1 = Yii::$app->session['date1'];
             $date2 = Yii::$app->session['date2'];
@@ -87,6 +88,65 @@ class ReportController extends \common\components\AppController {
             ],
         ]);
         return $this->render('mrs001', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
+    }
+    
+    public function actionDeathipt() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        $ward ="";
+        
+        
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+            $ward = Yii::$app->session['ward'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+                $ward = Yii::$app->session['ward'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                $ward = $_POST['ward'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+                Yii::$app->session['ward'] = $ward;
+            }
+        }
+        if (isset($_GET['date1'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+            $ward = Yii::$app->session['ward'];
+        }
+
+        $sql = "SELECT d.death_diag_1,i1.name AS iname,COUNT(i.hn) AS	tcount
+                FROM ipt i
+                LEFT JOIN death d ON d.hn = i.hn
+                LEFT JOIN icd101 i1 ON i1.code=d.death_diag_1
+                LEFT JOIN ward w ON w.ward = i.ward
+                WHERE dchdate BETWEEN '$date1' and '$date2'
+                                        AND dchstts IN('08','09') AND  d.death_diag_1 IS NOT NULL
+                                        AND w.spclty ='$ward'
+                GROUP BY d.death_diag_1
+                ORDER BY tcount DESC 
+                LIMIT 20 ";
+        try {
+            $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 100
+            ],
+        ]);
+        return $this->render('deathipt', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2,'ward'=>$ward]);
     }
     
     
