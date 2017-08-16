@@ -145,6 +145,57 @@ class ReportsmoController extends \common\components\AppController {
         return $this->render('notclinic', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
     }
     
+    public function actionNcdhdc() {
+        $this->permitRole([1, 3]);
+        $date1 = date('Y-m-d');
+        $date2 = date('Y-m-d');
+        if (isset($_GET['page'])) {
+            $date1 = Yii::$app->session['date1'];
+            $date2 = Yii::$app->session['date2'];
+        }
+        if (Yii::$app->request->isPost) {
+            if (isset($_POST['date1']) == '') {
+                $date1 = Yii::$app->session['date1'];
+                $date2 = Yii::$app->session['date2'];
+            } else {
+
+                $date1 = $_POST['date1'];
+                $date2 = $_POST['date2'];
+                Yii::$app->session['date1'] = $date1;
+                Yii::$app->session['date2'] = $date2;
+            }
+        }
+
+        $sql = "SELECT t1.*,IF(t2.pid IS NULL,'','Y') AS tdm,t2.DATE_SERV AS datedm,IF(t3.pid IS NULL,'','Y') AS tht,t3.DATE_SERV AS dateht
+                FROM (
+                SELECT n.DATE_SERV,p.cid,CONCAT(c.prename,p.NAME,' ',p.LNAME)  AS tname,YEAR(CURDATE())-YEAR(p.BIRTH)  AS tage,SBP_1,SBP_2,DBP_1,DBP_2,BSLEVEL,n.pid
+                FROM ncdscreen n
+                LEFT JOIN person p ON p.PID = n.PID AND p.HOSPCODE = n.HOSPCODE
+                LEFT JOIN cprename c ON c.id_prename=p.PRENAME
+                #LEFT JOIN diagnosis_opd d ON   d.HOSPCODE= n.HOSPCODE AND d.PID = n.PID AND  d.DIAGCODE BETWEEN 'e10' AND 'e149'
+                WHERE n.DATE_SERV BETWEEN '$date1' AND '$date2' AND n.HOSPCODE='10725' ) AS t1
+                LEFT JOIN (SELECT pid,HOSPCODE,DATE_SERV FROM diagnosis_opd WHERE HOSPCODE ='10725' AND DIAGCODE BETWEEN 'e10' AND 'e149' AND DATE_SERV BETWEEN '$date1' AND '$date2' GROUP BY pid)  AS t2 ON t2.pid = t1.pid
+                LEFT JOIN (SELECT pid,HOSPCODE,DATE_SERV FROM diagnosis_opd WHERE HOSPCODE ='10725' AND DIAGCODE BETWEEN 'i10' AND 'i15' AND DATE_SERV BETWEEN '$date1' AND '$date2' GROUP BY pid)  AS t3 ON t3.pid = t1.pid
+
+                ";
+        try {
+            $rawData = \Yii::$app->db3->createCommand($sql)->queryAll();
+        } catch (\yii\db\Exception $e) {
+            throw new \yii\web\ConflictHttpException('sql error');
+        }
+        $dataProvider = new \yii\data\ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawData,
+            'pagination' => [
+                'pageSize' => 100
+            ],
+            /*'sort' => [
+                'attributes' => count($rawData[0]) > 0 ? array_keys($rawData[0]) : array()
+            ]*/
+        ]);
+        return $this->render('ncdhdc', ['dataProvider' => $dataProvider, 'date1' => $date1, 'date2' => $date2]);
+    }
+    
      public function actionDmxray() {
         $this->permitRole([1, 3]);
         $date1 = date('Y-m-d');
