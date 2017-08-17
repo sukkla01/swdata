@@ -165,6 +165,7 @@ use kartik\tabs\TabsX;
                                        'timeserv'=>$timeserv,
                                        'hospname'=>$hospname,
                                        'hospcode'=>$hospcode,
+                                        'hrefer'=>$hrefer,
                                     
                                 ]),
                                 'active' => true
@@ -173,6 +174,12 @@ use kartik\tabs\TabsX;
                                 'label' => 'ยา',
                                 'content' => $this->render('drug', [
                                         'dataProvider' => $dataProviderdr,
+                                ]),
+                            ],
+                             [
+                                'label' => 'การส่งต่อ',
+                                'content' => $this->render('refer', [
+                                    'dataProviderRefer' => $dataProviderRefer,
                                 ]),
                             ],
                                 [

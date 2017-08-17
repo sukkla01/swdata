@@ -6,13 +6,11 @@ use yii\web\Controller;
 use Yii;
 use yii\data\ArrayDataProvider;
 
-
 class DefaultController extends \common\components\AppController {
 
-  
     public function actionIndex() {
 
-        $this->permitRole([1,2,3]);
+        $this->permitRole([1, 2, 3]);
         $connection = Yii::$app->db3;
 
         $tname = '';
@@ -32,9 +30,10 @@ class DefaultController extends \common\components\AppController {
         $btemp = '';
         $hospname = '';
         $timeserv = '';
-        $birth ='';
-        
-        
+        $birth = '';
+        $hrefer = '';
+
+
         if (Yii::$app->request->isPost) {
             $cid = Yii::$app->request->post('cid');
             Yii::$app->session['cid'] = $cid;
@@ -45,7 +44,7 @@ class DefaultController extends \common\components\AppController {
             $hospcode = $_GET['hospcode'];
             $an = $_GET['an'];
         }
-        
+
         if (isset($_GET['page'])) {
             $cid = Yii::$app->session['cid'];
         }
@@ -122,9 +121,11 @@ class DefaultController extends \common\components\AppController {
         ]);
         //อาการ
         $sqlcc = "SELECT date_serv,CHIEFCOMP,sbp,dbp,pr,rr,btemp,h.hosname as hospname,
-                    CONCAT(left(time_serv,2),':',SUBSTR(time_serv,3,2),':',right(time_serv,2)) as time_serv
+                    CONCAT(left(time_serv,2),':',SUBSTR(time_serv,3,2),':',right(time_serv,2)) as time_serv,
+                    CONCAT(h2.type_desc,h2.hname) AS hrefer
                     FROM service s
                     LEFT JOIN chospital  h ON h.hoscode = s.hospcode
+                    LEFT JOIN hospital_nhso h2 ON h2.hcode = s.REFEROUTHOSP
                     WHERE s.hospcode='$hospcode' AND seq ='$seq' 
                     LIMIT 1";
         $datacc = $connection->createCommand($sqlcc)
@@ -139,8 +140,9 @@ class DefaultController extends \common\components\AppController {
             $rr = $datacc[$i]['rr'];
             $btemp = $datacc[$i]['btemp'];
             $hospname = $datacc[$i]['hospname'];
-            $hospname = str_replace("โรงพยาบาลส่งเสริมสุขภาพตำบล","รพสต.", $hospname);
+            $hospname = str_replace("โรงพยาบาลส่งเสริมสุขภาพตำบล", "รพสต.", $hospname);
             $timeserv = $datacc[$i]['time_serv'];
+            $hrefer = $datacc[$i]['hrefer'];
         }
         //LAB
         $sqll = "SELECT l.labtest, t.labtest AS tlname,labresult
@@ -154,6 +156,30 @@ class DefaultController extends \common\components\AppController {
         $dataProviderl = new ArrayDataProvider([
             //'key' => 'hoscode',
             'allModels' => $rawl,
+            'pagination' => [
+                'pageSize' => 20
+            ],
+        ]);
+        
+        //Refer
+        $sqlRe = "SELECT s.PID,CONCAT(DATE_SERV,' ',TIME_SERV) AS vstdate,i.instype_name,MAIN,CHIEFCOMP,
+			IF(s.REFEROUTHOSP IS NULL,'',CONCAT(h.type_desc,h.hname)) AS hreferout,
+			IF(s.REFERINHOSP IS NULL,'',CONCAT(h2.type_desc,h2.hname)) AS hreferin,
+			IF(s.MAIN IS NULL,'',CONCAT(h3.type_desc,h3.hname)) AS hmain
+                FROM service s
+                LEFT JOIN person p ON p.hospcode = s.hospcode AND p.pid =s.pid
+                LEFT JOIN hospital_nhso h ON h.hcode = s.REFEROUTHOSP
+                LEFT JOIN hospital_nhso h2 ON h2.hcode = s.REFERINHOSP
+                LEFT JOIN hospital_nhso h3 ON h3.hcode = s.MAIN
+                LEFT JOIN cinstype i ON i.id_instype = s.instype
+                WHERE p.cid = '$cid' AND TYPEOUT ='3'
+                   ";
+        $rawRe = $connection->createCommand($sqlRe)
+                ->queryAll();
+
+        $dataProviderRefer = new ArrayDataProvider([
+            //'key' => 'hoscode',
+            'allModels' => $rawRe,
             'pagination' => [
                 'pageSize' => 20
             ],
@@ -180,11 +206,12 @@ class DefaultController extends \common\components\AppController {
             ],
         ]);
 
-        return $this->render('index', ['cid' => $cid, 'tname' => $tname, 'taddr' => $taddr, 'sex' => $sex, 'chronic' => $chronic,'birth'=>$birth,
+        return $this->render('index', ['cid' => $cid, 'tname' => $tname, 'taddr' => $taddr, 'sex' => $sex, 'chronic' => $chronic, 'birth' => $birth,
                     'dataProvider' => $dataProvider,
                     'dataProvideri' => $dataProvideri,
                     'dataProviderl' => $dataProviderl,
                     'dataProviderdr' => $dataProviderdr,
+                    'dataProviderRefer' => $dataProviderRefer,
                     'dateserv' => $date_serv,
                     'cc' => $cc,
                     'sbp' => $sbp,
@@ -192,9 +219,10 @@ class DefaultController extends \common\components\AppController {
                     'pr' => $pr,
                     'rr' => $rr,
                     'btemp' => $btemp,
-                    'hospcode' =>$hospcode,
-                    'hospname'=>$hospname,
-                    'timeserv'=>$timeserv
+                    'hospcode' => $hospcode,
+                    'hospname' => $hospname,
+                    'timeserv' => $timeserv,
+                    'hrefer' => $hrefer,
         ]);
     }
 
