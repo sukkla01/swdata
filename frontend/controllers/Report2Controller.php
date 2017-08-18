@@ -43,7 +43,8 @@ class Report2Controller extends \common\components\AppController {
                     LEFT JOIN patient p ON p.hn = i.hn
                     LEFT JOIN	ward w ON w.ward = i.ward
                     LEFT JOIN an_stat a ON a.an = i.an
-                    WHERE i.regdate BETWEEN '$date1' and '$date2'
+                    LEFT JOIN ovst o ON o.an = i.an
+                    WHERE i.regdate BETWEEN '$date1' and '$date2' AND o.spclty='06'
                     ORDER BY	 i.ward ";
                             try {
             $rawData = \Yii::$app->db2->createCommand($sql)->queryAll();
