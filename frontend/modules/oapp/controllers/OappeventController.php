@@ -116,8 +116,7 @@ class OappeventController extends Controller {
         $tname = '';
         $tel = '';
         $pttype = '';
-        $create_date = '';
-
+         $create_date =$date;
 
         if (isset($_GET['type'])) {
             $type = $_GET['type'];
@@ -152,6 +151,7 @@ class OappeventController extends Controller {
 
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
+            $create_date =$date;
         }
 
 

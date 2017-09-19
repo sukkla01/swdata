@@ -144,7 +144,8 @@ use yii\helpers\ArrayHelper;
                                             'title' => 'สั่งอาหาร',
                                             'data-toggle' => 'modal',
                                             'data-target' => '#modalvote',
-                                            'data-id' => $model['an'],
+                                    //'data-whatever'=>$model['an'],
+                                            //'data-id' => $model['an'],
                                 ]);
                             },
                             'filterType' => GridView::FILTER_COLOR,
@@ -234,7 +235,7 @@ use yii\helpers\ArrayHelper;
 
 
 <?php
-/* $this->registerJs('
+ $this->registerJs('
   function init_click_handlers(){
   $(".activity-add-link").click("pjax:end",function() {
 
@@ -244,5 +245,5 @@ use yii\helpers\ArrayHelper;
 
   }
   init_click_handlers(); //first run
-  '); */
+  '); 
 ?>

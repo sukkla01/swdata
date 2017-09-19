@@ -31,12 +31,18 @@ for ($i = 0; $i < sizeof($data); $i++) {
 $sql = "SELECT i.hn,i.an,a.bedno,CONCAT(p.pname,p.fname,' ',p.lname) AS tname,
                 CONCAT(s.age_y,' ปี ',s.age_m,' เดือน ',s.age_d,' วัน') AS tage,
                 i.regdate,i.regtime
-                ,o.height,o.bw,o.bmi
+                ,o.height,o.bw,o.bmi,
+		n.name AS fname,
+		f.fooddate_last AS fooddate,f.foodtime,
+		Congenital_disease,
+		IF(fooddate_last=CURDATE(),'Y','N') AS tcheck
                 FROM ipt i
                 LEFT JOIN patient p ON p.hn = i.hn
                 LEFT JOIN iptadm a ON a.an = i.an
                 LEFT JOIN an_stat s ON s.an = i.an
                 LEFT JOIN opdscreen o ON o.vn = i.vn
+		LEFT JOIN swdata.food_last f ON f.an = i.an
+		LEFT JOIN nutrition_items n ON n.icode = f.icode
                 WHERE i.dchdate IS NULL AND i.ward ='$ward' 
                 ORDER BY  bedno    ";
 $connection = Yii::$app->db2;
@@ -159,22 +165,11 @@ if ($order_complete == 'Y') {
                         $fname = '';
                         $tcheck = 'N';
                         $cd = '';
-                        $sqlf = "SELECT fooddate,foodtime,n.name,bd,cal,Congenital_disease,comment,
-                                        IF(fooddate=CURDATE(),'Y','N') AS tcheck
-                                        FROM food_detail_01  f
-                                        LEFT JOIN nutrition_items n ON n.icode = f.icode
-                                        WHERE an='$an'
-                                        ORDER BY foodid DESC
-                                        LIMIT 1";
-                        $dataf = $connection->createCommand($sqlf)
-                                ->queryAll();
-                        for ($il = 0; $il < sizeof($dataf); $il++) {
-                            $fooddate = $dataf[$il]['fooddate'];
-                            $foodtime = $dataf[$il]['foodtime'];
-                            $fname = $dataf[$il]['name'];
-                            $cd = $dataf[$il]['Congenital_disease'];
-                            $tcheck = $dataf[$il]['tcheck'];
-                        }
+                        $fooddate = $data[$i]['fooddate'];
+                        $foodtime = $data[$i]['foodtime'];
+                        $fname = $data[$i]['fname'];
+                        $cd = $data[$i]['Congenital_disease'];
+                        $tcheck = $data[$i]['tcheck'];
                         ?>
                         <tr <?= $color ?> >
                             <td><?= $i + 1 ?></td>
@@ -220,7 +215,7 @@ if ($order_complete == 'Y') {
 
         <!-- Modal content-->
         <div class="modal-content">
-            
+
             <div class="panel panel-danger">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-ban" ></i>&nbsp;&nbsp;ไม่สามารถสั่งพิมพ์ได้ เนื่องจากมีการสั่งอาหารซ้ำ ดังนี้</h3>
@@ -261,7 +256,7 @@ if ($order_complete == 'Y') {
                                         <td><?= $data[$i]['bedno']; ?></td>
                                         <td><?= $data[$i]['an']; ?></td>
                                         <td><?= $data[$i]['hn']; ?></td>
-                                        
+
                                         <td><?= $data[$i]['tname']; ?></td>
                                         <td align="center"><?= $data[$i]['tcount']; ?></td>
                                     </tr>

@@ -7,10 +7,11 @@ use Yii;
 class FingviewController extends  \common\components\AppController {
 
     public function actionIndex() {
+        $this->permitRole([1, 3]);
         $tsql = "SELECT year,name,file1,file2,file3,file4,note1
                 FROM finger_download d
                 LEFT JOIN finger_month m ON m.code = d.month
-                ORDER BY d.year,d.month  DESC";
+                ORDER BY CONCAT(d.year,d.month)  DESC";
 
         try {
             $rawData = \Yii::$app->db->createCommand($tsql)->queryAll();
@@ -36,7 +37,7 @@ class FingviewController extends  \common\components\AppController {
 
         //$aa = Yii::$app->response->sendFile($file);
         
-        $pathFile = 'D:/xampp/htdocs/swdata/backend/web/fingerfile/'.$name;
+        $pathFile = 'C:/xampp/htdocs/swdata/backend/web/fingerfile/'.$name;
 
         $pathFile1 = Yii::getAlias('@webroot').'/fingerfile/012559_1.pdf' ;
        //  $filename = '012559_1.pdf';

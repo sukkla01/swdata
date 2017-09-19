@@ -95,6 +95,7 @@ use yii\helpers\Url;
                 <ul class="treeview-menu">
                     <li><a href="<?= Url::to('index.php?r=quest/quest/create') ?>"><i class="fa fa-circle-o text-default"></i>แบบสอบถามอาการข้างเคียง</a></li>
                     <li><a href="<?= Url::to('index.php?r=bmd') ?>"><i class="fa fa-circle-o text-aqua"></i>การตรวจมวลกระดูก</a></li>
+                    <li><a href="<?= Url::to('index.php?r=research') ?>"><i class="fa fa-circle-o text-aqua"></i>บันทึกงานวิจัย</a></li>
                 </ul>
             </li>
            

@@ -55,7 +55,7 @@ return [
             'showScriptName' => true,
         ],
         'thaiFormatter' => [
-            'class' => 'dixonsatit\thaiYearFormatter\ThaiYearFormatter',
+             'class'=>'dixonsatit\thaiYearFormatter\ThaiYearFormatter',
         ],
     /*
       'urlManager' => [

@@ -85,7 +85,7 @@ echo $timet;*/
                                 DatePicker::className(), [
                             'language' => 'th',
                             'inline' => FALSE,
-                            'dateFormat' => 'yyyy-MM-dd',
+                            //'dateFormat' => 'yyyy-MM-dd',
                             'options' => ['class' => 'form-control', 'value' => date('Y-m-d'),],
                             'clientOptions' => [
                                 //'value' => '2015-01-01',

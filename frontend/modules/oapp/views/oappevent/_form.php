@@ -118,7 +118,7 @@ $text_total = $text1 . $text2 . $text3;
                         DatePicker::className(), [
                     'language' => 'th',
                     'inline' => FALSE,
-                    'dateFormat' => 'yyyy-MM-dd',
+                    //'dateFormat' => 'yyyy-MM-dd',
                     'options' => ['class' => 'form-control', 'value' => $create_date],
                     'clientOptions' => [
                         //'value' => '2015-01-01',

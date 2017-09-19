@@ -28,5 +28,8 @@ return [
     'rreport' => [
         'class' => 'frontend\modules\rreport\Rreport',
     ],
+     'research' => [
+        'class' => 'app\modules\research\Module',
+    ],
 ];
 

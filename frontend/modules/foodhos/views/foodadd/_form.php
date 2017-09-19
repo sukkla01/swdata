@@ -80,16 +80,15 @@ use kartik\grid\GridView;
                             'language' => 'th',
                             'inline' => FALSE,
                             'dateFormat' => 'yyyy-MM-dd',
-                            'options' => ['class' => 'form-control','value' => '2015-01-01',],
+                            'options' => ['class' => 'form-control', 'value' => '2015-01-01',],
                             'clientOptions' => [
-                                
                                 //'value' => '2015-01-01',
                                 //'defaultDate' => '2016-01-01',
                                 'todayHighlight' => true,
                                 'autoclose' => true,
                                 'dateFormat' => 'yyyy-mm-dd'
-                        ],
-                                    'value' => date('Y-m-d'),]);
+                            ],
+                            'value' => date('Y-m-d'),]);
                         ?>
                     </div>
                     <div class="col-lg-2">
@@ -107,14 +106,20 @@ use kartik\grid\GridView;
                     </div>
                     <div class="col-lg-6">
                         <?=
-                        $form->field($model, 'icode')->widget(Select2::className(), ['data' =>
+                        $form->field($model, 'icode')->widget(Select2::className(), [
+                            'initValueText' =>'ssss',
+                            'value' => '1',
+                            'data' =>
                             ArrayHelper::map(app\models\NutritionItems::find()->all(), 'icode', 'name'),
                             'options' => [
-                                'placeholder' => '<--คลิก/พิมพ์เลือก-->'],
+                                'placeholder' => '<--คลิก/พิมพ์เลือก-->',
+                                //'onchange' => 'alert (this.value)',
+                                ],
                             'pluginOptions' =>
                                 [
                                 'allowClear' => true
                             ],
+                            
                         ]);
                         ?> 
                     </div>
@@ -126,6 +131,7 @@ use kartik\grid\GridView;
                             ArrayHelper::map(app\models\NurCongenitalDisease::find()->all(), 'name', 'name'),
                             'options' => [
                                 'placeholder' => '<--คลิก/พิมพ์เลือก-->'],
+                            'value' => 'sssss',
                             'pluginOptions' =>
                                 [
                                 'allowClear' => true
@@ -234,7 +240,7 @@ use kartik\grid\GridView;
                         'attribute' => 'cal',
                         'label' => 'ความเข้มข้น'
                     ],
-                        [
+                       /* [
                         'attribute' => 'foodid',
                         'label' => 'แก้ไข',
                         'value' => function($model, $key) {
@@ -244,13 +250,13 @@ use kartik\grid\GridView;
                             $fooddate = $model['fooddate'];
                             $foodtime = $model['foodtime'];
                             return Html::a("<i class='fa fa-pencil'></i>", ['', 'foodid' => $foodid,
-                                        'an' => $an, 'bed' => $bed,'tstatus'=>'e'], [
+                                        'an' => $an, 'bed' => $bed, 'tstatus' => 'e'], [
                             ]);
                         },
                         'filterType' => GridView::FILTER_COLOR,
                         'hAlign' => 'middle',
                         'format' => 'raw',
-                    ],
+                    ],*/
                         [
                         'attribute' => 'foodid',
                         'label' => 'ลบ',
@@ -263,7 +269,7 @@ use kartik\grid\GridView;
                             $hn = $model['hn'];
                             $icode = $model['icode'];
                             return Html::a("<i class='fa fa-window-close'></i>", ['', 'foodid' => $foodid,
-                                        'an' => $an,'hn'=>$hn,'icode'=>$icode,'bed' => $bed,'tstatus'=>'d'], [
+                                        'an' => $an, 'hn' => $hn, 'icode' => $icode, 'bed' => $bed, 'tstatus' => 'd'], [
                                         'data-confirm' => Yii::t('yii', 'คุณต้องการลบ ' . $an . ' วันที่ ' . $fooddate . ' เวลา ' . $foodtime . ' นี้หรือไม่'),
                                         'data-pjax' => '0',
                             ]);

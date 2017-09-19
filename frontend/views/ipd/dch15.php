@@ -26,7 +26,7 @@ use kartik\export\ExportMenu;
             'name' => 'date1',
             'value' => $date1,
             'language' => 'th',
-            'dateFormat' => 'yyyy-MM-dd',
+            //'dateFormat' => 'yyyy-MM-dd',
             'clientOptions' => [
                 'changeMonth' => true,
                 'changeYear' => true,
@@ -44,7 +44,7 @@ use kartik\export\ExportMenu;
             'name' => 'date2',
             'value' => $date2,
             'language' => 'th',
-            'dateFormat' => 'yyyy-MM-dd',
+            //'dateFormat' => 'yyyy-MM-dd',
             'clientOptions' => [
                 'changeMonth' => true,
                 'changeYear' => true,

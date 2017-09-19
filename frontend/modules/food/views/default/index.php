@@ -55,7 +55,6 @@ if ($order_complete == 'Y') {
         </div>    
     </div>
 <?php } ?>
-ggggggggggggg
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">

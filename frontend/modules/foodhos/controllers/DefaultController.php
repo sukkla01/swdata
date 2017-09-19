@@ -74,14 +74,14 @@ class DefaultController extends \common\components\AppController {
                 'mode' => Pdf::MODE_UTF8,
                 // A4 paper format 
                 'format' => Pdf::FORMAT_A4,
-                'marginLeft' => 10,
-                'marginRight' => 10,
+                'marginLeft' => 5,
+                'marginRight' => 5,
                 'marginTop' => 1,
                 'marginBottom' => false,
                 'marginHeader' => false,
                 'marginFooter' => false,
                 // portrait orientation 
-                'orientation' => Pdf::ORIENT_LANDSCAPE,
+                'orientation' => Pdf::ORIENT_PORTRAIT,
                 // stream to browser inline 
                 'destination' => Pdf::DEST_BROWSER,
                 // your html content input 

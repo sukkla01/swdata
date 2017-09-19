@@ -42,7 +42,8 @@ $daten= Yii::$app->formatter->asDate($time, 'long');
             FROM food_detail_01 f
             LEFT JOIN iptadm i ON i.an= f.an
             LEFT JOIN ipt it ON it.an=f.an
-            WHERE f.fooddate = CURDATE() AND it.ward ='$ward' AND it.dchdate IS NULL ";
+            LEFT JOIN ward w ON w.ward = it.ward
+            WHERE f.fooddate = CURDATE() AND  w.spclty ='$ward' AND it.dchdate IS NULL ";
 $tdata = $connection->createCommand($tsql)
         ->queryAll(); 
 for ($ti = 0; $ti < sizeof($tdata); $ti++) {
@@ -73,7 +74,7 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
 
 <table class="table_bordered" width="100%" border="0" cellpadding="2" cellspacing="0"> 
     <tr> 
-        <td height="30">No.</td> 
+        <td height="30">No</td> 
         <td>เตียง</td> 
         <td>ชื่อ-สกุล</td> 
         <td>อายุ/ปี</td> 
@@ -92,10 +93,10 @@ for ($ti = 0; $ti < sizeof($tdata); $ti++) {
        
         ?>
         <tr> 
-            <td width="3%"  align="center" height="28"><?= $i + 1 ?></td> 
-            <td width="5%" align="center"><?=$bedno?></td> 
-            <td width="20%" align="left"><?=$tname?></td> 
-            <td width="5%" align="center"><?=$tage?></td> 
+            <td width="8%"  align="center" height="32"><?= $i + 1 ?></td> 
+            <td width="8%" align="center"><?=$bedno?></td> 
+            <td width="25%" align="left"><?=$tname?></td> 
+            <td width="8%" align="center"><?=$tage?></td> 
             <td width="10%" align="left"><?=$cd?></td> 
             <td width="35%" align="left"><?=$nname?></td> 
             <td width="22%" align="left"><?=$comment?></td> 
